@@ -19,8 +19,8 @@ namespace gamezone_api
         {
             List<Product> productsInit = new List<Product>
             {
-                new Product() { ProductId = Guid.Parse("fe2de405-c38e-4c90-ac52-da0540dfb4ef"), Name = "PS5", Price = 500, ReleaseDate = new DateOnly(2020, 11, 19), Description = "PlayStation 5 Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
-                new Product() { ProductId = Guid.Parse("fe2de405-c38e-4c90-ac52-da0540dfb4ef"), Name = "Nintendo Switch", Price = 300, ReleaseDate = new DateOnly(2017, 3, 3), Description = "Nintendo Switch Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
+                new Product() { ProductId = Guid.Parse("fe2de405-c38e-4c90-ac52-da0540dfb4ef"), Name = "PS5", Price = 500, ReleaseDate = new DateTime(2020, 11, 19), Description = "PlayStation 5 Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
+                new Product() { ProductId = Guid.Parse("fe2de405-c38e-4c90-ac52-da0540dfb4ef"), Name = "Nintendo Switch", Price = 300, ReleaseDate = new DateTime(2017, 3, 3), Description = "Nintendo Switch Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
             };
 
             modelBuilder.Entity<Product>(product =>
