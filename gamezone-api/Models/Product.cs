@@ -14,9 +14,9 @@ namespace gamezone_api.Models
         [Required]
         public decimal Price { get; set; }
 
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         [Required]
         public DateTime CreateDate { get; set; }
