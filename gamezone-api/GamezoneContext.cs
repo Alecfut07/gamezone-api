@@ -19,14 +19,14 @@ namespace gamezone_api
         {
             List<Product> productsInit = new List<Product>
             {
-                new Product() { ProductId = Guid.NewGuid(), Name = "PS5", Price = 500, ReleaseDate = new DateTime(2020, 11, 19), Description = "PlayStation 5 Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
-                new Product() { ProductId = Guid.NewGuid(), Name = "Nintendo Switch", Price = 300, ReleaseDate = new DateTime(2017, 3, 3), Description = "Nintendo Switch Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
+                new Product() { ID = 1, Name = "PS5", Price = 500, ReleaseDate = new DateTime(2020, 11, 19), Description = "PlayStation 5 Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
+                new Product() { ID = 2, Name = "Nintendo Switch", Price = 300, ReleaseDate = new DateTime(2017, 3, 3), Description = "Nintendo Switch Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
             };
 
             modelBuilder.Entity<Product>(product =>
             {
-                product.ToTable("Product");
-                product.HasKey(p => p.ProductId);
+                product.ToTable("products");
+                product.HasKey(p => p.ID);
 
                 product.Property(p => p.Name).IsRequired().HasMaxLength(150);
 

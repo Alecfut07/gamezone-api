@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Runtime.Serialization;
 using gamezone_api.Models;
 namespace gamezone_api.Services
 {
@@ -26,7 +28,6 @@ namespace gamezone_api.Services
             catch (Exception ex)
             {
                 throw ex;
-
             }
         }
 

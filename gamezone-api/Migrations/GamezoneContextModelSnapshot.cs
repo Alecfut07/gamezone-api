@@ -24,54 +24,63 @@ namespace gamezone_api.Migrations
 
             modelBuilder.Entity("gamezone_api.Models.Product", b =>
                 {
-                    b.Property<Guid>("ProductId")
+                    b.Property<long?>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("ID"));
 
                     b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("create_date");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("nvarchar(150)")
+                        .HasColumnName("name");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18,2)")
+                        .HasColumnName("price");
 
                     b.Property<DateTime?>("ReleaseDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("release_date");
 
                     b.Property<DateTime>("UpdateDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime2")
+                        .HasColumnName("update_date");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("ID");
 
-                    b.ToTable("Product", (string)null);
+                    b.ToTable("products", (string)null);
 
                     b.HasData(
                         new
                         {
-                            ProductId = new Guid("1ef23f06-626e-4329-afe8-4251c6866293"),
-                            CreateDate = new DateTime(2023, 4, 17, 13, 35, 20, 542, DateTimeKind.Local).AddTicks(7080),
+                            ID = 1L,
+                            CreateDate = new DateTime(2023, 4, 17, 17, 14, 57, 904, DateTimeKind.Local).AddTicks(7230),
                             Description = "PlayStation 5 Console",
                             Name = "PS5",
                             Price = 500m,
                             ReleaseDate = new DateTime(2020, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 17, 13, 35, 20, 542, DateTimeKind.Local).AddTicks(7120)
+                            UpdateDate = new DateTime(2023, 4, 17, 17, 14, 57, 904, DateTimeKind.Local).AddTicks(7270)
                         },
                         new
                         {
-                            ProductId = new Guid("396e7720-0071-4d1a-818f-5af2299e18ee"),
-                            CreateDate = new DateTime(2023, 4, 17, 13, 35, 20, 542, DateTimeKind.Local).AddTicks(7130),
+                            ID = 2L,
+                            CreateDate = new DateTime(2023, 4, 17, 17, 14, 57, 904, DateTimeKind.Local).AddTicks(7280),
                             Description = "Nintendo Switch Console",
                             Name = "Nintendo Switch",
                             Price = 300m,
                             ReleaseDate = new DateTime(2017, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 17, 13, 35, 20, 542, DateTimeKind.Local).AddTicks(7130)
+                            UpdateDate = new DateTime(2023, 4, 17, 17, 14, 57, 904, DateTimeKind.Local).AddTicks(7280)
                         });
                 });
 #pragma warning restore 612, 618

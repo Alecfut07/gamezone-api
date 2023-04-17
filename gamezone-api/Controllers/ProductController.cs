@@ -39,7 +39,8 @@ public class ProductController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(500);
+            //return BadRequest();
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
         return Ok();
     }
