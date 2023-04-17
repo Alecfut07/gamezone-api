@@ -1,5 +1,6 @@
 ﻿using gamezone_api;
 using gamezone_api.Models;
+using gamezone_api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // SQL SERVER CONNECTION
-//builder.Services.AddSqlServer<Product>(builder.Configuration.GetConnectionString("SQL_Server"));
+builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration.GetConnectionString("SQL_Server"));
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
