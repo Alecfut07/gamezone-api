@@ -1,10 +1,14 @@
 ﻿using gamezone_api;
 using gamezone_api.Models;
 using gamezone_api.Services;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+// DISABLING THE AUTOMATIC VALIDATION FROM [ApiController]
+builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

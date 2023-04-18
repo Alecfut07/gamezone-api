@@ -33,16 +33,29 @@ public class ProductController : ControllerBase
     [HttpPost]
     public IActionResult Post([FromBody] Product product)
     {
-        try
+        //try
+        //{
+        //    productService.Save(product);
+        //}
+        //catch (Exception ex)
+        //{
+        //    //return BadRequest();
+        //    return StatusCode(StatusCodes.Status500InternalServerError);
+        //}
+        //return Ok();
+
+        if (!ModelState.IsValid)
         {
-            productService.Save(product);
-        }
-        catch (Exception ex)
-        {
-            //return BadRequest();
             return StatusCode(StatusCodes.Status500InternalServerError);
         }
-        return Ok();
+        else
+        {
+            var newProduct = productService.Save(product);
+            product.ID = newProduct.Id;
+
+            return Ok(product);
+            //return CreatedAtAction("BLah", new { ID = product.ID }, product);
+        }
     }
 
     // PUT api/product/id

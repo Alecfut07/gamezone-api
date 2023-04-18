@@ -2,11 +2,14 @@
 using System.Net;
 using System.Runtime.Serialization;
 using gamezone_api.Models;
+using Microsoft.AspNetCore.Mvc;
+
 namespace gamezone_api.Services
 {
     public class ProductService : IProductService
     {
         GamezoneContext context;
+
         public ProductService(GamezoneContext dbContext)
         {
             context = dbContext;
@@ -20,15 +23,29 @@ namespace gamezone_api.Services
 
         public async Task Save(Product product)
         {
-            context.Add(product);
-            try
-            {
-                await context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            //context.Add(product);
+            //try
+            //{
+            //    await context.SaveChangesAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    throw ex;
+            //}
+
+            //var newProduct = new Product()
+            //{
+            //    ID = product.ID,
+            //    Name = product.Name,
+            //    Price = product.Price,
+            //    ReleaseDate = product.ReleaseDate,
+            //    Description = product.Description,
+            //    CreateDate = product.CreateDate,
+            //    UpdateDate = product.UpdateDate,
+            //};
+
+            context.Products.Add(product);
+            await context.SaveChangesAsync();
         }
 
         public async Task Update(Guid id, Product product)
