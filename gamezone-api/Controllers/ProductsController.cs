@@ -6,11 +6,11 @@ namespace gamezone_api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ProductController : ControllerBase
+public class ProductsController : ControllerBase
 {
     IProductService productService;
 
-    public ProductController(IProductService service)
+    public ProductsController(IProductService service)
     {
         productService = service;
     }
@@ -51,10 +51,10 @@ public class ProductController : ControllerBase
         else
         {
             var newProduct = productService.Save(product);
-            product.ID = newProduct.Id;
+            product.Id = newProduct.Id;
 
             return Ok(product);
-            //return CreatedAtAction("BLah", new { ID = product.ID }, product);
+            //return CreatedAtAction(nameof(Get), new { ID = product.ID }, product);
         }
     }
 

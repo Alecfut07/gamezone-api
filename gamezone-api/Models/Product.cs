@@ -1,13 +1,16 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Globalization;
+using FluentValidation;
 
 namespace gamezone_api.Models
 {
 	public class Product
 	{
+        [Key]
         [Column("id")]
-        public long ID { get; set; }
+        public long Id { get; set; }
 
         [Required]
         [Column("name")]

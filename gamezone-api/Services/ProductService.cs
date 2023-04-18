@@ -23,27 +23,8 @@ namespace gamezone_api.Services
 
         public async Task Save(Product product)
         {
-            //context.Add(product);
-            //try
-            //{
-            //    await context.SaveChangesAsync();
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw ex;
-            //}
-
-            //var newProduct = new Product()
-            //{
-            //    ID = product.ID,
-            //    Name = product.Name,
-            //    Price = product.Price,
-            //    ReleaseDate = product.ReleaseDate,
-            //    Description = product.Description,
-            //    CreateDate = product.CreateDate,
-            //    UpdateDate = product.UpdateDate,
-            //};
-
+            product.CreateDate = DateTime.UtcNow;
+            product.UpdateDate = DateTime.UtcNow;
             context.Products.Add(product);
             await context.SaveChangesAsync();
         }

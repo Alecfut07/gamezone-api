@@ -12,7 +12,7 @@ using gamezone_api;
 namespace gamezone_api.Migrations
 {
     [DbContext(typeof(GamezoneContext))]
-    [Migration("20230417231457_InitialCreate")]
+    [Migration("20230418172951_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -27,12 +27,12 @@ namespace gamezone_api.Migrations
 
             modelBuilder.Entity("gamezone_api.Models.Product", b =>
                 {
-                    b.Property<long?>("ID")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long?>("ID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2")
@@ -60,30 +60,30 @@ namespace gamezone_api.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("update_date");
 
-                    b.HasKey("ID");
+                    b.HasKey("Id");
 
                     b.ToTable("products", (string)null);
 
                     b.HasData(
                         new
                         {
-                            ID = 1L,
-                            CreateDate = new DateTime(2023, 4, 17, 17, 14, 57, 904, DateTimeKind.Local).AddTicks(7230),
+                            Id = 1L,
+                            CreateDate = new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3610),
                             Description = "PlayStation 5 Console",
                             Name = "PS5",
                             Price = 500m,
                             ReleaseDate = new DateTime(2020, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 17, 17, 14, 57, 904, DateTimeKind.Local).AddTicks(7270)
+                            UpdateDate = new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3660)
                         },
                         new
                         {
-                            ID = 2L,
-                            CreateDate = new DateTime(2023, 4, 17, 17, 14, 57, 904, DateTimeKind.Local).AddTicks(7280),
+                            Id = 2L,
+                            CreateDate = new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3660),
                             Description = "Nintendo Switch Console",
                             Name = "Nintendo Switch",
                             Price = 300m,
                             ReleaseDate = new DateTime(2017, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 17, 17, 14, 57, 904, DateTimeKind.Local).AddTicks(7280)
+                            UpdateDate = new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3670)
                         });
                 });
 #pragma warning restore 612, 618

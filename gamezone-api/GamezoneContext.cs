@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using gamezone_api.Models;
+using gamezone_api.Controllers;
 
 namespace gamezone_api
 {
@@ -19,14 +20,14 @@ namespace gamezone_api
         {
             List<Product> productsInit = new List<Product>
             {
-                new Product() { ID = 1, Name = "PS5", Price = 500, ReleaseDate = new DateTime(2020, 11, 19), Description = "PlayStation 5 Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
-                new Product() { ID = 2, Name = "Nintendo Switch", Price = 300, ReleaseDate = new DateTime(2017, 3, 3), Description = "Nintendo Switch Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
+                new Product() { Id = 1, Name = "PS5", Price = 500, ReleaseDate = new DateTime(2020, 11, 19), Description = "PlayStation 5 Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
+                new Product() { Id = 2, Name = "Nintendo Switch", Price = 300, ReleaseDate = new DateTime(2017, 3, 3), Description = "Nintendo Switch Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
             };
 
             modelBuilder.Entity<Product>(product =>
             {
                 product.ToTable("products");
-                product.HasKey(p => p.ID);
+                product.HasKey(p => p.Id);
 
                 product.Property(p => p.Name).IsRequired().HasMaxLength(150);
 
