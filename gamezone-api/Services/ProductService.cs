@@ -63,13 +63,17 @@ namespace gamezone_api.Services
             return updatedProduct;
         }
 
-        public async Task Delete(Guid id)
+        public async Task Delete(long id)
         {
-            var actualProduct = context.Products.Find(id);
+            var productToRemove = await context.Products.FindAsync(id);
 
-            if (actualProduct != null)
+            if (productToRemove == null)
             {
-                context.Remove(actualProduct);
+                throw new ArgumentNullException();
+            }
+            else
+            {
+                context.Remove(productToRemove);
                 await context.SaveChangesAsync();
             }
         }
@@ -85,7 +89,7 @@ namespace gamezone_api.Services
 
         Task<Product?> Update(long id, Product product);
 
-        Task Delete(Guid id);
+        Task Delete(long id);
     }
 }
 

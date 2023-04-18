@@ -65,10 +65,16 @@ public class ProductsController : ControllerBase
 
     // DELETE api/product/id
     [HttpDelete("{id}")]
-    public IActionResult Delete(Guid id)
+    public async Task<ActionResult> Delete([FromRoute] long id)
     {
-        productService.Delete(id);
-        return Ok();
+        try
+        {
+            await productService.Delete(id);
+        } catch(ArgumentNullException ex)
+        {
+            return NotFound();
+        }
+        return NoContent();
     }
 }
 
