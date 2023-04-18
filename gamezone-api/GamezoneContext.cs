@@ -12,6 +12,8 @@ namespace gamezone_api
     {
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<Condition> Conditions { get; set; }
+
         public GamezoneContext(DbContextOptions<GamezoneContext> options) : base(options)
         {
         }
@@ -42,6 +44,23 @@ namespace gamezone_api
                 product.Property(p => p.UpdateDate).IsRequired();
 
                 product.HasData(productsInit);
+            });
+
+            //List<Condition> conditionsInit = new List<Condition>
+            //{
+            //    new Condition() { Id = 1, State = "NEW" },
+            //    new Condition() { Id = 2, State = "PRE_OWNED" },
+            //    new Condition() { Id = 3, State = "DIGITAL" },
+            //};
+
+            modelBuilder.Entity<Condition>(condition =>
+            {
+                condition.ToTable("conditions");
+                condition.HasKey(p => p.Id);
+
+                condition.Property(p => p.State).IsRequired().HasMaxLength(30);
+
+                //condition.HasData(conditionsInit);
             });
         }
     }
