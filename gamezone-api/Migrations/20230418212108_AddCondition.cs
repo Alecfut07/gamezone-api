@@ -17,22 +17,22 @@ namespace gamezone_api.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    state = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    state = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_conditions", x => x.id);
                 });
 
-            //migrationBuilder.InsertData(
-            //    table: "conditions",
-            //    columns: new[] { "id", "state" },
-            //    values: new object[,]
-            //    {
-            //        { 1, "NEW" },
-            //        { 2, "PRE_OWNED" },
-            //        { 3, "DIGITAL" },
-            //    });
+            migrationBuilder.InsertData(
+                table: "conditions",
+                columns: new[] { "id", "state" },
+                values: new object[,]
+                {
+                    { 1, "NEW" },
+                    { 2, "PRE_OWNED" },
+                    { 3, "DIGITAL" },
+                });
         }
 
         /// <inheritdoc />
