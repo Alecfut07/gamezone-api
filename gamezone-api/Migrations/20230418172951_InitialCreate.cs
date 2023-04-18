@@ -37,7 +37,8 @@ namespace gamezone_api.Migrations
                 values: new object[,]
                 {
                     { 1L, new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3610), "PlayStation 5 Console", "PS5", 500m, new DateTime(2020, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3660) },
-                    { 2L, new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3660), "Nintendo Switch Console", "Nintendo Switch", 300m, new DateTime(2017, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3670) }
+                    { 2L, new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3660), "Nintendo Switch Console", "Nintendo Switch", 300m, new DateTime(2017, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3670) },
+                    { 3L, new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3660), "Nintendo Switch Console", "Nintendo Switch", 300m, new DateTime(2017, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3670) }
                 });
         }
 

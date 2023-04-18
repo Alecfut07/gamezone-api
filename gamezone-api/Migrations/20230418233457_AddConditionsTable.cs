@@ -1,12 +1,12 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
 namespace gamezone_api.Migrations
 {
     /// <inheritdoc />
-    public partial class AddCondition : Migration
+    public partial class AddConditionsTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -23,16 +23,9 @@ namespace gamezone_api.Migrations
                 {
                     table.PrimaryKey("PK_conditions", x => x.id);
                 });
-
-            migrationBuilder.InsertData(
-                table: "conditions",
-                columns: new[] { "id", "state" },
-                values: new object[,]
-                {
-                    { 1, "NEW" },
-                    { 2, "PRE_OWNED" },
-                    { 3, "DIGITAL" },
-                });
+            migrationBuilder.InsertData("conditions", "state", "NEW");
+            migrationBuilder.InsertData("conditions", "state", "PRE_OWNED");
+            migrationBuilder.InsertData("conditions", "state", "DIGITAL");
         }
 
         /// <inheritdoc />
