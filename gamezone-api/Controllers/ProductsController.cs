@@ -37,7 +37,7 @@ public class ProductsController : ControllerBase
 
     // POST api/product
     [HttpPost]
-    public IActionResult Post([FromBody] Product product)
+    public async Task<ActionResult<Product?>> Post([FromBody] Product product)
     {
         if (!ModelState.IsValid)
         {
@@ -45,11 +45,9 @@ public class ProductsController : ControllerBase
         }
         else
         {
-            var newProduct = productService.Save(product);
-            product.Id = newProduct.Id;
+            var newProduct = await productService.Save(product);
 
-            return Ok(product);
-            //return CreatedAtAction(nameof(Get), new { ID = product.ID }, product);
+            return Ok(newProduct);
         }
     }
 

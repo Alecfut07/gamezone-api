@@ -28,12 +28,15 @@ namespace gamezone_api.Services
             return product;
         }
 
-        public async Task Save(Product product)
+        public async Task<Product?> Save(Product product)
         {
             product.CreateDate = DateTime.UtcNow;
             product.UpdateDate = DateTime.UtcNow;
+
             context.Products.Add(product);
             await context.SaveChangesAsync();
+
+            return product;
         }
 
         public async Task<Product?> Update(long id, Product product)
@@ -78,7 +81,7 @@ namespace gamezone_api.Services
 
         Task<Product?> GetProduct(long id);
 
-        Task Save(Product product);
+        Task<Product?> Save(Product product);
 
         Task<Product?> Update(long id, Product product);
 
