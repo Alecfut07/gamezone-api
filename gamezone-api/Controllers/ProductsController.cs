@@ -17,33 +17,28 @@ public class ProductsController : ControllerBase
 
     // GET: api/product
     [HttpGet]
-    public IActionResult Get()
+    public async Task<ActionResult<Product>> GetProducts()
     {
-        return Ok(productService.Get());
+        var products = await productService.GetProducts();
+        return Ok(products);
     }
 
     // GET api/product/id
     [HttpGet("{id}")]
-    public string Get(int id)
+    public async Task<ActionResult<Product?>> GetProduct([FromRoute] long id)
     {
-        return "value";
+        var product = await productService.GetProduct(id);
+        if (product == null)
+        {
+            return NotFound();
+        }
+        return Ok(product);
     }
 
     // POST api/product
     [HttpPost]
     public IActionResult Post([FromBody] Product product)
     {
-        //try
-        //{
-        //    productService.Save(product);
-        //}
-        //catch (Exception ex)
-        //{
-        //    //return BadRequest();
-        //    return StatusCode(StatusCodes.Status500InternalServerError);
-        //}
-        //return Ok();
-
         if (!ModelState.IsValid)
         {
             return StatusCode(StatusCodes.Status500InternalServerError);
@@ -60,10 +55,14 @@ public class ProductsController : ControllerBase
 
     // PUT api/product/id
     [HttpPut("{id}")]
-    public IActionResult Put(Guid id, [FromBody] Product product)
+    public async Task<ActionResult<Product?>> Put([FromRoute] long id, [FromBody] Product product)
     {
-        productService.Update(id, product);
-        return Ok();
+        var updatedProduct = await productService.Update(id, product);
+        if (product == null)
+        {
+            return NotFound();
+        }
+        return Ok(updatedProduct);
     }
 
     // DELETE api/product/id
