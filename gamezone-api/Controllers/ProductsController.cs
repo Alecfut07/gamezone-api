@@ -10,9 +10,9 @@ public class ProductsController : ControllerBase
 {
     IProductService productService;
 
-    public ProductsController(IProductService service)
+    public ProductsController(IProductService productService)
     {
-        productService = service;
+        this.productService = productService;
     }
 
     // GET: api/product
@@ -25,9 +25,9 @@ public class ProductsController : ControllerBase
 
     // GET api/product/id
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product?>> GetProduct([FromRoute] long id)
+    public async Task<ActionResult<Product?>> GetProductById([FromRoute] long id)
     {
-        var product = await productService.GetProduct(id);
+        var product = await productService.GetProductById(id);
         if (product == null)
         {
             return NotFound();
@@ -37,7 +37,7 @@ public class ProductsController : ControllerBase
 
     // POST api/product
     [HttpPost]
-    public async Task<ActionResult<Product?>> Post([FromBody] Product product)
+    public async Task<ActionResult<Product?>> SaveNewProduct([FromBody] Product product)
     {
         if (!ModelState.IsValid)
         {
@@ -45,7 +45,7 @@ public class ProductsController : ControllerBase
         }
         else
         {
-            var newProduct = await productService.Save(product);
+            var newProduct = await productService.SaveNewProduct(product);
 
             return Ok(newProduct);
         }
@@ -53,9 +53,9 @@ public class ProductsController : ControllerBase
 
     // PUT api/product/id
     [HttpPut("{id}")]
-    public async Task<ActionResult<Product?>> Put([FromRoute] long id, [FromBody] Product product)
+    public async Task<ActionResult<Product?>> UpdateProduct([FromRoute] long id, [FromBody] Product product)
     {
-        var updatedProduct = await productService.Update(id, product);
+        var updatedProduct = await productService.UpdateProduct(id, product);
         if (product == null)
         {
             return NotFound();
@@ -65,11 +65,11 @@ public class ProductsController : ControllerBase
 
     // DELETE api/product/id
     [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete([FromRoute] long id)
+    public async Task<ActionResult> DeleteProduct([FromRoute] long id)
     {
         try
         {
-            await productService.Delete(id);
+            await productService.DeleteProduct(id);
         } catch(ArgumentNullException ex)
         {
             return NotFound();

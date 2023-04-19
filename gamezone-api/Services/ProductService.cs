@@ -22,33 +22,33 @@ namespace gamezone_api.Services
             return products;
         }
 
-        public async Task<Product?> GetProduct(long id)
+        public async Task<Product?> GetProductById(long id)
         {
             var product = await context.Products.FindAsync(id);
             return product;
         }
 
-        public async Task<Product?> Save(Product product)
+        public async Task<Product?> SaveNewProduct(Product newProduct)
         {
-            product.CreateDate = DateTime.UtcNow;
-            product.UpdateDate = DateTime.UtcNow;
+            newProduct.CreateDate = DateTime.UtcNow;
+            newProduct.UpdateDate = DateTime.UtcNow;
 
-            context.Products.Add(product);
+            context.Products.Add(newProduct);
             await context.SaveChangesAsync();
 
-            return product;
+            return newProduct;
         }
 
-        public async Task<Product?> Update(long id, Product product)
+        public async Task<Product?> UpdateProduct(long id, Product product)
         {
-            var updatedProduct = await context.Products.FindAsync(id);
+            var productToUpdate = await context.Products.FindAsync(id);
 
-            if (updatedProduct != null)
+            if (productToUpdate != null)
             {
-                updatedProduct.Name = product.Name;
-                updatedProduct.Price = product.Price;
-                updatedProduct.ReleaseDate = product.ReleaseDate;
-                updatedProduct.Description = product.Description;
+                productToUpdate.Name = product.Name;
+                productToUpdate.Price = product.Price;
+                productToUpdate.ReleaseDate = product.ReleaseDate;
+                productToUpdate.Description = product.Description;
 
                 //var isNameModified = context.Entry(actualProduct).Property("name").IsModified;
                 //var isPriceModified = context.Entry(actualProduct).Property("price").IsModified;
@@ -60,10 +60,10 @@ namespace gamezone_api.Services
                 await context.SaveChangesAsync();
             }
 
-            return updatedProduct;
+            return productToUpdate;
         }
 
-        public async Task Delete(long id)
+        public async Task DeleteProduct(long id)
         {
             var productToRemove = await context.Products.FindAsync(id);
 
@@ -73,7 +73,7 @@ namespace gamezone_api.Services
             }
             else
             {
-                context.Remove(productToRemove);
+                context.Products.Remove(productToRemove);
                 await context.SaveChangesAsync();
             }
         }
@@ -83,13 +83,13 @@ namespace gamezone_api.Services
     {
         Task<IEnumerable<Product>> GetProducts();
 
-        Task<Product?> GetProduct(long id);
+        Task<Product?> GetProductById(long id);
 
-        Task<Product?> Save(Product product);
+        Task<Product?> SaveNewProduct(Product newProduct);
 
-        Task<Product?> Update(long id, Product product);
+        Task<Product?> UpdateProduct(long id, Product product);
 
-        Task Delete(long id);
+        Task DeleteProduct(long id);
     }
 }
 

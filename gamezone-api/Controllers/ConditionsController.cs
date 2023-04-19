@@ -5,52 +5,85 @@ using gamezone_api.Services;
 
 namespace gamezone_api.Controllers
 {
-	[ApiController]
-	[Route("[controller]")]
-	public class ConditionsController : ControllerBase
-	{
-		IConditionService conditionService;
+    [ApiController]
+    [Route("[controller]")]
+    public class ConditionsController : ControllerBase
+    {
+        IConditionService conditionService;
 
-		public ConditionsController(IConditionService service)
-		{
-			conditionService = service;
-		}
+        public ConditionsController(IConditionService conditionService)
+        {
+            this.conditionService = conditionService;
+        }
 
-		// GET: conditions
-		[HttpGet]
-		public async Task<ActionResult<Condition>> GetConditions()
-		{
-			var conditions = await conditionService.GetConditions();
-			return Ok(conditions);
-		}
+        // GET: conditions
+        [HttpGet]
+        public async Task<ActionResult<Condition>> GetConditions()
+        {
+            var conditions = await conditionService.GetConditions();
+            return Ok(conditions);
+        }
 
-		// GET by id: conditions/id
-		//[HttpGet("{id}")]
-		//public IActionResult GetConditionById([FromRoute] int id)
-		//{
-		//	return Ok();
-		//}
+        // GET by id: conditions/id
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Condition?>> GetConditionById([FromRoute] int id)
+        {
+            var condition = await conditionService.GetConditionById(id);
+            if (condition == null)
+            {
+                return NotFound();
+            }
+            return Ok(condition);
+        }
 
-		// POST: conditions
-		//[HttpGet]
-		//public IActionResult CreateNewCondition([FromBody] Condition condition)
-		//{
-		//	return Ok();
-		//}
+        // POST: conditions
+        [HttpPost]
+        public async Task<ActionResult<Condition?>> CreateNewCondition([FromBody] Condition condition)
+        {
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            else
+            {
+                var newCondition = await conditionService.CreateNewCondition(condition);
 
-		// UPDATE: conditions/id
-		//[HttpPut("{id}")]
-		//public IActionResult UpdateCondition([FromRoute] int id, [FromBody] Condition condition)
-		//{
-		//	return Ok();
-		//}
+                return Ok(newCondition);
+            }
 
-		// DELETE: conditions/id
-		//[HttpDelete("{id}")]
-		//public IActionResult DeleteCondition([FromRoute] int id)
-		//{
-		//	return Ok();
-		//}
+        }
+
+        // UPDATE: conditions/id
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Condition?>> UpdateCondition([FromRoute] int id, [FromBody] Condition condition)
+        {
+            try
+            {
+                var updatedCondition = await conditionService.UpdateCondition(id, condition);
+
+                return Ok(updatedCondition);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
+        }
+
+        // DELETE: conditions/id
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Condition?>> DeleteCondition([FromRoute] int id)
+        {
+            try
+            {
+                await conditionService.DeleteCondition(id);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
     }
 }
 
