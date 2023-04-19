@@ -34,6 +34,7 @@ namespace gamezone_api.Models
         [Column("update_date")]
         public DateTime UpdateDate { get; set; }
 
+        // CONDITIONS 
         [ForeignKey("condition_id")]
         [Required]
         [Column("condition_id")]
@@ -41,6 +42,15 @@ namespace gamezone_api.Models
         public int ConditionId { get; set; }
 
         public virtual Condition? Condition { get; set; }
+
+        // EDITIONS
+        [ForeignKey("edition_id")]
+        [Required]
+        [Column("edition_id")]
+        [JsonPropertyName("edition_id")]
+        public int EditionId { get; set; }
+
+        public virtual Edition? Edition { get; set; }
     }
 }
 

@@ -16,6 +16,8 @@ namespace gamezone_api
 
         public DbSet<Condition> Conditions { get; set; }
 
+        public DbSet<Edition> Editions { get; set; }
+
         public GamezoneContext(DbContextOptions<GamezoneContext> options) : base(options)
         {
         }
@@ -27,6 +29,7 @@ namespace gamezone_api
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // PRODUCTS
             List<Product> productsInit = new List<Product>
             {
                 new Product() { Id = 1, Name = "PS5", Price = 500, ReleaseDate = new DateTime(2020, 11, 19), Description = "PlayStation 5 Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
@@ -36,8 +39,12 @@ namespace gamezone_api
             modelBuilder.Entity<Product>(product =>
             {
                 product.ToTable("products");
+
                 product.HasKey(p => p.Id);
+
                 product.HasOne(p => p.Condition).WithMany(p => p.Products).HasForeignKey(p => p.ConditionId);
+
+                product.HasOne(p => p.Edition).WithMany(p => p.Products).HasForeignKey(p => p.EditionId);
 
                 product.Property(p => p.Name).IsRequired().HasMaxLength(150);
 
@@ -54,6 +61,8 @@ namespace gamezone_api
                 product.HasData(productsInit);
             });
 
+            // CONDITIONS
+
             //List<Condition> conditionsInit = new List<Condition>
             //{
             //    new Condition() { Id = 1, State = "NEW" },
@@ -64,11 +73,22 @@ namespace gamezone_api
             modelBuilder.Entity<Condition>(condition =>
             {
                 condition.ToTable("conditions");
-                condition.HasKey(p => p.Id);
 
-                condition.Property(p => p.State).IsRequired().HasMaxLength(30);
+                condition.HasKey(c => c.Id);
+
+                condition.Property(c => c.State).IsRequired().HasMaxLength(30);
 
                 //condition.HasData(conditionsInit);
+            });
+
+            // EDITIONS
+            modelBuilder.Entity<Edition>(edition =>
+            {
+                edition.ToTable("editions");
+
+                edition.HasKey(e => e.Id);
+
+                edition.Property(e => e.Type).IsRequired().HasMaxLength(30);
             });
         }
     }
