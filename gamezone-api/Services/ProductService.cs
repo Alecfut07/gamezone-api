@@ -18,13 +18,17 @@ namespace gamezone_api.Services
 
         public async Task<IEnumerable<Product>> GetProducts()
         {
-            var products = await context.Products.ToListAsync();
+            var products = await context.Products
+                .Include("Condition")
+                .ToListAsync();
             return products;
         }
 
         public async Task<Product?> GetProductById(long id)
         {
-            var product = await context.Products.FindAsync(id);
+            var product = await context.Products
+                .Include("Condition")
+                .SingleOrDefaultAsync(p => p.Id == id);
             return product;
         }
 

@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using gamezone_api.Models;
 using gamezone_api.Controllers;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 namespace gamezone_api
 {
@@ -16,6 +18,11 @@ namespace gamezone_api
 
         public GamezoneContext(DbContextOptions<GamezoneContext> options) : base(options)
         {
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.LogTo(Console.WriteLine);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,6 +37,7 @@ namespace gamezone_api
             {
                 product.ToTable("products");
                 product.HasKey(p => p.Id);
+                product.HasOne(p => p.Condition).WithMany(p => p.Products).HasForeignKey(p => p.ConditionId);
 
                 product.Property(p => p.Name).IsRequired().HasMaxLength(150);
 

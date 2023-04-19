@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
+using System.Text.Json.Serialization;
 
 namespace gamezone_api.Models
 {
@@ -32,6 +33,14 @@ namespace gamezone_api.Models
         [Required]
         [Column("update_date")]
         public DateTime UpdateDate { get; set; }
+
+        [ForeignKey("condition_id")]
+        [Required]
+        [Column("condition_id")]
+        [JsonPropertyName("condition_id")]
+        public int ConditionId { get; set; }
+
+        public virtual Condition? Condition { get; set; }
     }
 }
 
