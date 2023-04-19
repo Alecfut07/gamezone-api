@@ -70,7 +70,7 @@ public class ProductsController : ControllerBase
         try
         {
             await productService.DeleteProduct(id);
-        } catch(ArgumentNullException ex)
+        } catch(Exception ex)
         {
             return NotFound();
         }

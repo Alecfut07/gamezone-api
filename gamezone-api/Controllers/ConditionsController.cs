@@ -2,6 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using gamezone_api.Models;
 using gamezone_api.Services;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Data;
+using System.Threading.Channels;
 
 namespace gamezone_api.Controllers
 {
@@ -78,7 +84,11 @@ namespace gamezone_api.Controllers
             {
                 await conditionService.DeleteCondition(id);
             }
-            catch (Exception ex)
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch (ArgumentException ex)
             {
                 return NotFound();
             }

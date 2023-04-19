@@ -31,7 +31,9 @@ namespace gamezone_api.Migrations
                 column: "condition_id",
                 principalTable: "conditions",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction,
+                onUpdate: ReferentialAction.NoAction
+            );
         }
 
         /// <inheritdoc />

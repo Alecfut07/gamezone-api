@@ -45,26 +45,27 @@ namespace gamezone_api.Services
 
         public async Task<Product?> UpdateProduct(long id, Product product)
         {
-            var productToUpdate = await context.Products.FindAsync(id);
-
-            if (productToUpdate != null)
+            var result = await context.Products
+                .Where((p) => p.Id == id)
+                .ExecuteUpdateAsync((prod) =>
+                    prod
+                        .SetProperty((p) => p.Name, product.Name)
+                        .SetProperty((p) => p.Price, product.Price)
+                        .SetProperty((p) => p.ReleaseDate, product.ReleaseDate)
+                        .SetProperty((p) => p.Description, product.Description)
+                        .SetProperty((p) => p.ConditionId, product.ConditionId)
+                        );
+            if (result > 0)
             {
-                productToUpdate.Name = product.Name;
-                productToUpdate.Price = product.Price;
-                productToUpdate.ReleaseDate = product.ReleaseDate;
-                productToUpdate.Description = product.Description;
-
-                //var isNameModified = context.Entry(actualProduct).Property("name").IsModified;
-                //var isPriceModified = context.Entry(actualProduct).Property("price").IsModified;
-                //var isReleaseModified = context.Entry(actualProduct).Property("release_date").IsModified;
-                //var isDescriptionModified = context.Entry(actualProduct).Property("description").IsModified;
-
-                
-                //context.Products.Update(actualProduct);
-                await context.SaveChangesAsync();
+                var updatedProduct = await context.Products
+                    .Include("Condition")
+                    .SingleAsync(p => p.Id == id);
+                return updatedProduct;
             }
-
-            return productToUpdate;
+            else
+            {
+                return null;
+            }
         }
 
         public async Task DeleteProduct(long id)
