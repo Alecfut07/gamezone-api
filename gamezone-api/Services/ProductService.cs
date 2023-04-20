@@ -19,7 +19,8 @@ namespace gamezone_api.Services
         public async Task<IEnumerable<Product>> GetProducts()
         {
             var products = await context.Products
-                .Include("Condition")
+                .Include(p => p.Condition)
+                .Include(p => p.Edition)
                 .ToListAsync();
             return products;
         }
@@ -27,7 +28,8 @@ namespace gamezone_api.Services
         public async Task<Product?> GetProductById(long id)
         {
             var product = await context.Products
-                .Include("Condition")
+                .Include(p => p.Condition)
+                .Include(p => p.Edition)
                 .SingleOrDefaultAsync(p => p.Id == id);
             return product;
         }
@@ -54,11 +56,13 @@ namespace gamezone_api.Services
                         .SetProperty((p) => p.ReleaseDate, product.ReleaseDate)
                         .SetProperty((p) => p.Description, product.Description)
                         .SetProperty((p) => p.ConditionId, product.ConditionId)
+                        .SetProperty((p) => p.EditionId, product.EditionId)
                         );
             if (result > 0)
             {
                 var updatedProduct = await context.Products
-                    .Include("Condition")
+                    .Include(p => p.Condition)
+                    .Include(p => p.Edition)
                     .SingleAsync(p => p.Id == id);
                 return updatedProduct;
             }
