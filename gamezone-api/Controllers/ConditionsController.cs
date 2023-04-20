@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Data;
 using System.Threading.Channels;
+using gamezone_api.Networking;
 
 namespace gamezone_api.Controllers
 {
@@ -24,7 +25,7 @@ namespace gamezone_api.Controllers
 
         // GET: /conditions
         [HttpGet]
-        public async Task<ActionResult<Condition>> GetConditions()
+        public async Task<ActionResult<ConditionResponse>> GetConditions()
         {
             var conditions = await conditionService.GetConditions();
             return Ok(conditions);
@@ -32,7 +33,7 @@ namespace gamezone_api.Controllers
 
         // GET by id: /conditions/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Condition?>> GetConditionById([FromRoute] int id)
+        public async Task<ActionResult<ConditionResponse?>> GetConditionById([FromRoute] int id)
         {
             var condition = await conditionService.GetConditionById(id);
             if (condition == null)
@@ -44,7 +45,7 @@ namespace gamezone_api.Controllers
 
         // POST: /conditions
         [HttpPost]
-        public async Task<ActionResult<Condition?>> CreateNewCondition([FromBody] Condition condition)
+        public async Task<ActionResult<ConditionResponse?>> CreateNewCondition([FromBody] ConditionRequest condition)
         {
             if (!ModelState.IsValid)
             {
@@ -61,11 +62,11 @@ namespace gamezone_api.Controllers
 
         // UPDATE: /conditions/id
         [HttpPut("{id}")]
-        public async Task<ActionResult<Condition?>> UpdateCondition([FromRoute] int id, [FromBody] Condition condition)
+        public async Task<ActionResult<ConditionResponse?>> UpdateCondition([FromRoute] int id, [FromBody] ConditionRequest conditionRequest)
         {
             try
             {
-                var updatedCondition = await conditionService.UpdateCondition(id, condition);
+                var updatedCondition = await conditionService.UpdateCondition(id, conditionRequest);
 
                 return Ok(updatedCondition);
             }
@@ -78,7 +79,7 @@ namespace gamezone_api.Controllers
 
         // DELETE: /conditions/id
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Condition?>> DeleteCondition([FromRoute] int id)
+        public async Task<ActionResult> DeleteCondition([FromRoute] int id)
         {
             try
             {

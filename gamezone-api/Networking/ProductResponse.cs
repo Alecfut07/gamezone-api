@@ -1,9 +1,8 @@
-﻿using System;
-using gamezone_api.Models;
+﻿using gamezone_api.Models;
 
 namespace gamezone_api.Networking
 {
-	public class ProductResponse
+    public class ProductResponse
     {
         public long Id { get; set; }
 

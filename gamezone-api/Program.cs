@@ -20,6 +20,7 @@ builder.Services.AddEndpointsApiExplorer();
 // SQL SERVER CONNECTION
 builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration.GetConnectionString("SQL_Server"));
 builder.Services.AddScoped<ProductsMapper>();
+builder.Services.AddScoped<ConditionsMapper>();
 builder.Services.AddScoped<ProductsRepository>();
 builder.Services.AddScoped<ConditionsRepository>();
 builder.Services.AddScoped<EditionsRepository>();

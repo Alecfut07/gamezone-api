@@ -24,7 +24,7 @@ namespace gamezone_api.Repositories
                 .Include(p => p.Edition)
                 .ToListAsync();
 
-            var productsResponse = products.ConvertAll<ProductResponse>((p) => productsMapper.map(p));
+            var productsResponse = products.ConvertAll<ProductResponse>((p) => productsMapper.Map(p));
             return productsResponse;
         }
 
@@ -35,13 +35,13 @@ namespace gamezone_api.Repositories
                 .Include(p => p.Edition)
                 .SingleOrDefaultAsync(p => p.Id == id);
 
-            var productResponse = productsMapper.map(product);
+            var productResponse = productsMapper.Map(product);
             return productResponse;
         }
 
         public async Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest)
         {
-            var newProduct = productsMapper.map(productRequest);
+            var newProduct = productsMapper.Map(productRequest);
             newProduct.CreateDate = DateTime.UtcNow;
             newProduct.UpdateDate = DateTime.UtcNow;
 
@@ -53,7 +53,7 @@ namespace gamezone_api.Repositories
                 .Include(p => p.Edition)
                 .SingleOrDefaultAsync(p => p.Id == newProduct.Id);
 
-            var productResponse = productsMapper.map(product);
+            var productResponse = productsMapper.Map(product);
 
             return productResponse;
         }
@@ -79,7 +79,7 @@ namespace gamezone_api.Repositories
                     .Include(p => p.Edition)
                     .SingleAsync(p => p.Id == id);
 
-                var productResponse = productsMapper.map(updatedProduct);
+                var productResponse = productsMapper.Map(updatedProduct);
                 return productResponse;
             }
             else

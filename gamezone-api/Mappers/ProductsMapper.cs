@@ -6,7 +6,7 @@ namespace gamezone_api.Mappers
 {
 	public class ProductsMapper
     {
-        public Product map(ProductRequest productRequest)
+        public Product Map(ProductRequest productRequest)
         {
             return new Product
             {
@@ -19,7 +19,7 @@ namespace gamezone_api.Mappers
             };
         }
 
-        public ProductResponse map(Product product)
+        public ProductResponse Map(Product product)
         {
             return new ProductResponse
             {

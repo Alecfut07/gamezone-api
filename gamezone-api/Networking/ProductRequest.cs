@@ -1,11 +1,9 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace gamezone_api.Networking
 {
-	public class ProductRequest
+    public class ProductRequest
 	{
         [Required]
         public string Name { get; set; }
