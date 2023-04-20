@@ -2,6 +2,7 @@
 using System.Net;
 using System.Runtime.Serialization;
 using gamezone_api.Models;
+using gamezone_api.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,80 +12,41 @@ namespace gamezone_api.Services
     {
         GamezoneContext context;
 
-        public ProductService(GamezoneContext dbContext)
+        private ProductsRepository productsRepository;
+
+        public ProductService(GamezoneContext dbContext, ProductsRepository productsRepository)
         {
             context = dbContext;
+            this.productsRepository = productsRepository;
         }
 
         public async Task<IEnumerable<Product>> GetProducts()
         {
-            var products = await context.Products
-                .Include(p => p.Condition)
-                .Include(p => p.Edition)
-                .ToListAsync();
+            var products = await productsRepository.GetProducts();
             return products;
         }
 
         public async Task<Product?> GetProductById(long id)
         {
-            var product = await context.Products
-                .Include(p => p.Condition)
-                .Include(p => p.Edition)
-                .SingleOrDefaultAsync(p => p.Id == id);
+            var product = await productsRepository.GetProductById(id);
             return product;
         }
 
         public async Task<Product?> SaveNewProduct(Product newProduct)
         {
-            newProduct.CreateDate = DateTime.UtcNow;
-            newProduct.UpdateDate = DateTime.UtcNow;
+            var createdNewProduct = await productsRepository.SaveNewProduct(newProduct);
 
-            context.Products.Add(newProduct);
-            await context.SaveChangesAsync();
-
-            return newProduct;
+            return createdNewProduct;
         }
 
         public async Task<Product?> UpdateProduct(long id, Product product)
         {
-            var result = await context.Products
-                .Where((p) => p.Id == id)
-                .ExecuteUpdateAsync((prod) =>
-                    prod
-                        .SetProperty((p) => p.Name, product.Name)
-                        .SetProperty((p) => p.Price, product.Price)
-                        .SetProperty((p) => p.ReleaseDate, product.ReleaseDate)
-                        .SetProperty((p) => p.Description, product.Description)
-                        .SetProperty((p) => p.ConditionId, product.ConditionId)
-                        .SetProperty((p) => p.EditionId, product.EditionId)
-                        );
-            if (result > 0)
-            {
-                var updatedProduct = await context.Products
-                    .Include(p => p.Condition)
-                    .Include(p => p.Edition)
-                    .SingleAsync(p => p.Id == id);
-                return updatedProduct;
-            }
-            else
-            {
-                return null;
-            }
+            return await productsRepository.UpdateProduct(id, product);
         }
 
         public async Task DeleteProduct(long id)
         {
-            var productToRemove = await context.Products.FindAsync(id);
-
-            if (productToRemove == null)
-            {
-                throw new ArgumentNullException();
-            }
-            else
-            {
-                context.Products.Remove(productToRemove);
-                await context.SaveChangesAsync();
-            }
+            await productsRepository.DeleteProduct(id);
         }
     }
 

@@ -31,10 +31,12 @@
     <None Remove="Models\" />
     <None Remove="Services\" />
     <None Remove="Migrations\" />
+    <None Remove="Repositories\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
     <Folder Include="Services\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 </Project>

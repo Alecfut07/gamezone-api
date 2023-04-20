@@ -1,5 +1,6 @@
 ﻿using gamezone_api;
 using gamezone_api.Models;
+using gamezone_api.Repositories;
 using gamezone_api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,6 +18,9 @@ builder.Services.AddEndpointsApiExplorer();
 
 // SQL SERVER CONNECTION
 builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration.GetConnectionString("SQL_Server"));
+
+//builder.Services.AddScoped(typeof(ProductsRepository), () => new ProductsRepository());
+builder.Services.AddScoped<ProductsRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IConditionService, ConditionService>();
 builder.Services.AddScoped<IEditionService, EditionService>();
