@@ -21,6 +21,7 @@ builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration.GetConnecti
 
 //builder.Services.AddScoped(typeof(ProductsRepository), () => new ProductsRepository());
 builder.Services.AddScoped<ProductsRepository>();
+builder.Services.AddScoped<ConditionsRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IConditionService, ConditionService>();
 builder.Services.AddScoped<IEditionService, EditionService>();
