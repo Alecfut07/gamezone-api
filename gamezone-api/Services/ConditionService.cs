@@ -28,7 +28,8 @@ namespace gamezone_api.Services
 
 		public async Task<Condition?> CreateNewCondition(Condition newCondition)
 		{
-			return await conditionsRepository.CreateNewCondition(newCondition);
+			var createdCondition = await conditionsRepository.CreateNewCondition(newCondition);
+			return createdCondition;
 		}
 
 		public async Task<Condition?> UpdateCondition(int id, Condition condition)

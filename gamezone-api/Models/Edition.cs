@@ -14,9 +14,6 @@ namespace gamezone_api.Models
 		[Required]
 		[Column("type")]
 		public string Type { get; set; }
-
-		[JsonIgnore]
-		public virtual ICollection<Product> Products { get; set; }
 	}
 }
 

@@ -42,10 +42,6 @@ namespace gamezone_api
 
                 product.HasKey(p => p.Id);
 
-                product.HasOne(p => p.Condition).WithMany(p => p.Products).HasForeignKey(p => p.ConditionId);
-
-                product.HasOne(p => p.Edition).WithMany(p => p.Products).HasForeignKey(p => p.EditionId);
-
                 product.Property(p => p.Name).IsRequired().HasMaxLength(150);
 
                 product.Property(p => p.Price).IsRequired();

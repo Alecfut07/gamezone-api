@@ -1,67 +1,44 @@
 ﻿using System;
 using gamezone_api.Models;
+using gamezone_api.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace gamezone_api.Services
 {
 	public class EditionService : IEditionService
 	{
-		GamezoneContext context;
+		private EditionsRepository editionsRepository;
 
-		public EditionService(GamezoneContext dbContext)
+		public EditionService(EditionsRepository editionsRepository)
 		{
-			context = dbContext;
+			this.editionsRepository = editionsRepository;
 		}
 
 		public async Task<IEnumerable<Edition?>> GetEditions()
 		{
-			var editions = await context.Editions.ToListAsync();
+			var editions = await editionsRepository.GetEditions();
 			return editions;
 		}
 
 		public async Task<Edition?> GetEditionById(int id)
 		{
-			var edition = await context.Editions.FindAsync(id);
+			var edition = await editionsRepository.GetEditionById(id);
 			return edition;
 		}
 
 		public async Task<Edition?> CreateNewEdition(Edition newEdition)
 		{
-			context.Editions.Add(newEdition);
-			await context.SaveChangesAsync();
-			return newEdition;
+			return await editionsRepository.CreateNewEdition(newEdition);
 		}
 
 		public async Task<Edition?> UpdateEdition(int id, Edition edition)
 		{
-			var editionToUpdate = await context.Editions.FindAsync(id);
-
-			if (editionToUpdate == null)
-			{
-				throw new ArgumentException();
-			}
-			else
-			{
-				editionToUpdate.Type = edition.Type;
-				await context.SaveChangesAsync();
-			}
-
-			return editionToUpdate;
+			return await editionsRepository.UpdateEdition(id, edition);
 		}
 
 		public async Task DeleteEdition(int id)
 		{
-			var editionToDelete = await context.Editions.FindAsync(id);
-
-			if (editionToDelete == null)
-			{
-				throw new ArgumentException();
-			}
-			else
-			{
-				context.Editions.Remove(editionToDelete);
-				await context.SaveChangesAsync();
-			}
+			await editionsRepository.DeleteEdition(id); 
 		}
 	}
 
