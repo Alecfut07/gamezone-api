@@ -16,12 +16,20 @@ namespace gamezone_api.Controllers
 			this.editionService = editionService;
 		}
 
-		// GET: editions
+		// GET: /editions
 		[HttpGet]
 		public async Task<ActionResult<Edition?>> GetEditions()
 		{
 			var editions = await editionService.GetEditions();
 			return Ok(editions);
+		}
+
+		// GET by id: /editions/id
+		[HttpGet("{id}")]
+		public async Task<ActionResult<Edition?>> GetEditionById(int id)
+		{
+			var edtion = await editionService.GetEditionById(id);
+			return edtion;
 		}
 	}
 }

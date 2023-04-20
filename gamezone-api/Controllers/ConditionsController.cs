@@ -22,7 +22,7 @@ namespace gamezone_api.Controllers
             this.conditionService = conditionService;
         }
 
-        // GET: conditions
+        // GET: /conditions
         [HttpGet]
         public async Task<ActionResult<Condition>> GetConditions()
         {
@@ -30,7 +30,7 @@ namespace gamezone_api.Controllers
             return Ok(conditions);
         }
 
-        // GET by id: conditions/id
+        // GET by id: /conditions/id
         [HttpGet("{id}")]
         public async Task<ActionResult<Condition?>> GetConditionById([FromRoute] int id)
         {
@@ -42,7 +42,7 @@ namespace gamezone_api.Controllers
             return Ok(condition);
         }
 
-        // POST: conditions
+        // POST: /conditions
         [HttpPost]
         public async Task<ActionResult<Condition?>> CreateNewCondition([FromBody] Condition condition)
         {
@@ -59,7 +59,7 @@ namespace gamezone_api.Controllers
 
         }
 
-        // UPDATE: conditions/id
+        // UPDATE: /conditions/id
         [HttpPut("{id}")]
         public async Task<ActionResult<Condition?>> UpdateCondition([FromRoute] int id, [FromBody] Condition condition)
         {
@@ -76,7 +76,7 @@ namespace gamezone_api.Controllers
 
         }
 
-        // DELETE: conditions/id
+        // DELETE: /conditions/id
         [HttpDelete("{id}")]
         public async Task<ActionResult<Condition?>> DeleteCondition([FromRoute] int id)
         {
