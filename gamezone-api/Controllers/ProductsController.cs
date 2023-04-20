@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using gamezone_api.Models;
 using gamezone_api.Services;
+using gamezone_api.Networking;
 
 namespace gamezone_api.Controllers;
 
@@ -17,7 +18,7 @@ public class ProductsController : ControllerBase
 
     // GET: api/product
     [HttpGet]
-    public async Task<ActionResult<Product>> GetProducts()
+    public async Task<ActionResult<ProductResponse>> GetProducts()
     {
         var products = await productService.GetProducts();
         return Ok(products);
@@ -25,7 +26,7 @@ public class ProductsController : ControllerBase
 
     // GET api/product/id
     [HttpGet("{id}")]
-    public async Task<ActionResult<Product?>> GetProductById([FromRoute] long id)
+    public async Task<ActionResult<ProductResponse?>> GetProductById([FromRoute] long id)
     {
         var product = await productService.GetProductById(id);
         if (product == null)
@@ -37,7 +38,7 @@ public class ProductsController : ControllerBase
 
     // POST api/product
     [HttpPost]
-    public async Task<ActionResult<Product?>> SaveNewProduct([FromBody] Product product)
+    public async Task<ActionResult<ProductResponse?>> SaveNewProduct([FromBody] ProductRequest productRequest)
     {
         if (!ModelState.IsValid)
         {
@@ -45,18 +46,17 @@ public class ProductsController : ControllerBase
         }
         else
         {
-            var newProduct = await productService.SaveNewProduct(product);
-
+            var newProduct = await productService.SaveNewProduct(productRequest);
             return Ok(newProduct);
         }
     }
 
     // PUT api/product/id
     [HttpPut("{id}")]
-    public async Task<ActionResult<Product?>> UpdateProduct([FromRoute] long id, [FromBody] Product product)
+    public async Task<ActionResult<ProductResponse?>> UpdateProduct([FromRoute] long id, [FromBody] ProductRequest productRequest)
     {
-        var updatedProduct = await productService.UpdateProduct(id, product);
-        if (product == null)
+        var updatedProduct = await productService.UpdateProduct(id, productRequest);
+        if (updatedProduct == null)
         {
             return NotFound();
         }

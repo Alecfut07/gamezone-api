@@ -2,6 +2,7 @@
 using System.Net;
 using System.Runtime.Serialization;
 using gamezone_api.Models;
+using gamezone_api.Networking;
 using gamezone_api.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,26 +18,25 @@ namespace gamezone_api.Services
             this.productsRepository = productsRepository;
         }
 
-        public async Task<IEnumerable<Product>> GetProducts()
+        public async Task<IEnumerable<ProductResponse>> GetProducts()
         {
             var products = await productsRepository.GetProducts();
             return products;
         }
 
-        public async Task<Product?> GetProductById(long id)
+        public async Task<ProductResponse?> GetProductById(long id)
         {
             var product = await productsRepository.GetProductById(id);
             return product;
         }
 
-        public async Task<Product?> SaveNewProduct(Product newProduct)
+        public async Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest)
         {
-            var createdNewProduct = await productsRepository.SaveNewProduct(newProduct);
-
-            return createdNewProduct;
+            var productResponse = await productsRepository.SaveNewProduct(productRequest);
+            return productResponse;
         }
 
-        public async Task<Product?> UpdateProduct(long id, Product product)
+        public async Task<ProductResponse?> UpdateProduct(long id, ProductRequest product)
         {
             return await productsRepository.UpdateProduct(id, product);
         }
@@ -49,13 +49,13 @@ namespace gamezone_api.Services
 
     public interface IProductService
     {
-        Task<IEnumerable<Product>> GetProducts();
+        Task<IEnumerable<ProductResponse>> GetProducts();
 
-        Task<Product?> GetProductById(long id);
+        Task<ProductResponse?> GetProductById(long id);
 
-        Task<Product?> SaveNewProduct(Product newProduct);
+        Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest);
 
-        Task<Product?> UpdateProduct(long id, Product product);
+        Task<ProductResponse?> UpdateProduct(long id, ProductRequest product);
 
         Task DeleteProduct(long id);
     }

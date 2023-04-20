@@ -1,4 +1,5 @@
 ﻿using gamezone_api;
+using gamezone_api.Mappers;
 using gamezone_api.Models;
 using gamezone_api.Repositories;
 using gamezone_api.Services;
@@ -18,6 +19,7 @@ builder.Services.AddEndpointsApiExplorer();
 
 // SQL SERVER CONNECTION
 builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration.GetConnectionString("SQL_Server"));
+builder.Services.AddScoped<ProductsMapper>();
 builder.Services.AddScoped<ProductsRepository>();
 builder.Services.AddScoped<ConditionsRepository>();
 builder.Services.AddScoped<EditionsRepository>();

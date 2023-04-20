@@ -1,5 +1,7 @@
 ﻿using System;
+using gamezone_api.Mappers;
 using gamezone_api.Models;
+using gamezone_api.Networking;
 using Microsoft.EntityFrameworkCore;
 
 namespace gamezone_api.Repositories
@@ -7,53 +9,68 @@ namespace gamezone_api.Repositories
 	public class ProductsRepository
 	{
         private GamezoneContext context;
+        private ProductsMapper productsMapper;
 
-        public ProductsRepository(GamezoneContext dbContext)
+        public ProductsRepository(GamezoneContext dbContext, ProductsMapper productsMapper)
 		{
 			context = dbContext;
+            this.productsMapper = productsMapper;
 		}
 
-		public async Task<IEnumerable<Product>> GetProducts()
+		public async Task<IEnumerable<ProductResponse>> GetProducts()
 		{
             var products = await context.Products
                 .Include(p => p.Condition)
                 .Include(p => p.Edition)
                 .ToListAsync();
-            return products;
+
+            var productsResponse = products.ConvertAll<ProductResponse>((p) => productsMapper.map(p));
+            return productsResponse;
         }
 
-        public async Task<Product?> GetProductById(long id)
+        public async Task<ProductResponse?> GetProductById(long id)
         {
             var product = await context.Products
                 .Include(p => p.Condition)
                 .Include(p => p.Edition)
                 .SingleOrDefaultAsync(p => p.Id == id);
-            return product;
+
+            var productResponse = productsMapper.map(product);
+            return productResponse;
         }
 
-        public async Task<Product?> SaveNewProduct(Product newProduct)
+        public async Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest)
         {
+            var newProduct = productsMapper.map(productRequest);
             newProduct.CreateDate = DateTime.UtcNow;
             newProduct.UpdateDate = DateTime.UtcNow;
 
             context.Products.Add(newProduct);
             await context.SaveChangesAsync();
 
-            return newProduct;
+            var product = await context.Products
+                .Include(p => p.Condition)
+                .Include(p => p.Edition)
+                .SingleOrDefaultAsync(p => p.Id == newProduct.Id);
+
+            var productResponse = productsMapper.map(product);
+
+            return productResponse;
         }
 
-        public async Task<Product?> UpdateProduct(long id, Product product)
+        public async Task<ProductResponse?> UpdateProduct(long id, ProductRequest productRequest)
         {
             var result = await context.Products
                 .Where((p) => p.Id == id)
                 .ExecuteUpdateAsync((prod) =>
                     prod
-                        .SetProperty((p) => p.Name, product.Name)
-                        .SetProperty((p) => p.Price, product.Price)
-                        .SetProperty((p) => p.ReleaseDate, product.ReleaseDate)
-                        .SetProperty((p) => p.Description, product.Description)
-                        .SetProperty((p) => p.ConditionId, product.ConditionId)
-                        .SetProperty((p) => p.EditionId, product.EditionId)
+                        .SetProperty((p) => p.Name, productRequest.Name)
+                        .SetProperty((p) => p.Price, productRequest.Price)
+                        .SetProperty((p) => p.ReleaseDate, productRequest.ReleaseDate)
+                        .SetProperty((p) => p.Description, productRequest.Description)
+                        .SetProperty((p) => p.ConditionId, productRequest.ConditionId)
+                        .SetProperty((p) => p.EditionId, productRequest.EditionId)
+                        .SetProperty((p) => p.UpdateDate, DateTime.UtcNow)
                         );
             if (result > 0)
             {
@@ -61,7 +78,9 @@ namespace gamezone_api.Repositories
                     .Include(p => p.Condition)
                     .Include(p => p.Edition)
                     .SingleAsync(p => p.Id == id);
-                return updatedProduct;
+
+                var productResponse = productsMapper.map(updatedProduct);
+                return productResponse;
             }
             else
             {
