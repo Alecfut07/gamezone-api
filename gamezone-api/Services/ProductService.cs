@@ -10,13 +10,10 @@ namespace gamezone_api.Services
 {
     public class ProductService : IProductService
     {
-        GamezoneContext context;
-
         private ProductsRepository productsRepository;
 
-        public ProductService(GamezoneContext dbContext, ProductsRepository productsRepository)
+        public ProductService(ProductsRepository productsRepository)
         {
-            context = dbContext;
             this.productsRepository = productsRepository;
         }
 
