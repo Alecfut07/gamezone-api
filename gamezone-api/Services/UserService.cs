@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -7,6 +8,7 @@ using gamezone_api.Models;
 using gamezone_api.Networking;
 using gamezone_api.Repositories;
 using Microsoft.IdentityModel.Tokens;
+using NuGet.Common;
 
 namespace gamezone_api.Services
 {
@@ -28,14 +30,17 @@ namespace gamezone_api.Services
             return regex.IsMatch(email);
         }
 
-        private string GenerateToken()
+        private string GenerateToken(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSetting["JWT:Secret"]));
             var signinCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var tokeOptions = new JwtSecurityToken(
                 issuer: ConfigurationManager.AppSetting["JWT:ValidIssuer"],
                 audience: ConfigurationManager.AppSetting["JWT:ValidAudience"],
-                claims: new List<Claim>(),
+                claims: new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
+                },
                 expires: DateTime.Now.AddMinutes(6),
                 signingCredentials: signinCredentials);
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
@@ -51,9 +56,9 @@ namespace gamezone_api.Services
             }
             else
             {
-                await usersRepository.CreateNewUser(userRequest);
+                var user = await usersRepository.CreateNewUser(userRequest);
 
-                var userResponse = new UserResponse { Token = GenerateToken() };
+                var userResponse = new UserResponse { Token = GenerateToken(user) };
 
                 return userResponse;
             }

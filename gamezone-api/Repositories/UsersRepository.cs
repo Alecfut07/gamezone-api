@@ -17,7 +17,7 @@ namespace gamezone_api.Repositories
             this.usersMapper = usersMapper;
         }
 
-        public async Task CreateNewUser(UserRequest userRequest)
+        public async Task<User> CreateNewUser(UserRequest userRequest)
         {
             var newUser = usersMapper.Map(userRequest);
             newUser.Password = BCrypt.Net.BCrypt.HashPassword(userRequest.Password, workFactor: 12);
@@ -26,6 +26,8 @@ namespace gamezone_api.Repositories
 
             context.Users.Add(newUser);
             await context.SaveChangesAsync();
+
+            return newUser;
         }
 
         public async Task<UserResponse> SignIn(UserRequest userRequest)
