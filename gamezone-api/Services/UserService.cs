@@ -14,9 +14,10 @@ namespace gamezone_api.Services
 			this.usersRepository = usersRepository;
 		}
 
-		public async Task<UserResponse> SignUp(UserRequest userRequest)
+		public async Task<UserResponse> CreateNewUser(UserRequest userRequest)
 		{
-			return null;
+			var userResponse = await usersRepository.CreateNewUser(userRequest);
+			return userResponse;
 		}
 
 		public async Task<UserResponse> SignIn(UserRequest userRequest)
@@ -27,7 +28,7 @@ namespace gamezone_api.Services
 
 	public interface IUserService
 	{
-		Task<UserResponse> SignUp(UserRequest userRequest);
+		Task<UserResponse> CreateNewUser(UserRequest userRequest);
 
 		Task<UserResponse> SignIn(UserRequest userRequest);
 	}

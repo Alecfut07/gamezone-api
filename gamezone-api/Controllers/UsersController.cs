@@ -17,21 +17,29 @@ namespace gamezone_api.Controllers
 			this.userService = userService;
 		}
 
-		// POST for sign-up: /users/sign-up
-		[HttpPost]
-		[Route("[controller]/[action]")]
+        // POST for sign-up: /users/sign-up
+        [HttpPost]
+		[Route("sign_up")]
 		public async Task<ActionResult<UserResponse>> SignUp([FromBody] UserRequest userRequest)
 		{
-			return Ok();
+			try
+			{
+				await userService.CreateNewUser(userRequest);
+			}
+			catch (Exception ex)
+			{
+				return NotFound();
+			}
+			return NoContent();
 		}
 
 		// POST for sign-in: /users/sign-in
 		[HttpPost]
-		[Route("[controller]/[action]")]
-		public async Task<ActionResult<UserResponse>> SignIn([FromBody] UserRequest userRequest)
+		[Route("sign_in")]
+		public async Task<ActionResult<UserResponse>> SignIn(UserRequest userRequest)
 		{
-			return Ok();
-		}
+            return Ok();
+        }
 	}
 }
 

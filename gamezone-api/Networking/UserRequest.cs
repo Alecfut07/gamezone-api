@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace gamezone_api.Networking
 {
@@ -8,7 +9,8 @@ namespace gamezone_api.Networking
 		public string Email { get; set; }
 
 		[Required]
-		public string Password { get; set; }
+        [JsonPropertyName("encrypted_password")]
+        public string Password { get; set; }
 	}
 }
 
