@@ -9,7 +9,7 @@ namespace gamezone_api.Networking
 		public string Email { get; set; }
 
 		[Required]
-        [JsonPropertyName("encrypted_password")]
+		[StringLength(20, MinimumLength = 6, ErrorMessage = "The password is too short.")]
         public string Password { get; set; }
 	}
 }
