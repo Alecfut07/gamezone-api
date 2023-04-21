@@ -1,8 +1,6 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
-using gamezone_api.Networking;
-using gamezone_api.Models;
+﻿using gamezone_api.Networking;
 using gamezone_api.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace gamezone_api.Controllers
 {
@@ -26,7 +24,9 @@ namespace gamezone_api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    await userService.CreateNewUser(userRequest);
+                    var userResponse = await userService.CreateNewUser(userRequest);
+                    HttpContext.Response.Headers.Add("Authorization", $"Bearer {userResponse.Token}");
+                    return NoContent();
                 }
                 else
                 {
@@ -37,7 +37,6 @@ namespace gamezone_api.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            return NoContent();
         }
 
         // POST for sign-in: /users/sign-in

@@ -1,8 +1,12 @@
 ﻿using System;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Text.RegularExpressions;
 using gamezone_api.Models;
 using gamezone_api.Networking;
 using gamezone_api.Repositories;
+using Microsoft.IdentityModel.Tokens;
 
 namespace gamezone_api.Services
 {
@@ -24,6 +28,21 @@ namespace gamezone_api.Services
             return regex.IsMatch(email);
         }
 
+        private string GenerateToken()
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSetting["JWT:Secret"]));
+            var signinCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            var tokeOptions = new JwtSecurityToken(
+                issuer: ConfigurationManager.AppSetting["JWT:ValidIssuer"],
+                audience: ConfigurationManager.AppSetting["JWT:ValidAudience"],
+                claims: new List<Claim>(),
+                expires: DateTime.Now.AddMinutes(6),
+                signingCredentials: signinCredentials);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+
+            return tokenString;
+        }
+
         public async Task<UserResponse> CreateNewUser(UserRequest userRequest)
         {
             if (!ValidateEmail(userRequest.Email))
@@ -32,7 +51,10 @@ namespace gamezone_api.Services
             }
             else
             {
-                var userResponse = await usersRepository.CreateNewUser(userRequest);
+                await usersRepository.CreateNewUser(userRequest);
+
+                var userResponse = new UserResponse { Token = GenerateToken() };
+
                 return userResponse;
             }
         }

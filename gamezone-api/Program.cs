@@ -19,14 +19,20 @@ builder.Services.AddSwaggerGen();
 
 // SQL SERVER CONNECTION
 builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration.GetConnectionString("SQL_Server"));
+
+// MAPPERS
 builder.Services.AddScoped<ProductsMapper>();
 builder.Services.AddScoped<ConditionsMapper>();
 builder.Services.AddScoped<EditionsMapper>();
 builder.Services.AddScoped<UsersMapper>();
+
+// REPOSITORIES
 builder.Services.AddScoped<ProductsRepository>();
 builder.Services.AddScoped<ConditionsRepository>();
 builder.Services.AddScoped<EditionsRepository>();
 builder.Services.AddScoped<UsersRepository>();
+
+// SERVICES
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IConditionService, ConditionService>();
 builder.Services.AddScoped<IEditionService, EditionService>();
