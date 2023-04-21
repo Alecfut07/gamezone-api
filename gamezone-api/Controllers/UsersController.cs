@@ -19,6 +19,7 @@ namespace gamezone_api.Controllers
 
 		// POST for sign-up: /users/sign-up
 		[HttpPost]
+		[Route("[controller]/[action]")]
 		public async Task<ActionResult<UserResponse>> SignUp([FromBody] UserRequest userRequest)
 		{
 			return Ok();
@@ -26,6 +27,7 @@ namespace gamezone_api.Controllers
 
 		// POST for sign-in: /users/sign-in
 		[HttpPost]
+		[Route("[controller]/[action]")]
 		public async Task<ActionResult<UserResponse>> SignIn([FromBody] UserRequest userRequest)
 		{
 			return Ok();

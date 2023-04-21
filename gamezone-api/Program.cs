@@ -25,9 +25,11 @@ builder.Services.AddScoped<EditionsMapper>();
 builder.Services.AddScoped<ProductsRepository>();
 builder.Services.AddScoped<ConditionsRepository>();
 builder.Services.AddScoped<EditionsRepository>();
+builder.Services.AddScoped<UsersRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IConditionService, ConditionService>();
 builder.Services.AddScoped<IEditionService, EditionService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
