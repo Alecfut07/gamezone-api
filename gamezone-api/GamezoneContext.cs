@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using gamezone_api.Models;
-using gamezone_api.Controllers;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
+using Microsoft.EntityFrameworkCore;
 
 namespace gamezone_api
 {
@@ -17,6 +10,8 @@ namespace gamezone_api
         public DbSet<Condition> Conditions { get; set; }
 
         public DbSet<Edition> Editions { get; set; }
+
+        public DbSet<User> Users { get; set; }
 
         public GamezoneContext(DbContextOptions<GamezoneContext> options) : base(options)
         {
@@ -50,9 +45,9 @@ namespace gamezone_api
 
                 product.Property(p => p.Description).IsRequired(false);
 
-                product.Property(p => p.CreateDate).IsRequired();
+                product.Property(p => p.CreateDate).IsRequired(false);
 
-                product.Property(p => p.UpdateDate).IsRequired();
+                product.Property(p => p.UpdateDate).IsRequired(false);
 
                 product.HasData(productsInit);
             });
@@ -85,6 +80,22 @@ namespace gamezone_api
                 edition.HasKey(e => e.Id);
 
                 edition.Property(e => e.Type).IsRequired().HasMaxLength(30);
+            });
+
+            // USERS
+            modelBuilder.Entity<User>(user =>
+            {
+                user.ToTable("users");
+
+                user.HasKey(u => u.Id);
+
+                user.Property(u => u.Email).IsRequired().HasMaxLength(150);
+
+                user.Property(u => u.Password).IsRequired();
+
+                user.Property(u => u.CreateDate).IsRequired(false);
+
+                user.Property(u => u.UpdateDate).IsRequired(false);
             });
         }
     }
