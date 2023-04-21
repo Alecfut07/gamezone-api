@@ -1,5 +1,7 @@
 ﻿using System;
+using gamezone_api.Mappers;
 using gamezone_api.Models;
+using gamezone_api.Networking;
 using Microsoft.EntityFrameworkCore;
 
 namespace gamezone_api.Repositories
@@ -7,46 +9,62 @@ namespace gamezone_api.Repositories
 	public class EditionsRepository
 	{
 		private GamezoneContext context;
+        private EditionsMapper editionsMapper;
 
-		public EditionsRepository(GamezoneContext dbContext)
+		public EditionsRepository(GamezoneContext dbContext, EditionsMapper editionsMapper)
 		{
 			context = dbContext;
-		}
+            this.editionsMapper = editionsMapper;
 
-		public async Task<IEnumerable<Edition>> GetEditions()
+        }
+
+		public async Task<IEnumerable<EditionResponse>> GetEditions()
 		{
             var editions = await context.Editions.ToListAsync();
-            return editions;
+
+            var editionsResponse = editions.ConvertAll<EditionResponse>((e) => editionsMapper.Map(e));
+            return editionsResponse;
         }
 
-		public async Task<Edition?> GetEditionById(int id)
+		public async Task<EditionResponse?> GetEditionById(int id)
 		{
             var edition = await context.Editions.FindAsync(id);
-            return edition;
+
+            var editionResponse = editionsMapper.Map(edition);
+            return editionResponse;
         }
 
-		public async Task<Edition?> CreateNewEdition(Edition newEdition)
+		public async Task<EditionResponse?> CreateNewEdition(EditionRequest editionRequest)
 		{
+            var newEdition = editionsMapper.Map(editionRequest);
+
             context.Editions.Add(newEdition);
             await context.SaveChangesAsync();
-            return newEdition;
+
+            var editionResponse = editionsMapper.Map(newEdition);
+            return editionResponse;
         }
 
-		public async Task<Edition?> UpdateEdition(int id, Edition edition)
+		public async Task<EditionResponse?> UpdateEdition(int id, EditionRequest editionRequest)
 		{
-            var editionToUpdate = await context.Editions.FindAsync(id);
+            var result = await context.Editions
+                .Where((e) => e.Id == id)
+                .ExecuteUpdateAsync((edit) =>
+                    edit
+                        .SetProperty((e) => e.Type, editionRequest.Type)
+                        );
 
-            if (editionToUpdate == null)
+            if (result > 0)
             {
-                throw new ArgumentException();
+                var updatedEdition = await context.Editions.FindAsync(id);
+
+                var editionResponse = editionsMapper.Map(updatedEdition);
+                return editionResponse;
             }
             else
             {
-                editionToUpdate.Type = edition.Type;
-                await context.SaveChangesAsync();
+                throw new ArgumentException();
             }
-
-            return editionToUpdate;
         }
 
         public async Task DeleteEdition(int id)

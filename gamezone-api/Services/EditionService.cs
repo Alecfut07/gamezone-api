@@ -1,5 +1,6 @@
 ﻿using System;
 using gamezone_api.Models;
+using gamezone_api.Networking;
 using gamezone_api.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,26 +15,26 @@ namespace gamezone_api.Services
 			this.editionsRepository = editionsRepository;
 		}
 
-		public async Task<IEnumerable<Edition?>> GetEditions()
+		public async Task<IEnumerable<EditionResponse?>> GetEditions()
 		{
 			var editions = await editionsRepository.GetEditions();
 			return editions;
 		}
 
-		public async Task<Edition?> GetEditionById(int id)
+		public async Task<EditionResponse?> GetEditionById(int id)
 		{
 			var edition = await editionsRepository.GetEditionById(id);
 			return edition;
 		}
 
-		public async Task<Edition?> CreateNewEdition(Edition newEdition)
+		public async Task<EditionResponse?> CreateNewEdition(EditionRequest editionRequest)
 		{
-			return await editionsRepository.CreateNewEdition(newEdition);
+			return await editionsRepository.CreateNewEdition(editionRequest);
 		}
 
-		public async Task<Edition?> UpdateEdition(int id, Edition edition)
+		public async Task<EditionResponse?> UpdateEdition(int id, EditionRequest editionRequest)
 		{
-			return await editionsRepository.UpdateEdition(id, edition);
+			return await editionsRepository.UpdateEdition(id, editionRequest);
 		}
 
 		public async Task DeleteEdition(int id)
@@ -44,13 +45,13 @@ namespace gamezone_api.Services
 
 	public interface IEditionService
 	{
-		Task<IEnumerable<Edition?>> GetEditions();
+		Task<IEnumerable<EditionResponse?>> GetEditions();
 
-		Task<Edition?> GetEditionById(int id);
+		Task<EditionResponse?> GetEditionById(int id);
 
-		Task<Edition?> CreateNewEdition(Edition newEdition);
+		Task<EditionResponse?> CreateNewEdition(EditionRequest newEdition);
 
-		Task<Edition?> UpdateEdition(int id, Edition edition);
+		Task<EditionResponse?> UpdateEdition(int id, EditionRequest editionRequest);
 
 		Task DeleteEdition(int id);
 	}

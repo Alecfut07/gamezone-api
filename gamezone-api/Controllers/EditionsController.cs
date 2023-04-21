@@ -1,5 +1,6 @@
 ﻿using System;
 using gamezone_api.Models;
+using gamezone_api.Networking;
 using gamezone_api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,7 @@ namespace gamezone_api.Controllers
 
         // GET: /editions
         [HttpGet]
-        public async Task<ActionResult<Edition?>> GetEditions()
+        public async Task<ActionResult<EditionResponse?>> GetEditions()
         {
             var editions = await editionService.GetEditions();
             return Ok(editions);
@@ -26,7 +27,7 @@ namespace gamezone_api.Controllers
 
         // GET by id: /editions/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Edition?>> GetEditionById([FromRoute] int id)
+        public async Task<ActionResult<EditionResponse?>> GetEditionById([FromRoute] int id)
         {
             var edition = await editionService.GetEditionById(id);
             if (edition == null)
@@ -38,7 +39,7 @@ namespace gamezone_api.Controllers
 
         // POST: /editions
         [HttpPost]
-        public async Task<ActionResult<Edition?>> CreateNewEdition([FromBody] Edition edition)
+        public async Task<ActionResult<EditionResponse?>> CreateNewEdition([FromBody] EditionRequest editionRequest)
         {
             if (!ModelState.IsValid)
             {
@@ -46,18 +47,18 @@ namespace gamezone_api.Controllers
             }
             else
             {
-                var newEdition = await editionService.CreateNewEdition(edition);
+                var newEdition = await editionService.CreateNewEdition(editionRequest);
                 return Ok(newEdition);
             }
         }
 
         // PUT: /editions/id
         [HttpPut("{id}")]
-        public async Task<ActionResult<Edition?>> UpdateEdition([FromRoute] int id, [FromBody] Edition edition)
+        public async Task<ActionResult<EditionResponse?>> UpdateEdition([FromRoute] int id, [FromBody] EditionRequest editionRequest)
         {
             try
             {
-                var updatedEdition = await editionService.UpdateEdition(id, edition);
+                var updatedEdition = await editionService.UpdateEdition(id, editionRequest);
                 return Ok(updatedEdition);
             }
             catch (Exception ex)
@@ -68,7 +69,7 @@ namespace gamezone_api.Controllers
 
         // DELETE: /editions/id
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Edition?>> DeleteEdition([FromRoute] int id)
+        public async Task<ActionResult> DeleteEdition([FromRoute] int id)
         {
             try
             {

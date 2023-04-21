@@ -1,0 +1,27 @@
+﻿using System;
+using gamezone_api.Models;
+using gamezone_api.Networking;
+
+namespace gamezone_api.Mappers
+{
+	public class EditionsMapper
+	{
+		public Edition Map(EditionRequest editionRequest)
+		{
+			return new Edition
+			{
+				Type = editionRequest.Type
+			};
+		}
+
+		public EditionResponse Map(Edition edition)
+		{
+			return new EditionResponse
+			{
+				Id = edition.Id,
+				Type = edition.Type
+			};
+		}
+	}
+}
+

@@ -21,6 +21,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration.GetConnectionString("SQL_Server"));
 builder.Services.AddScoped<ProductsMapper>();
 builder.Services.AddScoped<ConditionsMapper>();
+builder.Services.AddScoped<EditionsMapper>();
 builder.Services.AddScoped<ProductsRepository>();
 builder.Services.AddScoped<ConditionsRepository>();
 builder.Services.AddScoped<EditionsRepository>();

@@ -29,8 +29,8 @@ namespace gamezone_api.Repositories
         {
             var condition = await context.Conditions.FindAsync(id);
 
-            var conditionsResponse = conditionsMapper.Map(condition);
-            return conditionsResponse;
+            var conditionResponse = conditionsMapper.Map(condition);
+            return conditionResponse;
         }
 
         public async Task<ConditionResponse?> CreateNewCondition(ConditionRequest conditionRequest)
@@ -64,20 +64,6 @@ namespace gamezone_api.Repositories
             {
                 throw new ArgumentException();
             }
-
-            //var conditionToUpdate = await context.Conditions.FindAsync(id);
-
-            //if (conditionToUpdate == null)
-            //{
-            //    throw new ArgumentException();
-            //}
-            //else
-            //{
-            //    conditionToUpdate.State = condition.State;
-            //    await context.SaveChangesAsync();
-
-            //}
-            //return conditionToUpdate;
         }
 
         public async Task DeleteCondition(int id)
