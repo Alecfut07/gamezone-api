@@ -45,9 +45,9 @@ namespace gamezone_api
 
                 product.Property(p => p.Description).IsRequired(false);
 
-                product.Property(p => p.CreateDate).IsRequired(false);
+                product.Property(p => p.CreateDate).IsRequired();
 
-                product.Property(p => p.UpdateDate).IsRequired(false);
+                product.Property(p => p.UpdateDate).IsRequired();
 
                 product.HasData(productsInit);
             });
@@ -93,9 +93,9 @@ namespace gamezone_api
 
                 user.Property(u => u.Password).IsRequired();
 
-                user.Property(u => u.CreateDate).IsRequired(false);
+                user.Property(u => u.CreateDate).IsRequired();
 
-                user.Property(u => u.UpdateDate).IsRequired(false);
+                user.Property(u => u.UpdateDate).IsRequired();
             });
         }
     }
