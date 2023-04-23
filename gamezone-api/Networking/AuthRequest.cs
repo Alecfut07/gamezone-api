@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace gamezone_api.Networking
 {
-    public class UserRequest
+    public class AuthRequest
 	{
 		[Required]
 		public string Email { get; set; }
