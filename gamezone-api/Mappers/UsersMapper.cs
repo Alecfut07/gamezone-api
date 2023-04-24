@@ -14,6 +14,15 @@ namespace gamezone_api.Mappers
 				Password = authRequest.Password,
 			};
 		}
+
+		public UserResponse Map(User user)
+		{
+			return new UserResponse
+			{
+				Id = user.Id,
+				Email = user.Email
+			};
+		}
 	}
 }
 

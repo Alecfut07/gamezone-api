@@ -38,6 +38,7 @@
     <None Remove="Networking\" />
     <None Remove="Mappers\" />
     <None Remove="SeedData\" />
+    <None Remove="Helpers\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -47,5 +48,6 @@
     <Folder Include="Networking\" />
     <Folder Include="Mappers\" />
     <Folder Include="SeedData\" />
+    <Folder Include="Helpers\" />
   </ItemGroup>
 </Project>
