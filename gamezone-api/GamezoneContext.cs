@@ -26,12 +26,6 @@ namespace gamezone_api
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // PRODUCTS
-            //List<Product> productsInit = new List<Product>
-            //{
-            //    new Product() { Id = 1, Name = "PS5", Price = 500, ReleaseDate = new DateTime(2020, 11, 19), Description = "PlayStation 5 Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
-            //    new Product() { Id = 2, Name = "Nintendo Switch", Price = 300, ReleaseDate = new DateTime(2017, 3, 3), Description = "Nintendo Switch Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
-            //};
-
             modelBuilder.Entity<Product>(product =>
             {
                 product.ToTable("products");
@@ -54,14 +48,6 @@ namespace gamezone_api
             });
 
             // CONDITIONS
-
-            //List<Condition> conditionsInit = new List<Condition>
-            //{
-            //    new Condition() { Id = 1, State = "NEW" },
-            //    new Condition() { Id = 2, State = "PRE_OWNED" },
-            //    new Condition() { Id = 3, State = "DIGITAL" },
-            //};
-
             modelBuilder.Entity<Condition>(condition =>
             {
                 condition.ToTable("conditions");

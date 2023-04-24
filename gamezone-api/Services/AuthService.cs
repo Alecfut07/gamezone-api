@@ -13,15 +13,15 @@ using NuGet.Common;
 
 namespace gamezone_api.Services
 {
-    public class UserService : IUserService
+    public class AuthService : IAuthService
     {
-        private UsersRepository usersRepository;
+        private AuthRepository authRepository;
 
         private readonly IConfiguration _configuration;
 
-        public UserService(UsersRepository usersRepository, IConfiguration configuration)
+        public AuthService(AuthRepository authRepository, IConfiguration configuration)
         {
-            this.usersRepository = usersRepository;
+            this.authRepository = authRepository;
             _configuration = configuration;
         }
 
@@ -64,7 +64,7 @@ namespace gamezone_api.Services
             }
             else
             {
-                var user = await usersRepository.CreateNewUser(authRequest);
+                var user = await authRepository.CreateNewUser(authRequest);
 
                 var authResponse = new AuthResponse { Token = GenerateToken(user) };
 
@@ -86,7 +86,7 @@ namespace gamezone_api.Services
             }
             else
             {
-                var user = await usersRepository.FindUserByEmail(authRequest.Email);
+                var user = await authRepository.FindUserByEmail(authRequest.Email);
 
                 if (!ValidatePassword(authRequest.Password, user.Password))
                 {
@@ -102,7 +102,7 @@ namespace gamezone_api.Services
         }
     }
 
-    public interface IUserService
+    public interface IAuthService
     {
         Task<AuthResponse> CreateNewUser(AuthRequest authRequest);
 

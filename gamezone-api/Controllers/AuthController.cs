@@ -5,14 +5,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace gamezone_api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
-    public class UsersController : ControllerBase
+    [Route("users")]
+    public class AuthController : ControllerBase
     {
-        IUserService userService;
+        IAuthService authService;
 
-        public UsersController(IUserService userService)
+        public AuthController(IAuthService authService)
         {
-            this.userService = userService;
+            this.authService = authService;
         }
 
         // POST for sign-up: /users/sign-up
@@ -24,7 +24,7 @@ namespace gamezone_api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var authResponse = await userService.CreateNewUser(authRequest);
+                    var authResponse = await authService.CreateNewUser(authRequest);
                     HttpContext.Response.Headers.Add("Authorization", $"Bearer {authResponse.Token}");
                     return NoContent();
                 }
@@ -48,7 +48,7 @@ namespace gamezone_api.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var authResponse = await userService.Login(authRequest);
+                    var authResponse = await authService.Login(authRequest);
                     HttpContext.Response.Headers.Add("Authorization", $"Bearer {authResponse.Token}");
                     return NoContent();
                 }

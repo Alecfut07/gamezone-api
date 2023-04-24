@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace gamezone_api.Repositories
 {
-    public class UsersRepository
+    public class AuthRepository
     {
         private GamezoneContext context;
         private UsersMapper usersMapper;
 
-        public UsersRepository(GamezoneContext dbContext, UsersMapper usersMapper)
+        public AuthRepository(GamezoneContext dbContext, UsersMapper usersMapper)
         {
             context = dbContext;
             this.usersMapper = usersMapper;
