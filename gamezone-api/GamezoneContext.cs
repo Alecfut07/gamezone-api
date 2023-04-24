@@ -1,4 +1,5 @@
 using gamezone_api.Models;
+using gamezone_api.SeedData;
 using Microsoft.EntityFrameworkCore;
 
 namespace gamezone_api
@@ -25,11 +26,11 @@ namespace gamezone_api
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // PRODUCTS
-            List<Product> productsInit = new List<Product>
-            {
-                new Product() { Id = 1, Name = "PS5", Price = 500, ReleaseDate = new DateTime(2020, 11, 19), Description = "PlayStation 5 Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
-                new Product() { Id = 2, Name = "Nintendo Switch", Price = 300, ReleaseDate = new DateTime(2017, 3, 3), Description = "Nintendo Switch Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
-            };
+            //List<Product> productsInit = new List<Product>
+            //{
+            //    new Product() { Id = 1, Name = "PS5", Price = 500, ReleaseDate = new DateTime(2020, 11, 19), Description = "PlayStation 5 Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
+            //    new Product() { Id = 2, Name = "Nintendo Switch", Price = 300, ReleaseDate = new DateTime(2017, 3, 3), Description = "Nintendo Switch Console", CreateDate = DateTime.Now, UpdateDate = DateTime.Now },
+            //};
 
             modelBuilder.Entity<Product>(product =>
             {
@@ -49,7 +50,7 @@ namespace gamezone_api
 
                 product.Property(p => p.UpdateDate).IsRequired();
 
-                product.HasData(productsInit);
+                product.HasData(ProductsSeed.InitData());
             });
 
             // CONDITIONS

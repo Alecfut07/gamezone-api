@@ -28,7 +28,6 @@
     </PackageReference>
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +37,7 @@
     <None Remove="Repositories\" />
     <None Remove="Networking\" />
     <None Remove="Mappers\" />
+    <None Remove="SeedData\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -46,5 +46,6 @@
     <Folder Include="Repositories\" />
     <Folder Include="Networking\" />
     <Folder Include="Mappers\" />
+    <Folder Include="SeedData\" />
   </ItemGroup>
 </Project>
