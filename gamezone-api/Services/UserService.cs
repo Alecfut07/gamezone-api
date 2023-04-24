@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -16,9 +17,12 @@ namespace gamezone_api.Services
     {
         private UsersRepository usersRepository;
 
-        public UserService(UsersRepository usersRepository)
+        private readonly IConfiguration _configuration;
+
+        public UserService(UsersRepository usersRepository, IConfiguration configuration)
         {
             this.usersRepository = usersRepository;
+            _configuration = configuration;
         }
 
         private bool ValidateEmail(string email)
@@ -32,11 +36,15 @@ namespace gamezone_api.Services
 
         private string GenerateToken(User user)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSetting["JWT:Secret"]));
+            var audience = _configuration["JWT:ValidAudience"];
+            var issuer = _configuration["JWT:ValidIssuer"];
+            var secret = _configuration["JWT:Secret"];
+
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
             var signinCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var tokeOptions = new JwtSecurityToken(
-                issuer: ConfigurationManager.AppSetting["JWT:ValidIssuer"],
-                audience: ConfigurationManager.AppSetting["JWT:ValidAudience"],
+                issuer: issuer,
+                audience: audience,
                 claims: new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
@@ -48,19 +56,19 @@ namespace gamezone_api.Services
             return tokenString;
         }
 
-        public async Task<UserResponse> CreateNewUser(UserRequest userRequest)
+        public async Task<AuthResponse> CreateNewUser(AuthRequest authRequest)
         {
-            if (!ValidateEmail(userRequest.Email))
+            if (!ValidateEmail(authRequest.Email))
             {
                 throw new ArgumentException();
             }
             else
             {
-                var user = await usersRepository.CreateNewUser(userRequest);
+                var user = await usersRepository.CreateNewUser(authRequest);
 
-                var userResponse = new UserResponse { Token = GenerateToken(user) };
+                var authResponse = new AuthResponse { Token = GenerateToken(user) };
 
-                return userResponse;
+                return authResponse;
             }
         }
 
@@ -70,17 +78,35 @@ namespace gamezone_api.Services
             return verified;
         }
 
-        public async Task<UserResponse> SignIn(UserRequest userRequest)
+        public async Task<AuthResponse> Login(AuthRequest authRequest)
         {
-            return null;
+            if (!ValidateEmail(authRequest.Email))
+            {
+                throw new ArgumentException();
+            }
+            else
+            {
+                var user = await usersRepository.FindUserByEmail(authRequest.Email);
+
+                if (!ValidatePassword(authRequest.Password, user.Password))
+                {
+                    throw new ArgumentException();
+                }
+                else
+                {
+                    var authResponse = new AuthResponse { Token = GenerateToken(user) };
+
+                    return authResponse;
+                }
+            }
         }
     }
 
     public interface IUserService
     {
-        Task<UserResponse> CreateNewUser(UserRequest userRequest);
+        Task<AuthResponse> CreateNewUser(AuthRequest authRequest);
 
-        Task<UserResponse> SignIn(UserRequest userRequest);
+        Task<AuthResponse> Login(AuthRequest authRequest);
     }
 }
 

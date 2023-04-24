@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using gamezone_api.Mappers;
 using gamezone_api.Models;
 using gamezone_api.Networking;
+using Microsoft.EntityFrameworkCore;
 
 namespace gamezone_api.Repositories
 {
@@ -17,10 +18,10 @@ namespace gamezone_api.Repositories
             this.usersMapper = usersMapper;
         }
 
-        public async Task<User> CreateNewUser(UserRequest userRequest)
+        public async Task<User> CreateNewUser(AuthRequest authRequest)
         {
-            var newUser = usersMapper.Map(userRequest);
-            newUser.Password = BCrypt.Net.BCrypt.HashPassword(userRequest.Password, workFactor: 12);
+            var newUser = usersMapper.Map(authRequest);
+            newUser.Password = BCrypt.Net.BCrypt.HashPassword(authRequest.Password, workFactor: 12);
             newUser.CreateDate = DateTime.UtcNow;
             newUser.UpdateDate = DateTime.UtcNow;
 
@@ -30,9 +31,10 @@ namespace gamezone_api.Repositories
             return newUser;
         }
 
-        public async Task<UserResponse> SignIn(UserRequest userRequest)
+        public async Task<User> FindUserByEmail(string email)
         {
-            return null;
+            var user = await context.Users.SingleOrDefaultAsync(u => u.Email == email);
+            return user;
         }
     }
 }

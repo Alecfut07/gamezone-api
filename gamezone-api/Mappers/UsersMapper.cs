@@ -6,12 +6,12 @@ namespace gamezone_api.Mappers
 {
 	public class UsersMapper
 	{
-		public User Map(UserRequest userRequest)
+		public User Map(AuthRequest authRequest)
 		{
 			return new User
 			{
-				Email = userRequest.Email,
-				Password = userRequest.Password,
+				Email = authRequest.Email,
+				Password = authRequest.Password,
 			};
 		}
 	}

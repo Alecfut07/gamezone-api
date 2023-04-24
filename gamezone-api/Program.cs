@@ -1,9 +1,12 @@
-﻿using gamezone_api;
+﻿using System.Text;
+using gamezone_api;
 using gamezone_api.Mappers;
 using gamezone_api.Models;
 using gamezone_api.Repositories;
 using gamezone_api.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,8 +20,26 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// JWT AUTHENTICATION SCHEME
+//builder.Services
+//    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+//    .AddJwtBearer(options =>
+//    {
+//        options.TokenValidationParameters = new TokenValidationParameters()
+//        {
+//            ClockSkew = TimeSpan.Zero,
+//            ValidateIssuer = true,
+//            ValidateAudience = true,
+//            ValidateLifetime = true,
+//            ValidateIssuerSigningKey = true,
+//            ValidIssuer = "ValidIssuer",
+//            ValidAudience = "ValidAudience",
+//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Secret")),
+//        };
+//    });
+
 // SQL SERVER CONNECTION
-builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration.GetConnectionString("SQL_Server"));
+builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration["ConnectionStrings:SQL_Server"]);
 
 // MAPPERS
 builder.Services.AddScoped<ProductsMapper>();
@@ -54,6 +75,8 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

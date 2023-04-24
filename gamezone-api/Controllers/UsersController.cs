@@ -18,14 +18,14 @@ namespace gamezone_api.Controllers
         // POST for sign-up: /users/sign-up
         [HttpPost]
         [Route("sign_up")]
-        public async Task<ActionResult<UserResponse>> SignUp([FromBody] UserRequest userRequest)
+        public async Task<ActionResult<AuthResponse>> SignUp([FromBody] AuthRequest authRequest)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var userResponse = await userService.CreateNewUser(userRequest);
-                    HttpContext.Response.Headers.Add("Authorization", $"Bearer {userResponse.Token}");
+                    var authResponse = await userService.CreateNewUser(authRequest);
+                    HttpContext.Response.Headers.Add("Authorization", $"Bearer {authResponse.Token}");
                     return NoContent();
                 }
                 else
@@ -42,9 +42,25 @@ namespace gamezone_api.Controllers
         // POST for sign-in: /users/sign-in
         [HttpPost]
         [Route("sign_in")]
-        public async Task<ActionResult<UserResponse>> SignIn(UserRequest userRequest)
+        public async Task<ActionResult<AuthResponse>> SignIn([FromBody] AuthRequest authRequest)
         {
-            return Ok();
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var authResponse = await userService.Login(authRequest);
+                    HttpContext.Response.Headers.Add("Authorization", $"Bearer {authResponse.Token}");
+                    return NoContent();
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return Unauthorized();
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Data;
 using System.Threading.Channels;
 using gamezone_api.Networking;
+using Microsoft.AspNetCore.Authorization;
 
 namespace gamezone_api.Controllers
 {
