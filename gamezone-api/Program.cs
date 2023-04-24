@@ -21,22 +21,26 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // JWT AUTHENTICATION SCHEME
-//builder.Services
-//    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddJwtBearer(options =>
-//    {
-//        options.TokenValidationParameters = new TokenValidationParameters()
-//        {
-//            ClockSkew = TimeSpan.Zero,
-//            ValidateIssuer = true,
-//            ValidateAudience = true,
-//            ValidateLifetime = true,
-//            ValidateIssuerSigningKey = true,
-//            ValidIssuer = "ValidIssuer",
-//            ValidAudience = "ValidAudience",
-//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Secret")),
-//        };
-//    });
+builder.Services
+    .AddAuthentication(opt =>
+    {
+        opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ClockSkew = TimeSpan.Zero,
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+            ValidAudience = builder.Configuration["JWT:ValidAudience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])),
+        };
+    });
 
 // SQL SERVER CONNECTION
 builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration["ConnectionStrings:SQL_Server"]);
