@@ -91,6 +91,8 @@ namespace gamezone_api
 
                 user.Property(u => u.Email).IsRequired().HasMaxLength(150);
 
+                user.HasIndex(u => u.Email).IsUnique();
+
                 user.Property(u => u.Password).IsRequired();
 
                 user.Property(u => u.CreateDate).IsRequired();
