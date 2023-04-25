@@ -3,7 +3,7 @@ using gamezone_api.Models;
 
 namespace gamezone_api.SeedData
 {
-	public class PublishersData
+	public class PublishersSeed
 	{
 		public static List<Publisher> InitData()
 		{

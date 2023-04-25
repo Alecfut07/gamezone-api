@@ -97,6 +97,8 @@ namespace gamezone_api
                 publisher.HasKey(p => p.Id);
 
                 publisher.Property(p => p.Name).IsRequired().HasMaxLength(30);
+
+                publisher.HasData(PublishersSeed.InitData());
             });
         }
     }
