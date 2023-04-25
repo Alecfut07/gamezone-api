@@ -14,6 +14,8 @@ namespace gamezone_api
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Publisher> Publishers { get; set; }
+
         public GamezoneContext(DbContextOptions<GamezoneContext> options) : base(options)
         {
         }
@@ -85,6 +87,16 @@ namespace gamezone_api
                 user.Property(u => u.CreateDate).IsRequired();
 
                 user.Property(u => u.UpdateDate).IsRequired();
+            });
+
+            // PUBLISHERS
+            modelBuilder.Entity<Publisher>(publisher =>
+            {
+                publisher.ToTable("publishers");
+
+                publisher.HasKey(p => p.Id);
+
+                publisher.Property(p => p.Name).IsRequired().HasMaxLength(30);
             });
         }
     }
