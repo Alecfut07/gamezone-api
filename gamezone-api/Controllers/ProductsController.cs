@@ -2,6 +2,7 @@
 using gamezone_api.Models;
 using gamezone_api.Services;
 using gamezone_api.Networking;
+using gamezone_api.Parameters;
 
 namespace gamezone_api.Controllers;
 
@@ -16,15 +17,15 @@ public class ProductsController : ControllerBase
         this.productService = productService;
     }
 
-    // GET: api/product
-    [HttpGet]
-    public async Task<ActionResult<ProductResponse>> GetProducts()
-    {
-        var products = await productService.GetProducts();
-        return Ok(products);
-    }
+    // GET: /products
+    //[HttpGet]
+    //public async Task<ActionResult<ProductResponse>> GetProducts()
+    //{
+    //    var products = await productService.GetProducts();
+    //    return Ok(products);
+    //}
 
-    // GET api/product/id
+    // GET /products/id
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductResponse?>> GetProductById([FromRoute] long id)
     {
@@ -36,7 +37,15 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 
-    // POST api/product
+    // GET /products?pagenumber=1&pagesize=10
+    [HttpGet]
+    public async Task<ActionResult<ProductResponse?>> GetProductsByPaging([FromQuery] ProductParameters productParameters)
+    {
+        var productsByPaging = await productService.GetProductsByPaging(productParameters);
+        return Ok(productsByPaging);
+    }
+
+    // POST /products
     [HttpPost]
     public async Task<ActionResult<ProductResponse?>> SaveNewProduct([FromBody] ProductRequest productRequest)
     {
@@ -51,7 +60,7 @@ public class ProductsController : ControllerBase
         }
     }
 
-    // PUT api/product/id
+    // PUT /products/id
     [HttpPut("{id}")]
     public async Task<ActionResult<ProductResponse?>> UpdateProduct([FromRoute] long id, [FromBody] ProductRequest productRequest)
     {
@@ -63,7 +72,7 @@ public class ProductsController : ControllerBase
         return Ok(updatedProduct);
     }
 
-    // DELETE api/product/id
+    // DELETE /products/id
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteProduct([FromRoute] long id)
     {

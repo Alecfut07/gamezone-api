@@ -39,6 +39,7 @@
     <None Remove="Mappers\" />
     <None Remove="SeedData\" />
     <None Remove="Helpers\" />
+    <None Remove="Parameters\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -49,5 +50,6 @@
     <Folder Include="Mappers\" />
     <Folder Include="SeedData\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Parameters\" />
   </ItemGroup>
 </Project>

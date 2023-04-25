@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
 using gamezone_api.Models;
 using gamezone_api.Networking;
+using gamezone_api.Parameters;
 using gamezone_api.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +32,13 @@ namespace gamezone_api.Services
             return product;
         }
 
+        public async Task<IEnumerable<ProductResponse>> GetProductsByPaging(ProductParameters productParameters)
+        {
+            var productsByPaging = await productsRepository.GetProductsByPaging(productParameters);
+            return productsByPaging;
+
+        }
+
         public async Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest)
         {
             var productResponse = await productsRepository.SaveNewProduct(productRequest);
@@ -52,6 +61,8 @@ namespace gamezone_api.Services
         Task<IEnumerable<ProductResponse>> GetProducts();
 
         Task<ProductResponse?> GetProductById(long id);
+
+        Task<IEnumerable<ProductResponse>> GetProductsByPaging(ProductParameters productParameters); 
 
         Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest);
 

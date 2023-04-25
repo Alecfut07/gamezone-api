@@ -2,6 +2,7 @@
 using gamezone_api.Mappers;
 using gamezone_api.Models;
 using gamezone_api.Networking;
+using gamezone_api.Parameters;
 using Microsoft.EntityFrameworkCore;
 
 namespace gamezone_api.Repositories
@@ -37,6 +38,34 @@ namespace gamezone_api.Repositories
 
             var productResponse = productsMapper.Map(product);
             return productResponse;
+        }
+
+        public async Task<IEnumerable<ProductResponse>> GetProductsByPaging(ProductParameters productParameters)
+        {
+            var products = await context.Products
+                .Include(p => p.Condition)
+                .Include(p => p.Edition)
+                .ToListAsync();
+
+            var productsResponse = products.ConvertAll<ProductResponse>((p) => productsMapper.Map(p));
+
+            if (productParameters.PageNumber != null && productParameters.PageSize != null)
+            {
+                var pageNumber = productParameters.PageNumber ?? 0;
+                var pageSize = productParameters.PageSize ?? 0;
+
+                var productsByPaging = productsResponse
+                    .OrderBy((prods) => prods.Name)
+                    .Skip((pageNumber - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToList();
+
+                return productsByPaging;
+            }
+            else
+            {
+                return productsResponse;
+            }
         }
 
         public async Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest)
