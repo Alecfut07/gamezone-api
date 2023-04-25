@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using System.Runtime.Serialization;
+using gamezone_api.Helpers;
 using gamezone_api.Models;
 using gamezone_api.Networking;
 using gamezone_api.Parameters;
@@ -32,11 +33,17 @@ namespace gamezone_api.Services
             return product;
         }
 
-        public async Task<IEnumerable<ProductResponse>> GetProductsByPaging(ProductParameters productParameters)
+        public async Task<List<ProductResponse>> GetProductsByPaging(ProductParameters productParameters)
         {
             var productsByPaging = await productsRepository.GetProductsByPaging(productParameters);
             return productsByPaging;
 
+        }
+
+        public async Task<List<ProductResponse>> SearchProducts(SearchParameter searchParameter)
+        {
+            var searchedProducts = await productsRepository.SearchProducts(searchParameter);
+            return searchedProducts;
         }
 
         public async Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest)
@@ -62,7 +69,9 @@ namespace gamezone_api.Services
 
         Task<ProductResponse?> GetProductById(long id);
 
-        Task<IEnumerable<ProductResponse>> GetProductsByPaging(ProductParameters productParameters); 
+        Task<List<ProductResponse>> GetProductsByPaging(ProductParameters productParameters);
+
+        Task<List<ProductResponse>> SearchProducts(SearchParameter searchParameter);
 
         Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest);
 

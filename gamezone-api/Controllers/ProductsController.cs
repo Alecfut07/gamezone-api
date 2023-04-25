@@ -3,6 +3,8 @@ using gamezone_api.Models;
 using gamezone_api.Services;
 using gamezone_api.Networking;
 using gamezone_api.Parameters;
+using gamezone_api.Helpers;
+using Newtonsoft.Json;
 
 namespace gamezone_api.Controllers;
 
@@ -39,10 +41,40 @@ public class ProductsController : ControllerBase
 
     // GET /products?pagenumber=1&pagesize=10
     [HttpGet]
-    public async Task<ActionResult<ProductResponse?>> GetProductsByPaging([FromQuery] ProductParameters productParameters)
+    public async Task<ActionResult<List<ProductResponse>>> GetProductsByPaging([FromQuery] ProductParameters productParameters)
     {
-        var productsByPaging = await productService.GetProductsByPaging(productParameters);
-        return Ok(productsByPaging);
+        var products = await productService.GetProductsByPaging(productParameters);
+        if (products is PagedList<ProductResponse>)
+        {
+            var paginatedProducts = products as PagedList<ProductResponse>;
+            var metadata = new
+            {
+                paginatedProducts.TotalCount,
+                paginatedProducts.PageSize,
+                paginatedProducts.CurrentPage,
+                paginatedProducts.TotalPages,
+                paginatedProducts.HasPrevious,
+                paginatedProducts.HasNext,
+            };
+
+            HttpContext.Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+        }
+
+        return Ok(products);
+    }
+
+    [HttpGet]
+    [Route("Search")]
+    public async Task<ActionResult<List<ProductResponse>>> SearchProducts([FromQuery] SearchParameter searchParameter)
+    {
+        var products = await productService.SearchProducts(searchParameter);
+
+        if (products == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(products);
     }
 
     // POST /products

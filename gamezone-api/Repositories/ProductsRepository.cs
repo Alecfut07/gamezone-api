@@ -1,4 +1,5 @@
 ﻿using System;
+using gamezone_api.Helpers;
 using gamezone_api.Mappers;
 using gamezone_api.Models;
 using gamezone_api.Networking;
@@ -40,7 +41,7 @@ namespace gamezone_api.Repositories
             return productResponse;
         }
 
-        public async Task<IEnumerable<ProductResponse>> GetProductsByPaging(ProductParameters productParameters)
+        public async Task<List<ProductResponse>> GetProductsByPaging(ProductParameters productParameters)
         {
             var products = await context.Products
                 .Include(p => p.Condition)
@@ -54,11 +55,18 @@ namespace gamezone_api.Repositories
                 var pageNumber = productParameters.PageNumber ?? 0;
                 var pageSize = productParameters.PageSize ?? 0;
 
-                var productsByPaging = productsResponse
-                    .OrderBy((prods) => prods.Name)
-                    .Skip((pageNumber - 1) * pageSize)
-                    .Take(pageSize)
-                    .ToList();
+                //var productsByPaging = productsResponse
+                //    .OrderBy((prods) => prods.Name)
+                //    .Skip((pageNumber - 1) * pageSize)
+                //    .Take(pageSize)
+                //    .ToList();
+
+                var productsByPaging = PagedList<ProductResponse>
+                    .ToPagedList(
+                        productsResponse.OrderBy((prods) => prods.Name),
+                        pageNumber,
+                        pageSize
+                        );
 
                 return productsByPaging;
             }
@@ -66,6 +74,20 @@ namespace gamezone_api.Repositories
             {
                 return productsResponse;
             }
+        }
+
+        public async Task<List<ProductResponse>> SearchProducts(SearchParameter searchParameter)
+        {
+            var query = searchParameter.Query ?? "";
+            var products = await context.Products
+                .Where((prod) => prod.Name.ToLower().Contains(query.ToLower()))
+                .Include(prod => prod.Condition)
+                .Include(prod => prod.Edition)
+                .ToListAsync();
+                
+
+            var productsResponse = products.ConvertAll<ProductResponse>((p) => productsMapper.Map(p));
+            return productsResponse.Any() ? productsResponse : null;
         }
 
         public async Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest)
