@@ -50,6 +50,7 @@ builder.Services.AddScoped<ProductsMapper>();
 builder.Services.AddScoped<ConditionsMapper>();
 builder.Services.AddScoped<EditionsMapper>();
 builder.Services.AddScoped<UsersMapper>();
+builder.Services.AddScoped<PublishersMapper>();
 
 // REPOSITORIES
 builder.Services.AddScoped<ProductsRepository>();
@@ -57,6 +58,7 @@ builder.Services.AddScoped<ConditionsRepository>();
 builder.Services.AddScoped<EditionsRepository>();
 builder.Services.AddScoped<AuthRepository>();
 builder.Services.AddScoped<UserRepository>();
+builder.Services.AddScoped<PublishersRepository>();
 
 // SERVICES
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -64,6 +66,7 @@ builder.Services.AddScoped<IConditionService, ConditionService>();
 builder.Services.AddScoped<IEditionService, EditionService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPublisherService, PublisherService>();
 
 var app = builder.Build();
 
