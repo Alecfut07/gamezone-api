@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using gamezone_api.Models;
 using gamezone_api.SeedData;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,8 @@ namespace gamezone_api
 
         public DbSet<Publisher> Publishers { get; set; }
 
+        public DbSet<VideoGame> VideoGames { get; set; }
+
         public GamezoneContext(DbContextOptions<GamezoneContext> options) : base(options)
         {
         }
@@ -33,6 +36,10 @@ namespace gamezone_api
                 product.ToTable("products");
 
                 product.HasKey(p => p.Id);
+
+                product.HasOne(p => p.Condition);
+                
+                product.HasOne(p => p.Edition);
 
                 product.Property(p => p.Name).IsRequired().HasMaxLength(150);
 
@@ -99,6 +106,17 @@ namespace gamezone_api
                 publisher.Property(p => p.Name).IsRequired().HasMaxLength(30);
 
                 publisher.HasData(PublishersSeed.InitData());
+            });
+
+            // VIDEOGAMES
+            modelBuilder.Entity<VideoGame>(videogame =>
+            {
+                videogame.ToTable("videogames");
+                videogame.HasKey(v => v.Id);
+
+                videogame.HasOne(v => v.Product).WithOne(p => p.VideoGame).HasForeignKey<VideoGame>();
+
+                videogame.HasOne(v => v.Publisher);
             });
         }
     }

@@ -38,5 +38,7 @@ namespace gamezone_api.Models
         public virtual Condition Condition { get; set; }
 
         public virtual Edition Edition { get; set; }
+
+        public virtual VideoGame VideoGame { get; set; }
     }
 }

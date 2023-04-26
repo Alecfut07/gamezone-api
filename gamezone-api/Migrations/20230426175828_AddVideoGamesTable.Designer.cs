@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using gamezone_api;
 
@@ -11,9 +12,11 @@ using gamezone_api;
 namespace gamezone_api.Migrations
 {
     [DbContext(typeof(GamezoneContext))]
-    partial class GamezoneContextModelSnapshot : ModelSnapshot
+    [Migration("20230426175828_AddVideoGamesTable")]
+    partial class AddVideoGamesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,361 +121,361 @@ namespace gamezone_api.Migrations
                         {
                             Id = 1L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3180),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1580),
                             Description = "Nintendo 64 Game",
                             EditionId = 0,
                             Name = "The Legend of Zelda: Ocarina of Time",
                             Price = 42.99m,
                             ReleaseDate = new DateTime(1998, 11, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3200)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1600)
                         },
                         new
                         {
                             Id = 2L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3210),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1600),
                             Description = "PlayStation 1 Game",
                             EditionId = 0,
                             Name = "Tony Hawk's Pro Skater 2",
                             Price = 29.99m,
                             ReleaseDate = new DateTime(2000, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3210)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1610)
                         },
                         new
                         {
                             Id = 3L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3210),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1610),
                             Description = "PlayStation 3 Game",
                             EditionId = 0,
                             Name = "Grand Theft Auto 4",
                             Price = 25.38m,
                             ReleaseDate = new DateTime(2008, 4, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3210)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1610)
                         },
                         new
                         {
                             Id = 4L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3220),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1610),
                             Description = "SEGA Dreamcast Game",
                             EditionId = 0,
                             Name = "Soul Calibur",
                             Price = 15.99m,
                             ReleaseDate = new DateTime(1999, 9, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3220)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1610)
                         },
                         new
                         {
                             Id = 5L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3220),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1620),
                             Description = "Nintendo Wii Game",
                             EditionId = 0,
                             Name = "Super Mario Galaxy",
                             Price = 33.33m,
                             ReleaseDate = new DateTime(2007, 11, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3220)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1620)
                         },
                         new
                         {
                             Id = 6L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3230),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1620),
                             Description = "Nintendo Wii Game",
                             EditionId = 0,
                             Name = "Super Mario Galaxy 2",
                             Price = 38.18m,
                             ReleaseDate = new DateTime(2010, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3230)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1620)
                         },
                         new
                         {
                             Id = 7L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3230),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1630),
                             Description = "Xbox One Game",
                             EditionId = 0,
                             Name = "Read Dead Redemption 2",
                             Price = 40.92m,
                             ReleaseDate = new DateTime(2018, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3230)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1630)
                         },
                         new
                         {
                             Id = 8L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3230),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1630),
                             Description = "Xbox One Game",
                             EditionId = 0,
                             Name = "Grand Theft Auto 5",
                             Price = 27.88m,
                             ReleaseDate = new DateTime(2014, 11, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3240)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1630)
                         },
                         new
                         {
                             Id = 9L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3240),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1630),
                             Description = "PC Game",
                             EditionId = 0,
                             Name = "Disco Elysium: The Final Cut",
                             Price = 48.22m,
                             ReleaseDate = new DateTime(2021, 3, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3240)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1640)
                         },
                         new
                         {
                             Id = 10L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3240),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1640),
                             Description = "Nintendo Switch Game",
                             EditionId = 0,
                             Name = "The Legend of Zelda: Breath of the Wild",
                             Price = 12.33m,
                             ReleaseDate = new DateTime(2017, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3240)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1640)
                         },
                         new
                         {
                             Id = 11L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3250),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1640),
                             Description = "Nintendo 64 Game",
                             EditionId = 0,
                             Name = "Perfect Dark",
                             Price = 24.22m,
                             ReleaseDate = new DateTime(2000, 5, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3250)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1640)
                         },
                         new
                         {
                             Id = 12L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3250),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1650),
                             Description = "Nintendo Gamecube Game",
                             EditionId = 0,
                             Name = "Metroid Prime",
                             Price = 51.11m,
                             ReleaseDate = new DateTime(2002, 11, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3250)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1650)
                         },
                         new
                         {
                             Id = 13L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3260),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1650),
                             Description = "Nintendo Switch Game",
                             EditionId = 0,
                             Name = "Super Mario Odyssey",
                             Price = 14.73m,
                             ReleaseDate = new DateTime(2017, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3260)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1650)
                         },
                         new
                         {
                             Id = 14L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3260),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1660),
                             Description = "Nintendo Switch Game",
                             EditionId = 0,
                             Name = "Halo: Combat Evolved",
                             Price = 17.48m,
                             ReleaseDate = new DateTime(2001, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3260)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1660)
                         },
                         new
                         {
                             Id = 15L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3260),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1660),
                             Description = "SEGA Dreamcast",
                             EditionId = 0,
                             Name = "NFL 2K1",
                             Price = 19.99m,
                             ReleaseDate = new DateTime(2000, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3260)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1660)
                         },
                         new
                         {
                             Id = 16L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3270),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1660),
                             Description = "PC Game",
                             EditionId = 0,
                             Name = "Half-Life 2",
                             Price = 32.22m,
                             ReleaseDate = new DateTime(2004, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3270)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1670)
                         },
                         new
                         {
                             Id = 17L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3270),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1670),
                             Description = "Xbox 360 Game",
                             EditionId = 0,
                             Name = "BioSchock",
                             Price = 41.01m,
                             ReleaseDate = new DateTime(2007, 8, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3270)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1670)
                         },
                         new
                         {
                             Id = 18L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3280),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1670),
                             Description = "Nintendo 64 Game",
                             EditionId = 0,
                             Name = "GoldenEye 007",
                             Price = 52.21m,
                             ReleaseDate = new DateTime(1997, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3280)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1670)
                         },
                         new
                         {
                             Id = 19L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3280),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1680),
                             Description = "PlayStation 3 Game",
                             EditionId = 0,
                             Name = "Uncharted 2: Among Thieves",
                             Price = 39.99m,
                             ReleaseDate = new DateTime(2009, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3280)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1680)
                         },
                         new
                         {
                             Id = 20L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3280),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1680),
                             Description = "Nintendo Gamecube Game",
                             EditionId = 0,
                             Name = "Resident Evil 4",
                             Price = 55.55m,
                             ReleaseDate = new DateTime(2005, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3290)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1680)
                         },
                         new
                         {
                             Id = 21L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3290),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1680),
                             Description = "PlayStation 3 Game",
                             EditionId = 0,
                             Name = "Batman: Arkham City",
                             Price = 43.73m,
                             ReleaseDate = new DateTime(2011, 10, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3290)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1690)
                         },
                         new
                         {
                             Id = 22L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3290),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1690),
                             Description = "PlayStation 1 Game",
                             EditionId = 0,
                             Name = "Tekken 3",
                             Price = 45.75m,
                             ReleaseDate = new DateTime(1998, 4, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3290)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1690)
                         },
                         new
                         {
                             Id = 23L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3300),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1690),
                             Description = "Xbox Series X Game",
                             EditionId = 0,
                             Name = "Elden Ring",
                             Price = 35.33m,
                             ReleaseDate = new DateTime(2022, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3300)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1690)
                         },
                         new
                         {
                             Id = 24L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3300),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1700),
                             Description = "Xbox 360 Game",
                             EditionId = 0,
                             Name = "Mass Effect 2",
                             Price = 23.23m,
                             ReleaseDate = new DateTime(2010, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3300)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1700)
                         },
                         new
                         {
                             Id = 25L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3300),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1700),
                             Description = "Nintendo Gamecube Game",
                             EditionId = 0,
                             Name = "The Legend of Zelda: Twilight Princess",
                             Price = 41.73m,
                             ReleaseDate = new DateTime(2006, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3310)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1700)
                         },
                         new
                         {
                             Id = 26L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3310),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1710),
                             Description = "Xbox 360 Game",
                             EditionId = 0,
                             Name = "The Elder Scrolls 5: Skyrim",
                             Price = 17.78m,
                             ReleaseDate = new DateTime(2011, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3310)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1710)
                         },
                         new
                         {
                             Id = 27L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3310),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1710),
                             Description = "Nintendo Gamecube Game",
                             EditionId = 0,
                             Name = "The Legend of Zelda: The Wind Waker",
                             Price = 25.25m,
                             ReleaseDate = new DateTime(2003, 3, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3310)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1710)
                         },
                         new
                         {
                             Id = 28L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3320),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1710),
                             Description = "PlayStation 1 Game",
                             EditionId = 0,
                             Name = "Gran Turismo",
                             Price = 27.77m,
                             ReleaseDate = new DateTime(1998, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3320)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1720)
                         },
                         new
                         {
                             Id = 29L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3320),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1720),
                             Description = "PlayStation 2 Game",
                             EditionId = 0,
                             Name = "Metal Gear Solid 2: Sons of Liberty",
                             Price = 36.66m,
                             ReleaseDate = new DateTime(2001, 11, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3320)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1720)
                         },
                         new
                         {
                             Id = 30L,
                             ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3330),
+                            CreateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1720),
                             Description = "Nintendo Switch Game",
                             EditionId = 0,
                             Name = "Persona 5 Royal",
                             Price = 60m,
                             ReleaseDate = new DateTime(2022, 10, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 26, 12, 9, 29, 520, DateTimeKind.Local).AddTicks(3330)
+                            UpdateDate = new DateTime(2023, 4, 26, 11, 58, 27, 928, DateTimeKind.Local).AddTicks(1730)
                         });
                 });
 

@@ -6,6 +6,14 @@ namespace gamezone_api.Mappers
 {
 	public class ProductsMapper
     {
+        private ConditionsMapper _conditionsMapper;
+        private EditionsMapper _editionsMapper;
+
+        public ProductsMapper(ConditionsMapper conditionsMapper, EditionsMapper editionsMapper)
+        {
+            _conditionsMapper = conditionsMapper;
+            _editionsMapper = editionsMapper;
+        }
         public Product Map(ProductRequest productRequest)
         {
             return new Product
@@ -28,8 +36,8 @@ namespace gamezone_api.Mappers
                 Description = product.Description,
                 Price = product.Price,
                 ReleaseDate = product.ReleaseDate,
-                Condition = product.Condition,
-                Edition = product.Edition,
+                Condition = _conditionsMapper.Map(product.Condition),
+                Edition = _editionsMapper.Map(product.Edition),
                 CreateDate = product.CreateDate,
                 UpdateDate = product.UpdateDate
             };
