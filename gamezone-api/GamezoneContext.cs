@@ -41,6 +41,8 @@ namespace gamezone_api
                 
                 product.HasOne(p => p.Edition);
 
+                product.Property(p => p.ImageURL).IsRequired(false).HasMaxLength(300);
+
                 product.Property(p => p.Name).IsRequired().HasMaxLength(150);
 
                 product.Property(p => p.Price).IsRequired();

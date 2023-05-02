@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using gamezone_api;
+using gamezone_api.Helpers;
 using gamezone_api.Mappers;
 using gamezone_api.Models;
 using gamezone_api.Repositories;
@@ -7,6 +8,8 @@ using gamezone_api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -15,10 +18,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(name: MyAllowSpecificOrigins,
+        options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("http://localhost:3000");
+                          //policy.WithOrigins("http://localhost:3000");
+                          policy.AllowAnyHeader()
+                              .AllowAnyMethod()
+                              .AllowAnyOrigin();
                       });
 });
 
@@ -79,6 +85,11 @@ builder.Services.AddScoped<IEditionService, EditionService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPublisherService, PublisherService>();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
+    });
 
 var app = builder.Build();
 
@@ -93,7 +104,6 @@ if (app.Environment.IsDevelopment())
     app.MapGet("/info/routes", (IEnumerable<EndpointDataSource> endpointSources) =>
         string.Join("\n", endpointSources.SelectMany(source => source.Endpoints)));
 }
-
 
 app.UseHttpsRedirection();
 

@@ -18,10 +18,11 @@ namespace gamezone_api.Mappers
         {
             return new Product
             {
+                ImageURL = productRequest.ImageURL,
                 Name = productRequest.Name,
                 Description = productRequest.Description,
                 Price = productRequest.Price,
-                ReleaseDate = productRequest.ReleaseDate,
+                ReleaseDate = productRequest.ReleaseDate == null ? null : productRequest.ReleaseDate.Value.ToUniversalTime(),
                 ConditionId = productRequest.ConditionId,
                 EditionId = productRequest.EditionId,
             };
@@ -32,6 +33,7 @@ namespace gamezone_api.Mappers
             return new ProductResponse
             {
                 Id = product.Id,
+                ImageURL = product.ImageURL,
                 Name = product.Name,
                 Description = product.Description,
                 Price = product.Price,

@@ -5,12 +5,16 @@ namespace gamezone_api.Networking
 {
     public class ProductRequest
 	{
+        [JsonPropertyName("image_url")]
+        public string ImageURL { get; set; }
+
         [Required]
         public string Name { get; set; }
 
         [Required]
         public decimal Price { get; set; }
 
+        [JsonPropertyName("release_date")]
         public DateTime? ReleaseDate { get; set; }
 
         public string? Description { get; set; }

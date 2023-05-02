@@ -115,6 +115,7 @@ namespace gamezone_api.Repositories
                 .Where((p) => p.Id == id)
                 .ExecuteUpdateAsync((prod) =>
                     prod
+                        .SetProperty((p) => p.ImageURL, productRequest.ImageURL)
                         .SetProperty((p) => p.Name, productRequest.Name)
                         .SetProperty((p) => p.Price, productRequest.Price)
                         .SetProperty((p) => p.ReleaseDate, productRequest.ReleaseDate)
