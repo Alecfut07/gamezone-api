@@ -68,6 +68,8 @@ namespace gamezone_api
                 productVariants.HasOne(pv => pv.Edition);
 
                 productVariants.Property(pv => pv.Price).IsRequired();
+
+                productVariants.HasData(ProductVariantsSeed.InitData());
             });
 
             // CONDITIONS
