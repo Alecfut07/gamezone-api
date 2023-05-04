@@ -44,6 +44,8 @@ namespace gamezone_api.Repositories
         public async Task<List<ProductResponse>> GetProductsByPaging(ProductParameters productParameters)
         {
             var products = await context.Products
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .ToListAsync();
 
             var productsResponse = products.ConvertAll<ProductResponse>((p) => productsMapper.Map(p));
@@ -79,6 +81,8 @@ namespace gamezone_api.Repositories
             var query = searchParameter.Query ?? "";
             var products = await context.Products
                 .Where((prod) => prod.Name.ToLower().Contains(query.ToLower()))
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .ToListAsync();
                 
 

@@ -19,14 +19,6 @@ public class ProductsController : ControllerBase
         this.productService = productService;
     }
 
-    // GET: /products
-    [HttpGet]
-    public async Task<ActionResult<ProductResponse>> GetProducts()
-    {
-        var products = await productService.GetProducts();
-        return Ok(products);
-    }
-
     // GET /products/id
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductResponse?>> GetProductById([FromRoute] long id)
@@ -39,29 +31,29 @@ public class ProductsController : ControllerBase
         return Ok(product);
     }
 
-    // GET /products?pagenumber=1&pagesize=10
-    //[HttpGet]
-    //public async Task<ActionResult<List<ProductResponse>>> GetProductsByPaging([FromQuery] ProductParameters productParameters)
-    //{
-    //    var products = await productService.GetProductsByPaging(productParameters);
-    //    if (products is PagedList<ProductResponse>)
-    //    {
-    //        var paginatedProducts = products as PagedList<ProductResponse>;
-    //        var metadata = new
-    //        {
-    //            paginatedProducts.TotalCount,
-    //            paginatedProducts.PageSize,
-    //            paginatedProducts.CurrentPage,
-    //            paginatedProducts.TotalPages,
-    //            paginatedProducts.HasPrevious,
-    //            paginatedProducts.HasNext,
-    //        };
+   // GET /products? pagenumber = 1 & pagesize = 10
+   [HttpGet]
+    public async Task<ActionResult<List<ProductResponse>>> GetProductsByPaging([FromQuery] ProductParameters productParameters)
+    {
+        var products = await productService.GetProductsByPaging(productParameters);
+        if (products is PagedList<ProductResponse>)
+        {
+            var paginatedProducts = products as PagedList<ProductResponse>;
+            var metadata = new
+            {
+                paginatedProducts.TotalCount,
+                paginatedProducts.PageSize,
+                paginatedProducts.CurrentPage,
+                paginatedProducts.TotalPages,
+                paginatedProducts.HasPrevious,
+                paginatedProducts.HasNext,
+            };
 
-    //        HttpContext.Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-    //    }
+            HttpContext.Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+        }
 
-    //    return Ok(products);
-    //}
+        return Ok(products);
+    }
 
     [HttpGet]
     [Route("Search")]
@@ -75,48 +67,6 @@ public class ProductsController : ControllerBase
         }
 
         return Ok(products);
-    }
-
-    // POST /products
-    [HttpPost]
-    public async Task<ActionResult<ProductResponse?>> SaveNewProduct([FromBody] ProductRequest productRequest)
-    {
-        if (!ModelState.IsValid)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError);
-        }
-        else
-        {
-            var newProduct = await productService.SaveNewProduct(productRequest);
-            return Ok(newProduct);
-        }
-    }
-
-    // PUT /products/id
-    [HttpPut("{id}")]
-    public async Task<ActionResult<ProductResponse?>> UpdateProduct([FromRoute] long id, [FromBody] ProductRequest productRequest)
-    {
-        var updatedProduct = await productService.UpdateProduct(id, productRequest);
-        if (updatedProduct == null)
-        {
-            return NotFound();
-        }
-        return Ok(updatedProduct);
-    }
-
-    // DELETE /products/id
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteProduct([FromRoute] long id)
-    {
-        try
-        {
-            await productService.DeleteProduct(id);
-        }
-        catch(Exception ex)
-        {
-            return NotFound();
-        }
-        return NoContent();
     }
 }
 

@@ -40,6 +40,7 @@
     <None Remove="SeedData\" />
     <None Remove="Helpers\" />
     <None Remove="Parameters\" />
+    <None Remove="Controllers\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -51,6 +52,7 @@
     <Folder Include="SeedData\" />
     <Folder Include="Helpers\" />
     <Folder Include="Parameters\" />
+    <Folder Include="Controllers\Admin\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Migrations\20230426180929_AddSampleProducts.Designer.cs" />
