@@ -9,6 +9,8 @@ namespace gamezone_api
     {
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<ProductVariants> ProductVariants { get; set; }
+
         public DbSet<Condition> Conditions { get; set; }
 
         public DbSet<Edition> Editions { get; set; }
@@ -37,15 +39,9 @@ namespace gamezone_api
 
                 product.HasKey(p => p.Id);
 
-                product.HasOne(p => p.Condition);
-                
-                product.HasOne(p => p.Edition);
-
                 product.Property(p => p.ImageURL).IsRequired(false).HasMaxLength(300);
 
                 product.Property(p => p.Name).IsRequired().HasMaxLength(150);
-
-                product.Property(p => p.Price).IsRequired();
 
                 product.Property(p => p.ReleaseDate).IsRequired(false);
 
@@ -56,6 +52,22 @@ namespace gamezone_api
                 product.Property(p => p.UpdateDate).IsRequired();
 
                 product.HasData(ProductsSeed.InitData());
+            });
+
+            // PRODUCT VARIANTS
+            modelBuilder.Entity<ProductVariants>(productVariants =>
+            {
+                productVariants.ToTable("product_variants");
+
+                productVariants.HasKey(pv => pv.Id);
+
+                productVariants.HasOne(pv => pv.Product);
+
+                productVariants.HasOne(pv => pv.Condition);
+
+                productVariants.HasOne(pv => pv.Edition);
+
+                productVariants.Property(pv => pv.Price).IsRequired();
             });
 
             // CONDITIONS
@@ -116,7 +128,7 @@ namespace gamezone_api
                 videogame.ToTable("videogames");
                 videogame.HasKey(v => v.Id);
 
-                videogame.HasOne(v => v.Product).WithOne(p => p.VideoGame).HasForeignKey<VideoGame>();
+                videogame.HasOne(v => v.Product);
 
                 videogame.HasOne(v => v.Publisher);
             });

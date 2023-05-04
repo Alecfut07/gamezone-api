@@ -21,10 +21,7 @@ namespace gamezone_api.Mappers
                 ImageURL = productRequest.ImageURL,
                 Name = productRequest.Name,
                 Description = productRequest.Description,
-                Price = productRequest.Price,
                 ReleaseDate = productRequest.ReleaseDate == null ? null : productRequest.ReleaseDate.Value.ToUniversalTime(),
-                ConditionId = productRequest.ConditionId,
-                EditionId = productRequest.EditionId,
             };
         }
 
@@ -36,10 +33,7 @@ namespace gamezone_api.Mappers
                 ImageURL = product.ImageURL,
                 Name = product.Name,
                 Description = product.Description,
-                Price = product.Price,
                 ReleaseDate = product.ReleaseDate,
-                Condition = _conditionsMapper.Map(product.Condition),
-                Edition = _editionsMapper.Map(product.Edition),
                 CreateDate = product.CreateDate,
                 UpdateDate = product.UpdateDate
             };

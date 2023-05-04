@@ -15,9 +15,6 @@ namespace gamezone_api.Models
         [Column("name")]
         public string Name { get; set; }
 
-        [Column("price")]
-        public decimal Price { get; set; }
-
         [Column("release_date")]
         public DateTime? ReleaseDate { get; set; }
 
@@ -29,19 +26,5 @@ namespace gamezone_api.Models
 
         [Column("update_date")]
         public DateTime UpdateDate { get; set; }
-
-        [ForeignKey("condition_id")]
-        [Column("condition_id")]
-        public int ConditionId { get; set; }
-
-        [ForeignKey("edition_id")]
-        [Column("edition_id")]
-        public int EditionId { get; set; }
-
-        public virtual Condition Condition { get; set; }
-
-        public virtual Edition Edition { get; set; }
-
-        public virtual VideoGame VideoGame { get; set; }
     }
 }

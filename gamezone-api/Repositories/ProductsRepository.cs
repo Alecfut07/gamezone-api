@@ -22,8 +22,6 @@ namespace gamezone_api.Repositories
 		public async Task<IEnumerable<ProductResponse>> GetProducts()
 		{
             var products = await context.Products
-                .Include(p => p.Condition)
-                .Include(p => p.Edition)
                 .ToListAsync();
 
             var productsResponse = products.ConvertAll<ProductResponse>((p) => productsMapper.Map(p));
@@ -33,8 +31,6 @@ namespace gamezone_api.Repositories
         public async Task<ProductResponse?> GetProductById(long id)
         {
             var product = await context.Products
-                .Include(p => p.Condition)
-                .Include(p => p.Edition)
                 .SingleOrDefaultAsync(p => p.Id == id);
 
             var productResponse = productsMapper.Map(product);
@@ -44,8 +40,6 @@ namespace gamezone_api.Repositories
         public async Task<List<ProductResponse>> GetProductsByPaging(ProductParameters productParameters)
         {
             var products = await context.Products
-                .Include(p => p.Condition)
-                .Include(p => p.Edition)
                 .ToListAsync();
 
             var productsResponse = products.ConvertAll<ProductResponse>((p) => productsMapper.Map(p));
@@ -81,8 +75,6 @@ namespace gamezone_api.Repositories
             var query = searchParameter.Query ?? "";
             var products = await context.Products
                 .Where((prod) => prod.Name.ToLower().Contains(query.ToLower()))
-                .Include(prod => prod.Condition)
-                .Include(prod => prod.Edition)
                 .ToListAsync();
                 
 
@@ -100,8 +92,6 @@ namespace gamezone_api.Repositories
             await context.SaveChangesAsync();
 
             var product = await context.Products
-                .Include(p => p.Condition)
-                .Include(p => p.Edition)
                 .SingleOrDefaultAsync(p => p.Id == newProduct.Id);
 
             var productResponse = productsMapper.Map(product);
@@ -117,18 +107,13 @@ namespace gamezone_api.Repositories
                     prod
                         .SetProperty((p) => p.ImageURL, productRequest.ImageURL)
                         .SetProperty((p) => p.Name, productRequest.Name)
-                        .SetProperty((p) => p.Price, productRequest.Price)
                         .SetProperty((p) => p.ReleaseDate, productRequest.ReleaseDate)
                         .SetProperty((p) => p.Description, productRequest.Description)
-                        .SetProperty((p) => p.ConditionId, productRequest.ConditionId)
-                        .SetProperty((p) => p.EditionId, productRequest.EditionId)
                         .SetProperty((p) => p.UpdateDate, DateTime.UtcNow)
                         );
             if (result > 0)
             {
                 var updatedProduct = await context.Products
-                    .Include(p => p.Condition)
-                    .Include(p => p.Edition)
                     .SingleAsync(p => p.Id == id);
 
                 var productResponse = productsMapper.Map(updatedProduct);

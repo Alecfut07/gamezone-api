@@ -11,8 +11,6 @@ namespace gamezone_api.Networking
 
         public string Name { get; set; }
 
-        public decimal Price { get; set; }
-
         [JsonPropertyName("release_date")]
         public DateTime? ReleaseDate { get; set; }
 
@@ -23,9 +21,5 @@ namespace gamezone_api.Networking
 
         [JsonPropertyName("update_date")]
         public DateTime UpdateDate { get; set; }
-
-        public virtual ConditionResponse Condition { get; set; }
-
-        public virtual EditionResponse Edition { get; set; }
     }
 }
