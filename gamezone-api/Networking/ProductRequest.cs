@@ -15,6 +15,9 @@ namespace gamezone_api.Networking
         public DateTime? ReleaseDate { get; set; }
 
         public string? Description { get; set; }
+
+        [JsonPropertyName("product_variants")]
+        public ICollection<ProductVariantRequest> ProductVariantRequests { get; set; } 
     }
 }
 

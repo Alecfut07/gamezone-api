@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace gamezone_api.Models
 {
-    public class ProductVariants
+    public class ProductVariant
 	{
 		[Key]
 		[Column("id")]

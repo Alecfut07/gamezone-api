@@ -21,5 +21,8 @@ namespace gamezone_api.Networking
 
         [JsonPropertyName("update_date")]
         public DateTime UpdateDate { get; set; }
+
+        [JsonPropertyName("product_variants")]
+        public ICollection<ProductVariantResponse> ProductVariantResponses { get; set; }
     }
 }

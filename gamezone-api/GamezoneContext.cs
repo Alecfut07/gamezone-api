@@ -9,7 +9,7 @@ namespace gamezone_api
     {
         public DbSet<Product> Products { get; set; }
 
-        public DbSet<ProductVariants> ProductVariants { get; set; }
+        public DbSet<ProductVariant> ProductVariants { get; set; }
 
         public DbSet<Condition> Conditions { get; set; }
 
@@ -55,7 +55,7 @@ namespace gamezone_api
             });
 
             // PRODUCT VARIANTS
-            modelBuilder.Entity<ProductVariants>(productVariants =>
+            modelBuilder.Entity<ProductVariant>(productVariants =>
             {
                 productVariants.ToTable("product_variants");
 

@@ -10,8 +10,6 @@ namespace gamezone_api.Networking
 
         public decimal Price { get; set; }
 
-        public virtual ProductResponse Product { get; set; }
-
         public virtual ConditionResponse Condition { get; set; }
 
         public virtual EditionResponse Edition { get; set; }

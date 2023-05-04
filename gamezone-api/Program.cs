@@ -72,6 +72,7 @@ builder.Services.AddScoped<PublishersMapper>();
 
 // REPOSITORIES
 builder.Services.AddScoped<ProductsRepository>();
+//builder.Services.AddScoped<ProductVariantsRepository>();
 builder.Services.AddScoped<ConditionsRepository>();
 builder.Services.AddScoped<EditionsRepository>();
 builder.Services.AddScoped<AuthRepository>();
@@ -80,6 +81,7 @@ builder.Services.AddScoped<PublishersRepository>();
 
 // SERVICES
 builder.Services.AddScoped<IProductService, ProductService>();
+//builder.Services.AddScoped<IProductVariantService, ProductVariantService>();
 builder.Services.AddScoped<IConditionService, ConditionService>();
 builder.Services.AddScoped<IEditionService, EditionService>();
 builder.Services.AddScoped<IAuthService, AuthService>();

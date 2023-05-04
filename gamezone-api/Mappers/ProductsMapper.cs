@@ -14,6 +14,7 @@ namespace gamezone_api.Mappers
             _conditionsMapper = conditionsMapper;
             _editionsMapper = editionsMapper;
         }
+
         public Product Map(ProductRequest productRequest)
         {
             return new Product
@@ -22,6 +23,7 @@ namespace gamezone_api.Mappers
                 Name = productRequest.Name,
                 Description = productRequest.Description,
                 ReleaseDate = productRequest.ReleaseDate == null ? null : productRequest.ReleaseDate.Value.ToUniversalTime(),
+                ProductVariants = Map(productRequest.ProductVariantRequests.ToList())
             };
         }
 
@@ -35,8 +37,40 @@ namespace gamezone_api.Mappers
                 Description = product.Description,
                 ReleaseDate = product.ReleaseDate,
                 CreateDate = product.CreateDate,
-                UpdateDate = product.UpdateDate
+                UpdateDate = product.UpdateDate,
+                ProductVariantResponses = Map(product.ProductVariants.ToList())
             };
+        }
+
+        public ProductVariant Map(ProductVariantRequest productVariantRequest)
+        {
+            return new ProductVariant
+            {
+                Price = productVariantRequest.Price,
+                ConditionId = productVariantRequest.ConditionId,
+                EditionId = productVariantRequest.EditionId,
+            };
+        }
+
+        public List<ProductVariant> Map(List<ProductVariantRequest> productVariantRequests)
+        {
+            return productVariantRequests.ConvertAll<ProductVariant>((pvr) => Map(pvr));
+        }
+
+        public ProductVariantResponse Map(ProductVariant productVariant)
+        {
+            return new ProductVariantResponse
+            {
+                Id = productVariant.Id,
+                Price = productVariant.Price,
+                Condition = _conditionsMapper.Map(productVariant.Condition),
+                Edition = _editionsMapper.Map(productVariant.Edition),
+            };
+        }
+
+        public List<ProductVariantResponse> Map(List<ProductVariant> productVariants)
+        {
+            return productVariants.ConvertAll<ProductVariantResponse>((pv) => Map(pv));
         }
     }
 }

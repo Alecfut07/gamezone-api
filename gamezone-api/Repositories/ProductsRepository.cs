@@ -22,6 +22,8 @@ namespace gamezone_api.Repositories
 		public async Task<IEnumerable<ProductResponse>> GetProducts()
 		{
             var products = await context.Products
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .ToListAsync();
 
             var productsResponse = products.ConvertAll<ProductResponse>((p) => productsMapper.Map(p));
@@ -31,6 +33,8 @@ namespace gamezone_api.Repositories
         public async Task<ProductResponse?> GetProductById(long id)
         {
             var product = await context.Products
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .SingleOrDefaultAsync(p => p.Id == id);
 
             var productResponse = productsMapper.Map(product);
@@ -92,6 +96,8 @@ namespace gamezone_api.Repositories
             await context.SaveChangesAsync();
 
             var product = await context.Products
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .SingleOrDefaultAsync(p => p.Id == newProduct.Id);
 
             var productResponse = productsMapper.Map(product);
@@ -111,6 +117,7 @@ namespace gamezone_api.Repositories
                         .SetProperty((p) => p.Description, productRequest.Description)
                         .SetProperty((p) => p.UpdateDate, DateTime.UtcNow)
                         );
+
             if (result > 0)
             {
                 var updatedProduct = await context.Products

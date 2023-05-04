@@ -20,12 +20,12 @@ public class ProductsController : ControllerBase
     }
 
     // GET: /products
-    //[HttpGet]
-    //public async Task<ActionResult<ProductResponse>> GetProducts()
-    //{
-    //    var products = await productService.GetProducts();
-    //    return Ok(products);
-    //}
+    [HttpGet]
+    public async Task<ActionResult<ProductResponse>> GetProducts()
+    {
+        var products = await productService.GetProducts();
+        return Ok(products);
+    }
 
     // GET /products/id
     [HttpGet("{id}")]
@@ -40,28 +40,28 @@ public class ProductsController : ControllerBase
     }
 
     // GET /products?pagenumber=1&pagesize=10
-    [HttpGet]
-    public async Task<ActionResult<List<ProductResponse>>> GetProductsByPaging([FromQuery] ProductParameters productParameters)
-    {
-        var products = await productService.GetProductsByPaging(productParameters);
-        if (products is PagedList<ProductResponse>)
-        {
-            var paginatedProducts = products as PagedList<ProductResponse>;
-            var metadata = new
-            {
-                paginatedProducts.TotalCount,
-                paginatedProducts.PageSize,
-                paginatedProducts.CurrentPage,
-                paginatedProducts.TotalPages,
-                paginatedProducts.HasPrevious,
-                paginatedProducts.HasNext,
-            };
+    //[HttpGet]
+    //public async Task<ActionResult<List<ProductResponse>>> GetProductsByPaging([FromQuery] ProductParameters productParameters)
+    //{
+    //    var products = await productService.GetProductsByPaging(productParameters);
+    //    if (products is PagedList<ProductResponse>)
+    //    {
+    //        var paginatedProducts = products as PagedList<ProductResponse>;
+    //        var metadata = new
+    //        {
+    //            paginatedProducts.TotalCount,
+    //            paginatedProducts.PageSize,
+    //            paginatedProducts.CurrentPage,
+    //            paginatedProducts.TotalPages,
+    //            paginatedProducts.HasPrevious,
+    //            paginatedProducts.HasNext,
+    //        };
 
-            HttpContext.Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
-        }
+    //        HttpContext.Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+    //    }
 
-        return Ok(products);
-    }
+    //    return Ok(products);
+    //}
 
     [HttpGet]
     [Route("Search")]
