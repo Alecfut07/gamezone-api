@@ -6,6 +6,7 @@ using gamezone_api.Models;
 using gamezone_api.Repositories;
 using gamezone_api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -14,7 +15,6 @@ using Newtonsoft.Json.Converters;
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 builder.Services.AddCors(options =>
 {
@@ -92,8 +92,14 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
     });
+builder.Services.AddHttpLogging(logging =>
+{
+    logging.LoggingFields = HttpLoggingFields.All;
+});
 
 var app = builder.Build();
+
+app.UseHttpLogging();
 
 app.UseRouting();
 
