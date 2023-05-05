@@ -5,6 +5,8 @@ namespace gamezone_api.Networking
 {
     public class ProductVariantRequest
 	{
+        public long Id { get; set; }
+
 		[Required]
 		public decimal Price { get; set; }
 

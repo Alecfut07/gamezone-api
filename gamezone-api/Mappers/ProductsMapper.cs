@@ -15,10 +15,11 @@ namespace gamezone_api.Mappers
             _editionsMapper = editionsMapper;
         }
 
-        public Product Map(ProductRequest productRequest)
+        public Product Map(ProductRequest productRequest, long id = 0)
         {
             return new Product
             {
+                Id = id,
                 ImageURL = productRequest.ImageURL,
                 Name = productRequest.Name,
                 Description = productRequest.Description,
@@ -46,6 +47,7 @@ namespace gamezone_api.Mappers
         {
             return new ProductVariant
             {
+                Id = productVariantRequest.Id,
                 Price = productVariantRequest.Price,
                 ConditionId = productVariantRequest.ConditionId,
                 EditionId = productVariantRequest.EditionId,

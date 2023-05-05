@@ -111,29 +111,64 @@ namespace gamezone_api.Repositories
 
         public async Task<ProductResponse?> UpdateProduct(long id, ProductRequest productRequest)
         {
-            var result = await context.Products
-                .Where((p) => p.Id == id)
-                .ExecuteUpdateAsync((prod) =>
-                    prod
-                        .SetProperty((p) => p.ImageURL, productRequest.ImageURL)
-                        .SetProperty((p) => p.Name, productRequest.Name)
-                        .SetProperty((p) => p.ReleaseDate, productRequest.ReleaseDate)
-                        .SetProperty((p) => p.Description, productRequest.Description)
-                        .SetProperty((p) => p.UpdateDate, DateTime.UtcNow)
-                        );
-
-            if (result > 0)
-            {
-                var updatedProduct = await context.Products
+            var product = await context.Products
+                    .Include(p => p.ProductVariants)
                     .SingleAsync(p => p.Id == id);
+            if (product != null)
+            {
+                product.Name = productRequest.Name;
+                product.Description = productRequest.Description;
+                product.ImageURL = productRequest.ImageURL;
+                product.ReleaseDate = productRequest.ReleaseDate;
+                product.UpdateDate = DateTime.UtcNow;
+
+                var incomingProductVariants = productsMapper.Map(productRequest.ProductVariantRequests.ToList());
+                product.ProductVariants
+                    .Where((pv) => !incomingProductVariants.Contains(pv))
+                    .ToList()
+                    .ForEach((pv) => context.Entry(pv).State = EntityState.Deleted);
+
+                product.ProductVariants = incomingProductVariants;
+
+                await context.SaveChangesAsync();
+
+                var updatedProduct = await context.Products
+                   .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
+                   .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
+                   .SingleAsync(p => p.Id == product.Id);
 
                 var productResponse = productsMapper.Map(updatedProduct);
+
                 return productResponse;
             }
             else
             {
                 return null;
             }
+
+            //var result = await context.Products
+            //    .Where((p) => p.Id == id)
+            //    .ExecuteUpdateAsync((prod) =>
+            //        prod
+            //            .SetProperty((p) => p.ImageURL, productRequest.ImageURL)
+            //            .SetProperty((p) => p.Name, productRequest.Name)
+            //            .SetProperty((p) => p.ReleaseDate, productRequest.ReleaseDate)
+            //            .SetProperty((p) => p.Description, productRequest.Description)
+            //            .SetProperty((p) => p.UpdateDate, DateTime.UtcNow)
+            //            );
+
+            //if (result > 0)
+            //{
+            //    var updatedProduct = await context.Products
+            //        .SingleAsync(p => p.Id == id);
+
+            //    var productResponse = productsMapper.Map(updatedProduct);
+            //    return productResponse;
+            //}
+            //else
+            //{
+            //    return null;
+            //}
         }
 
         public async Task DeleteProduct(long id)
