@@ -17,6 +17,8 @@ namespace gamezone_api
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Address> Addresses { get; set; }
+
         public DbSet<Publisher> Publishers { get; set; }
 
         public DbSet<VideoGame> VideoGames { get; set; }
@@ -101,15 +103,51 @@ namespace gamezone_api
 
                 user.HasKey(u => u.Id);
 
+                user.Property(u => u.FirstName).IsRequired(false);
+
+                user.Property(u => u.LastName).IsRequired(false);
+
                 user.Property(u => u.Email).IsRequired().HasMaxLength(150);
 
                 user.HasIndex(u => u.Email).IsUnique();
 
                 user.Property(u => u.Password).IsRequired();
 
+                user.Property(u => u.Phone).IsRequired(false).HasMaxLength(20);
+
+                user.HasIndex(u => u.Phone).IsUnique();
+
+                user.Property(u => u.Birthday).IsRequired(false);
+
+                user.HasOne(u => u.Address);
+
                 user.Property(u => u.CreateDate).IsRequired();
 
                 user.Property(u => u.UpdateDate).IsRequired();
+
+                user.HasData(UsersSeed.InitData());
+            });
+
+            // ADDRESSES
+            modelBuilder.Entity<Address>(address =>
+            {
+                address.ToTable("addresses");
+
+                address.HasKey(a => a.Id);
+
+                address.Property(a => a.Line1).IsRequired().HasMaxLength(50);
+
+                address.Property(a => a.Line2).IsRequired(false).HasMaxLength(50);
+
+                address.Property(a => a.ZipCode).IsRequired().HasMaxLength(8);
+
+                address.Property(a => a.State).IsRequired().HasMaxLength(50);
+
+                address.Property(a => a.City).IsRequired().HasMaxLength(50);
+
+                address.Property(a => a.Country).IsRequired().HasMaxLength(50);
+
+                address.HasData(AddressesSeed.InitData());
             });
 
             // PUBLISHERS
