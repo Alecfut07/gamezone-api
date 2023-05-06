@@ -103,9 +103,9 @@ namespace gamezone_api
 
                 user.HasKey(u => u.Id);
 
-                user.Property(u => u.FirstName).IsRequired(false);
+                user.Property(u => u.FirstName).IsRequired(false).HasMaxLength(50);
 
-                user.Property(u => u.LastName).IsRequired(false);
+                user.Property(u => u.LastName).IsRequired(false).HasMaxLength(50);
 
                 user.Property(u => u.Email).IsRequired().HasMaxLength(150);
 

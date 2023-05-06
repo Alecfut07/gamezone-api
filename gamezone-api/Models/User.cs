@@ -25,7 +25,7 @@ namespace gamezone_api.Models
 		public string Phone { get; set; }
 
 		[Column("birthday")]
-		public DateTime Birthday { get; set; }
+		public DateTime? Birthday { get; set; }
 
 		[ForeignKey("address_id")]
 		[Column("address_id")]
