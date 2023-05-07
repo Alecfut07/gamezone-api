@@ -17,12 +17,10 @@ namespace gamezone_api.Networking
 
 		public string Phone { get; set; }
 
-		public DateTime? Birthday { get; set; }
+		public DateTime? Birthdate { get; set; }
 
-        [JsonPropertyName("address")]
-        public AddressResponse AddressResponse { get; set; }
-
-        public string Role { get; set; }
+        //[JsonPropertyName("address")]
+        //public AddressResponse AddressResponse { get; set; }
 
         [JsonPropertyName("create_date")]
         public DateTime CreateDate { get; set; }

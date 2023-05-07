@@ -24,7 +24,7 @@ namespace gamezone_api.Mappers
 				LastName = user.LastName,
 				Email = user.Email,
 				Phone = user.Phone,
-				Birthday = user.Birthdate,
+				Birthdate = user.Birthdate,
 				CreateDate = user.CreateDate,
 				UpdateDate = user.UpdateDate
 			};

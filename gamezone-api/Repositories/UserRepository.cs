@@ -36,7 +36,7 @@ namespace gamezone_api.Repositories
 						.SetProperty((user) => user.LastName, userRequest.LastName)
 						.SetProperty((user) => user.Email, userRequest.Email)
 						.SetProperty((user) => user.Phone, userRequest.Phone)
-						.SetProperty((user) => user.Birthdate, userRequest.Birthday)
+						.SetProperty((user) => user.Birthdate, userRequest.Birthdate)
 						);
 			
 

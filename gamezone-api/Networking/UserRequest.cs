@@ -20,9 +20,7 @@ namespace gamezone_api.Networking
 
         public string Phone { get; set; }
 
-        public DateTime? Birthday { get; set; }
-
-        public string Role { get; set; }
+        public DateTime? Birthdate { get; set; }
     }
 }
 
