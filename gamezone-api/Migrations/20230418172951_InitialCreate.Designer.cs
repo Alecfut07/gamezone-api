@@ -63,28 +63,6 @@ namespace gamezone_api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("products", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            CreateDate = new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3610),
-                            Description = "PlayStation 5 Console",
-                            Name = "PS5",
-                            Price = 500m,
-                            ReleaseDate = new DateTime(2020, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3660)
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            CreateDate = new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3660),
-                            Description = "Nintendo Switch Console",
-                            Name = "Nintendo Switch",
-                            Price = 300m,
-                            ReleaseDate = new DateTime(2017, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 18, 11, 29, 51, 52, DateTimeKind.Local).AddTicks(3670)
-                        });
                 });
 #pragma warning restore 612, 618
         }

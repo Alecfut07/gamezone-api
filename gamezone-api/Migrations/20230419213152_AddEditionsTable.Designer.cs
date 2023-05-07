@@ -117,32 +117,6 @@ namespace gamezone_api.Migrations
                     b.HasIndex("EditionId");
 
                     b.ToTable("products", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 19, 15, 31, 52, 188, DateTimeKind.Local).AddTicks(5650),
-                            Description = "PlayStation 5 Console",
-                            EditionId = 0,
-                            Name = "PS5",
-                            Price = 500m,
-                            ReleaseDate = new DateTime(2020, 11, 19, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 19, 15, 31, 52, 188, DateTimeKind.Local).AddTicks(5670)
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            ConditionId = 0,
-                            CreateDate = new DateTime(2023, 4, 19, 15, 31, 52, 188, DateTimeKind.Local).AddTicks(5670),
-                            Description = "Nintendo Switch Console",
-                            EditionId = 0,
-                            Name = "Nintendo Switch",
-                            Price = 300m,
-                            ReleaseDate = new DateTime(2017, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 4, 19, 15, 31, 52, 188, DateTimeKind.Local).AddTicks(5680)
-                        });
                 });
 
             modelBuilder.Entity("gamezone_api.Models.Product", b =>
