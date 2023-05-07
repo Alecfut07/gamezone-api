@@ -49,7 +49,7 @@ namespace gamezone_api.Services
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
                 },
-                expires: DateTime.Now.AddMinutes(6),
+                expires: DateTime.Now.AddDays(1),
                 signingCredentials: signinCredentials);
             var tokenString = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
 
