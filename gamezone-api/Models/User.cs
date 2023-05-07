@@ -25,14 +25,11 @@ namespace gamezone_api.Models
 		public string Phone { get; set; }
 
 		[Column("birthday")]
-		public DateTime? Birthday { get; set; }
+		public DateTime? Birthdate { get; set; }
 
 		[ForeignKey("address_id")]
 		[Column("address_id")]
-		public long AddressId { get; set; }
-
-		[Column("role")]
-		public string Role { get; set; }
+		public long? AddressId { get; set; }
 
 		[Column("create_date")]
 		public DateTime CreateDate { get; set; }
@@ -40,7 +37,7 @@ namespace gamezone_api.Models
 		[Column("update_date")]
 		public DateTime UpdateDate { get; set; }
 
-		public virtual Address Address { get; set; }
+		public Address? Address { get; set; }
 	}
 }
 

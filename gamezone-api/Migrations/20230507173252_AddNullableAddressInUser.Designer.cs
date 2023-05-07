@@ -12,8 +12,8 @@ using gamezone_api;
 namespace gamezone_api.Migrations
 {
     [DbContext(typeof(GamezoneContext))]
-    [Migration("20230504161430_AddProductVariantsSeed")]
-    partial class AddProductVariantsSeed
+    [Migration("20230507173252_AddNullableAddressInUser")]
+    partial class AddNullableAddressInUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,107 @@ namespace gamezone_api.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("gamezone_api.Models.Address", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("city");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("country");
+
+                    b.Property<string>("Line1")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("line_1");
+
+                    b.Property<string>("Line2")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("line_2");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("state");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)")
+                        .HasColumnName("zip_code");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("addresses", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            City = "Denver",
+                            Country = "United States",
+                            Line1 = "7700 S Broadway, Littleton",
+                            Line2 = "",
+                            State = "CO",
+                            ZipCode = "80122"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            City = "Denver",
+                            Country = "United States",
+                            Line1 = "5460 S Broadway, Englewood",
+                            Line2 = "",
+                            State = "CO",
+                            ZipCode = "80113"
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            City = "San Diego",
+                            Country = "United States",
+                            Line1 = "435 H St, Chula Vista",
+                            Line2 = "",
+                            State = "CA",
+                            ZipCode = "91910"
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            City = "San Diego",
+                            Country = "United States",
+                            Line1 = "500 Hotel Cir N, San Diego",
+                            Line2 = "Room 10",
+                            State = "CA",
+                            ZipCode = "92108"
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            City = "San Diego",
+                            Country = "United States",
+                            Line1 = "5998 Alcala Park Way, San Diego",
+                            Line2 = "",
+                            State = "CA",
+                            ZipCode = "92110"
+                        });
+                });
 
             modelBuilder.Entity("gamezone_api.Models.Condition", b =>
                 {
@@ -109,276 +210,276 @@ namespace gamezone_api.Migrations
                         new
                         {
                             Id = 1L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3780),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(4930),
                             Description = "Nintendo 64 Game",
                             Name = "The Legend of Zelda: Ocarina of Time",
                             ReleaseDate = new DateTime(1998, 11, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3800)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5020)
                         },
                         new
                         {
                             Id = 2L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3800),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5020),
                             Description = "PlayStation 1 Game",
                             Name = "Tony Hawk's Pro Skater 2",
                             ReleaseDate = new DateTime(2000, 9, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3810)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5030)
                         },
                         new
                         {
                             Id = 3L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3810),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5030),
                             Description = "PlayStation 3 Game",
                             Name = "Grand Theft Auto 4",
                             ReleaseDate = new DateTime(2008, 4, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3810)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5030)
                         },
                         new
                         {
                             Id = 4L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3810),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5030),
                             Description = "SEGA Dreamcast Game",
                             Name = "Soul Calibur",
                             ReleaseDate = new DateTime(1999, 9, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3810)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5030)
                         },
                         new
                         {
                             Id = 5L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3820),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5040),
                             Description = "Nintendo Wii Game",
                             Name = "Super Mario Galaxy",
                             ReleaseDate = new DateTime(2007, 11, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3820)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5040)
                         },
                         new
                         {
                             Id = 6L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3820),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5040),
                             Description = "Nintendo Wii Game",
                             Name = "Super Mario Galaxy 2",
                             ReleaseDate = new DateTime(2010, 5, 23, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3820)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5040)
                         },
                         new
                         {
                             Id = 7L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3830),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5040),
                             Description = "Xbox One Game",
                             Name = "Read Dead Redemption 2",
                             ReleaseDate = new DateTime(2018, 10, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3830)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5050)
                         },
                         new
                         {
                             Id = 8L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3830),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5050),
                             Description = "Xbox One Game",
                             Name = "Grand Theft Auto 5",
                             ReleaseDate = new DateTime(2014, 11, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3830)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5050)
                         },
                         new
                         {
                             Id = 9L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3830),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5050),
                             Description = "PC Game",
                             Name = "Disco Elysium: The Final Cut",
                             ReleaseDate = new DateTime(2021, 3, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3830)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5050)
                         },
                         new
                         {
                             Id = 10L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3840),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5060),
                             Description = "Nintendo Switch Game",
                             Name = "The Legend of Zelda: Breath of the Wild",
                             ReleaseDate = new DateTime(2017, 3, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3840)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5060)
                         },
                         new
                         {
                             Id = 11L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3840),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5060),
                             Description = "Nintendo 64 Game",
                             Name = "Perfect Dark",
                             ReleaseDate = new DateTime(2000, 5, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3840)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5060)
                         },
                         new
                         {
                             Id = 12L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3850),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5060),
                             Description = "Nintendo Gamecube Game",
                             Name = "Metroid Prime",
                             ReleaseDate = new DateTime(2002, 11, 17, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3850)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5060)
                         },
                         new
                         {
                             Id = 13L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3850),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5070),
                             Description = "Nintendo Switch Game",
                             Name = "Super Mario Odyssey",
                             ReleaseDate = new DateTime(2017, 10, 27, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3850)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5070)
                         },
                         new
                         {
                             Id = 14L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3850),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5070),
                             Description = "Nintendo Switch Game",
                             Name = "Halo: Combat Evolved",
                             ReleaseDate = new DateTime(2001, 11, 14, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3850)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5070)
                         },
                         new
                         {
                             Id = 15L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3860),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5080),
                             Description = "SEGA Dreamcast",
                             Name = "NFL 2K1",
                             ReleaseDate = new DateTime(2000, 9, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3860)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5080)
                         },
                         new
                         {
                             Id = 16L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3860),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5080),
                             Description = "PC Game",
                             Name = "Half-Life 2",
                             ReleaseDate = new DateTime(2004, 11, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3860)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5080)
                         },
                         new
                         {
                             Id = 17L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3860),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5080),
                             Description = "Xbox 360 Game",
                             Name = "BioSchock",
                             ReleaseDate = new DateTime(2007, 8, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3870)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5080)
                         },
                         new
                         {
                             Id = 18L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3870),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5090),
                             Description = "Nintendo 64 Game",
                             Name = "GoldenEye 007",
                             ReleaseDate = new DateTime(1997, 8, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3870)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5090)
                         },
                         new
                         {
                             Id = 19L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3870),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5090),
                             Description = "PlayStation 3 Game",
                             Name = "Uncharted 2: Among Thieves",
                             ReleaseDate = new DateTime(2009, 10, 13, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3870)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5090)
                         },
                         new
                         {
                             Id = 20L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3880),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5090),
                             Description = "Nintendo Gamecube Game",
                             Name = "Resident Evil 4",
                             ReleaseDate = new DateTime(2005, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3880)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5100)
                         },
                         new
                         {
                             Id = 21L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3880),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5100),
                             Description = "PlayStation 3 Game",
                             Name = "Batman: Arkham City",
                             ReleaseDate = new DateTime(2011, 10, 18, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3880)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5100)
                         },
                         new
                         {
                             Id = 22L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3890),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5100),
                             Description = "PlayStation 1 Game",
                             Name = "Tekken 3",
                             ReleaseDate = new DateTime(1998, 4, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3890)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5100)
                         },
                         new
                         {
                             Id = 23L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3890),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5110),
                             Description = "Xbox Series X Game",
                             Name = "Elden Ring",
                             ReleaseDate = new DateTime(2022, 2, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3890)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5110)
                         },
                         new
                         {
                             Id = 24L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3890),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5110),
                             Description = "Xbox 360 Game",
                             Name = "Mass Effect 2",
                             ReleaseDate = new DateTime(2010, 1, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3890)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5110)
                         },
                         new
                         {
                             Id = 25L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3900),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5110),
                             Description = "Nintendo Gamecube Game",
                             Name = "The Legend of Zelda: Twilight Princess",
                             ReleaseDate = new DateTime(2006, 12, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3900)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5120)
                         },
                         new
                         {
                             Id = 26L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3900),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5120),
                             Description = "Xbox 360 Game",
                             Name = "The Elder Scrolls 5: Skyrim",
                             ReleaseDate = new DateTime(2011, 11, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3900)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5120)
                         },
                         new
                         {
                             Id = 27L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3900),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5120),
                             Description = "Nintendo Gamecube Game",
                             Name = "The Legend of Zelda: The Wind Waker",
                             ReleaseDate = new DateTime(2003, 3, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3910)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5120)
                         },
                         new
                         {
                             Id = 28L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3910),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5130),
                             Description = "PlayStation 1 Game",
                             Name = "Gran Turismo",
                             ReleaseDate = new DateTime(1998, 4, 30, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3910)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5130)
                         },
                         new
                         {
                             Id = 29L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3910),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5130),
                             Description = "PlayStation 2 Game",
                             Name = "Metal Gear Solid 2: Sons of Liberty",
                             ReleaseDate = new DateTime(2001, 11, 12, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3910)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5130)
                         },
                         new
                         {
                             Id = 30L,
-                            CreateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3920),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5130),
                             Description = "Nintendo Switch Game",
                             Name = "Persona 5 Royal",
                             ReleaseDate = new DateTime(2022, 10, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            UpdateDate = new DateTime(2023, 5, 4, 10, 14, 30, 915, DateTimeKind.Local).AddTicks(3920)
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(5130)
                         });
                 });
 
-            modelBuilder.Entity("gamezone_api.Models.ProductVariants", b =>
+            modelBuilder.Entity("gamezone_api.Models.ProductVariant", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -702,6 +803,14 @@ namespace gamezone_api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
+                    b.Property<long>("AddressId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("address_id");
+
+                    b.Property<DateTime?>("Birthday")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("birthday");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2")
                         .HasColumnName("create_date");
@@ -712,10 +821,30 @@ namespace gamezone_api.Migrations
                         .HasColumnType("nvarchar(150)")
                         .HasColumnName("email");
 
+                    b.Property<string>("FirstName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("first_name");
+
+                    b.Property<string>("LastName")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)")
+                        .HasColumnName("last_name");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("encrypted_password");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("phone");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("role");
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2")
@@ -723,10 +852,88 @@ namespace gamezone_api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressId");
+
                     b.HasIndex("Email")
                         .IsUnique();
 
+                    b.HasIndex("Phone")
+                        .IsUnique()
+                        .HasFilter("[phone] IS NOT NULL");
+
                     b.ToTable("users", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            AddressId = 1L,
+                            Birthday = new DateTime(2000, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(7220),
+                            Email = "alec@gmail.com",
+                            FirstName = "Alec",
+                            LastName = "Ortega",
+                            Password = "123456",
+                            Phone = "(664)329-1243",
+                            Role = "admin",
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(7230)
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            AddressId = 2L,
+                            Birthday = new DateTime(1990, 6, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(7230),
+                            Email = "alexis@gmail.com",
+                            FirstName = "Alexis",
+                            LastName = "Ortega",
+                            Password = "123456",
+                            Phone = "(664)937-3897",
+                            Role = "admin",
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(7240)
+                        },
+                        new
+                        {
+                            Id = 3L,
+                            AddressId = 3L,
+                            Birthday = new DateTime(1988, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(7240),
+                            Email = "armando@gmail.com",
+                            FirstName = "Armando",
+                            LastName = "Ortega",
+                            Password = "123456",
+                            Phone = "(664)467-2145",
+                            Role = "user",
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(7240)
+                        },
+                        new
+                        {
+                            Id = 4L,
+                            AddressId = 4L,
+                            Birthday = new DateTime(1952, 8, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(7240),
+                            Email = "aop@gmail.com",
+                            FirstName = "Armando",
+                            LastName = "Ortega Partida",
+                            Password = "123456",
+                            Phone = "(664)894-4378",
+                            Role = "user",
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(7240)
+                        },
+                        new
+                        {
+                            Id = 5L,
+                            AddressId = 5L,
+                            Birthday = new DateTime(1963, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(7250),
+                            Email = "patricia@gmail.com",
+                            FirstName = "Patricia",
+                            LastName = "Cisneros Mayoral",
+                            Password = "123456",
+                            Phone = "(664)399-1289",
+                            Role = "user",
+                            UpdateDate = new DateTime(2023, 5, 7, 11, 32, 52, 61, DateTimeKind.Local).AddTicks(7250)
+                        });
                 });
 
             modelBuilder.Entity("gamezone_api.Models.VideoGame", b =>
@@ -755,7 +962,7 @@ namespace gamezone_api.Migrations
                     b.ToTable("videogames", (string)null);
                 });
 
-            modelBuilder.Entity("gamezone_api.Models.ProductVariants", b =>
+            modelBuilder.Entity("gamezone_api.Models.ProductVariant", b =>
                 {
                     b.HasOne("gamezone_api.Models.Condition", "Condition")
                         .WithMany()
@@ -770,7 +977,7 @@ namespace gamezone_api.Migrations
                         .IsRequired();
 
                     b.HasOne("gamezone_api.Models.Product", "Product")
-                        .WithMany()
+                        .WithMany("ProductVariants")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -780,6 +987,17 @@ namespace gamezone_api.Migrations
                     b.Navigation("Edition");
 
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("gamezone_api.Models.User", b =>
+                {
+                    b.HasOne("gamezone_api.Models.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
                 });
 
             modelBuilder.Entity("gamezone_api.Models.VideoGame", b =>
@@ -799,6 +1017,11 @@ namespace gamezone_api.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("Publisher");
+                });
+
+            modelBuilder.Entity("gamezone_api.Models.Product", b =>
+                {
+                    b.Navigation("ProductVariants");
                 });
 #pragma warning restore 612, 618
         }

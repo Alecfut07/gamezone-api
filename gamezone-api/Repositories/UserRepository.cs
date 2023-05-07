@@ -1,5 +1,6 @@
 ﻿using System;
 using gamezone_api.Mappers;
+using gamezone_api.Models;
 using gamezone_api.Networking;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,12 +32,22 @@ namespace gamezone_api.Repositories
 				.Where((u) => u.Id == id)
 				.ExecuteUpdateAsync((user) =>
 					user
+						.SetProperty((user) => user.FirstName, userRequest.FirstName)
+						.SetProperty((user) => user.LastName, userRequest.LastName)
 						.SetProperty((user) => user.Email, userRequest.Email)
+						.SetProperty((user) => user.Phone, userRequest.Phone)
+						.SetProperty((user) => user.Birthdate, userRequest.Birthday)
 						);
+			
 
 			if (result > 0)
 			{
 				var updatedUser = await context.Users.FindAsync(id);
+				//if (updatedUser.Address == null)
+				//{
+				//	var address = new Address();
+				//	address.City = userRequest.Address.city;
+				//}
 
 				var userResponse = usersMapper.Map(updatedUser);
 				return userResponse;

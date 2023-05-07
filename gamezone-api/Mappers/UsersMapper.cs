@@ -20,7 +20,13 @@ namespace gamezone_api.Mappers
 			return new UserResponse
 			{
 				Id = user.Id,
-				Email = user.Email
+				FirstName = user.FirstName,
+				LastName = user.LastName,
+				Email = user.Email,
+				Phone = user.Phone,
+				Birthday = user.Birthdate,
+				CreateDate = user.CreateDate,
+				UpdateDate = user.UpdateDate
 			};
 		}
 	}

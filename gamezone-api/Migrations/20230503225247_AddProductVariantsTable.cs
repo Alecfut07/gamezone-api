@@ -20,10 +20,6 @@ namespace gamezone_api.Migrations
                 table: "products");
 
             migrationBuilder.DropIndex(
-                name: "IX_videogames_product_id",
-                table: "videogames");
-
-            migrationBuilder.DropIndex(
                 name: "IX_products_condition_id",
                 table: "products");
 
@@ -74,13 +70,8 @@ namespace gamezone_api.Migrations
                         column: x => x.product_id,
                         principalTable: "products",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_videogames_product_id",
-                table: "videogames",
-                column: "product_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_product_variants_condition_id",
@@ -104,10 +95,6 @@ namespace gamezone_api.Migrations
             migrationBuilder.DropTable(
                 name: "product_variants");
 
-            migrationBuilder.DropIndex(
-                name: "IX_videogames_product_id",
-                table: "videogames");
-
             migrationBuilder.AddColumn<int>(
                 name: "condition_id",
                 table: "products",
@@ -128,12 +115,6 @@ namespace gamezone_api.Migrations
                 type: "decimal(18,2)",
                 nullable: false,
                 defaultValue: 0m);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_videogames_product_id",
-                table: "videogames",
-                column: "product_id",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_products_condition_id",

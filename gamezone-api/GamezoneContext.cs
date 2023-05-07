@@ -21,8 +21,6 @@ namespace gamezone_api
 
         public DbSet<Publisher> Publishers { get; set; }
 
-        public DbSet<VideoGame> VideoGames { get; set; }
-
         public GamezoneContext(DbContextOptions<GamezoneContext> options) : base(options)
         {
         }
@@ -53,7 +51,7 @@ namespace gamezone_api
 
                 product.Property(p => p.UpdateDate).IsRequired();
 
-                product.HasData(ProductsSeed.InitData());
+                //product.HasData(ProductsSeed.InitData());
             });
 
             // PRODUCT VARIANTS
@@ -71,7 +69,7 @@ namespace gamezone_api
 
                 productVariants.Property(pv => pv.Price).IsRequired();
 
-                productVariants.HasData(ProductVariantsSeed.InitData());
+                //productVariants.HasData(ProductVariantsSeed.InitData());
             });
 
             // CONDITIONS
@@ -117,7 +115,7 @@ namespace gamezone_api
 
                 user.HasIndex(u => u.Phone).IsUnique();
 
-                user.Property(u => u.Birthday).IsRequired(false);
+                user.Property(u => u.Birthdate).IsRequired(false);
 
                 user.HasOne(u => u.Address);
 
@@ -160,17 +158,6 @@ namespace gamezone_api
                 publisher.Property(p => p.Name).IsRequired().HasMaxLength(30);
 
                 publisher.HasData(PublishersSeed.InitData());
-            });
-
-            // VIDEOGAMES
-            modelBuilder.Entity<VideoGame>(videogame =>
-            {
-                videogame.ToTable("videogames");
-                videogame.HasKey(v => v.Id);
-
-                videogame.HasOne(v => v.Product);
-
-                videogame.HasOne(v => v.Publisher);
             });
         }
     }

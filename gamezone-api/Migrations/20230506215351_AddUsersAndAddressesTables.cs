@@ -47,13 +47,6 @@ namespace gamezone_api.Migrations
                 maxLength: 20,
                 nullable: true);
 
-            migrationBuilder.AddColumn<string>(
-                name: "role",
-                table: "users",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
-
             migrationBuilder.CreateTable(
                 name: "addresses",
                 columns: table => new
@@ -86,14 +79,14 @@ namespace gamezone_api.Migrations
 
             migrationBuilder.InsertData(
                 table: "users",
-                columns: new[] { "id", "address_id", "birthday", "create_date", "email", "first_name", "last_name", "encrypted_password", "phone", "role", "update_date" },
+                columns: new[] { "id", "address_id", "birthday", "create_date", "email", "first_name", "last_name", "encrypted_password", "phone", "update_date" },
                 values: new object[,]
                 {
-                    { 1L, 1L, new DateTime(2000, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7130), "alec@gmail.com", "Alec", "Ortega", "123456", "(664)329-1243", "admin", new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7140) },
-                    { 2L, 2L, new DateTime(1990, 6, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7140), "alexis@gmail.com", "Alexis", "Ortega", "123456", "(664)937-3897", "admin", new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7150) },
-                    { 3L, 3L, new DateTime(1988, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7150), "armando@gmail.com", "Armando", "Ortega", "123456", "(664)467-2145", "user", new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7150) },
-                    { 4L, 4L, new DateTime(1952, 8, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7150), "aop@gmail.com", "Armando", "Ortega Partida", "123456", "(664)894-4378", "user", new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7150) },
-                    { 5L, 5L, new DateTime(1963, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7160), "patricia@gmail.com", "Patricia", "Cisneros Mayoral", "123456", "(664)399-1289", "user", new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7160) }
+                    { 1L, 1L, new DateTime(2000, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7130), "alec@gmail.com", "Alec", "Ortega", "123456", "(664)329-1243", new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7140) },
+                    { 2L, 2L, new DateTime(1990, 6, 4, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7140), "alexis@gmail.com", "Alexis", "Ortega", "123456", "(664)937-3897", new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7150) },
+                    { 3L, 3L, new DateTime(1988, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7150), "armando@gmail.com", "Armando", "Ortega", "123456", "(664)467-2145", new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7150) },
+                    { 4L, 4L, new DateTime(1952, 8, 21, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7150), "aop@gmail.com", "Armando", "Ortega Partida", "123456", "(664)894-4378", new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7150) },
+                    { 5L, 5L, new DateTime(1963, 9, 15, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7160), "patricia@gmail.com", "Patricia", "Cisneros Mayoral", "123456", "(664)399-1289", new DateTime(2023, 5, 6, 15, 53, 51, 280, DateTimeKind.Local).AddTicks(7160) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -178,10 +171,6 @@ namespace gamezone_api.Migrations
 
             migrationBuilder.DropColumn(
                 name: "phone",
-                table: "users");
-
-            migrationBuilder.DropColumn(
-                name: "role",
                 table: "users");
         }
     }
