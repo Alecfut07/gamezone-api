@@ -11,13 +11,6 @@ namespace gamezone_api.Networking
         [JsonPropertyName("last_name")]
         public string LastName { get; set; }
 
-        [Required]
-		public string Email { get; set; }
-
-		[Required]
-		[StringLength(20, MinimumLength = 6, ErrorMessage = "The password is too short.")]
-		public string Password { get; set; }
-
         public string Phone { get; set; }
 
         public DateTime? Birthdate { get; set; }
