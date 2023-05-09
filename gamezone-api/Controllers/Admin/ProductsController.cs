@@ -48,8 +48,15 @@ namespace gamezone_api.Controllers.Admin
         [HttpPost("upload")]
         public async Task<ActionResult<ImageResponse?>> UploadImage([FromForm] ImageRequest imageRequest)
         {
-            var newImageUploaded = await productService.UploadImage(imageRequest);
-            return Ok(newImageUploaded);
+            try
+            {
+
+                var newImageUploaded = await productService.UploadImage(imageRequest);
+                return Ok(newImageUploaded);
+            } catch(ArgumentNullException error)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // PUT /products/id

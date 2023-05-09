@@ -128,7 +128,6 @@ namespace gamezone_api.Repositories
             {
                 product.Name = productRequest.Name;
                 product.Description = productRequest.Description;
-                product.ImageURL = productRequest.ImageURL;
                 product.ImageKey = productRequest.ImageKey;
                 product.ReleaseDate = productRequest.ReleaseDate;
                 product.UpdateDate = DateTime.UtcNow;

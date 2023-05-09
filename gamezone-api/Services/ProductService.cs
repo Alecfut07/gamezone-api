@@ -55,41 +55,48 @@ namespace gamezone_api.Services
         public async Task<ImageResponse?> UploadImage(ImageRequest imageRequest)
         {
             var file = imageRequest.Image;
-            var folderName = Path.Combine("Resources", "Images");
-            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-
-            try
+            if (file == null)
             {
-                if (!Directory.Exists(pathToSave))
-                {
-                    // Create the directory
-                    DirectoryInfo di = Directory.CreateDirectory(pathToSave);
-                }
+                throw new ArgumentNullException();
+            }
+            else
+            {
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
-                if (file.Length > 0)
+                try
                 {
-                    var uniqueFileName = Convert.ToString(Guid.NewGuid() + Path.GetExtension(file.FileName));
-                    var fullPathToSave = Path.Combine(pathToSave, uniqueFileName);
-                    using (var stream = new FileStream(fullPathToSave, FileMode.Create))
+                    if (!Directory.Exists(pathToSave))
                     {
-                        file.CopyTo(stream);
+                        // Create the directory
+                        DirectoryInfo di = Directory.CreateDirectory(pathToSave);
                     }
 
-                    var imageKey = Path.Combine("Images", uniqueFileName);
-                    ImageResponse response = new ImageResponse()
+                    if (file.Length > 0)
                     {
-                        ImageKey = imageKey
-                    };
-                    return response;
+                        var uniqueFileName = Convert.ToString(Guid.NewGuid() + Path.GetExtension(file.FileName));
+                        var fullPathToSave = Path.Combine(pathToSave, uniqueFileName);
+                        using (var stream = new FileStream(fullPathToSave, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                        }
+
+                        var imageKey = Path.Combine("Images", uniqueFileName);
+                        ImageResponse response = new ImageResponse()
+                        {
+                            ImageKey = imageKey
+                        };
+                        return response;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("The process failed: {0}", ex.ToString());
                 }
 
+                return null;
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("The process failed: {0}", ex.ToString());
-            }
-
-            return null;
         }
 
         public async Task<ProductResponse?> UpdateProduct(long id, ProductRequest product)

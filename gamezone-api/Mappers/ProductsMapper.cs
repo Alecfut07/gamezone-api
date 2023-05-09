@@ -23,7 +23,6 @@ namespace gamezone_api.Mappers
             return new Product
             {
                 Id = id,
-                ImageURL = productRequest.ImageURL,
                 ImageKey = productRequest.ImageKey,
                 Name = productRequest.Name,
                 Description = productRequest.Description,
