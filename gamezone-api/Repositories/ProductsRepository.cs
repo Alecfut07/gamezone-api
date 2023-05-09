@@ -109,6 +109,15 @@ namespace gamezone_api.Repositories
             return productResponse;
         }
 
+        //public async Task<ProductResponse?> UploadImage(long id, ProductRequest productRequest)
+        //{
+        //    var product = await context.Products
+        //        .Include(p => p.ProductVariants)
+        //        .SingleAsync(p => p.Id == id);
+
+
+        //}
+
         public async Task<ProductResponse?> UpdateProduct(long id, ProductRequest productRequest)
         {
             var product = await context.Products

@@ -12,6 +12,9 @@ namespace gamezone_api.Models
         [Column("image_url")]
         public string ImageURL { get; set; }
 
+        [Column("image_key")]
+        public string ImageKey { get; set; }
+
         [Column("name")]
         public string Name { get; set; }
 

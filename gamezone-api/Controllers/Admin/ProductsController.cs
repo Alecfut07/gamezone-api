@@ -5,6 +5,7 @@ using gamezone_api.Networking;
 using gamezone_api.Parameters;
 using gamezone_api.Helpers;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace gamezone_api.Controllers.Admin
 {
@@ -40,6 +41,25 @@ namespace gamezone_api.Controllers.Admin
                 var newProduct = await productService.SaveNewProduct(productRequest);
                 return Ok(newProduct);
             }
+        }
+
+        // POST: admin/products/upload
+        [HttpPost("/upload")]
+        public async Task<ActionResult<ImageResponse?>> UploadImage([FromForm] ImageRequest imageRequest)
+        {
+            //if (!ModelState.IsValid)
+            //{
+            //    return StatusCode(StatusCodes.Status500InternalServerError);
+            //}
+            //else
+            //{
+            //    var  = await productService.UploadImage(id, imageRequest);
+            //    return Ok(newProduct);
+            //}
+            //var file = Request.Form.Files[0];
+
+            var newImageUploaded = await productService.UploadImage(imageRequest);
+            return Ok(newImageUploaded);
         }
 
         // PUT /products/id

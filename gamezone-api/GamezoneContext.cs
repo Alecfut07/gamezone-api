@@ -41,6 +41,8 @@ namespace gamezone_api
 
                 product.Property(p => p.ImageURL).IsRequired(false).HasMaxLength(300);
 
+                product.Property(p => p.ImageKey).IsRequired(false);
+
                 product.Property(p => p.Name).IsRequired().HasMaxLength(150);
 
                 product.Property(p => p.ReleaseDate).IsRequired(false);
