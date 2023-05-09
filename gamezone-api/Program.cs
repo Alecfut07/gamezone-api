@@ -89,6 +89,8 @@ builder.Services.AddScoped<IEditionService, EditionService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPublisherService, PublisherService>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {

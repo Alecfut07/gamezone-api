@@ -7,7 +7,7 @@ namespace gamezone_api.Networking
         public long Id { get; set; }
 
         [JsonPropertyName("image_url")]
-        public string ImageURL { get; set; }
+        public string? ImageURL { get; set; }
 
         public string Name { get; set; }
 

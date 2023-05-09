@@ -123,11 +123,13 @@ namespace gamezone_api.Repositories
             var product = await context.Products
                     .Include(p => p.ProductVariants)
                     .SingleAsync(p => p.Id == id);
+
             if (product != null)
             {
                 product.Name = productRequest.Name;
                 product.Description = productRequest.Description;
                 product.ImageURL = productRequest.ImageURL;
+                product.ImageKey = productRequest.ImageKey;
                 product.ReleaseDate = productRequest.ReleaseDate;
                 product.UpdateDate = DateTime.UtcNow;
 

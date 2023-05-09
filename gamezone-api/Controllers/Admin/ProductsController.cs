@@ -38,26 +38,16 @@ namespace gamezone_api.Controllers.Admin
             }
             else
             {
+                string protocol = HttpContext.Request.Host.Host;
                 var newProduct = await productService.SaveNewProduct(productRequest);
                 return Ok(newProduct);
             }
         }
 
         // POST: admin/products/upload
-        [HttpPost("/upload")]
+        [HttpPost("upload")]
         public async Task<ActionResult<ImageResponse?>> UploadImage([FromForm] ImageRequest imageRequest)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return StatusCode(StatusCodes.Status500InternalServerError);
-            //}
-            //else
-            //{
-            //    var  = await productService.UploadImage(id, imageRequest);
-            //    return Ok(newProduct);
-            //}
-            //var file = Request.Form.Files[0];
-
             var newImageUploaded = await productService.UploadImage(imageRequest);
             return Ok(newImageUploaded);
         }
