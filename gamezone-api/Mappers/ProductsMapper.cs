@@ -40,10 +40,6 @@ namespace gamezone_api.Mappers
             }
             else
             {
-                //var httpProtocol = "https";
-                //var domain = "localhost";
-                //var portNumber = "7269";
-
                 string protocol = _httpContextAccessor.HttpContext.Request.Scheme;
                 string domain = _httpContextAccessor.HttpContext.Request.Host.Host;
                 int? portNumber = _httpContextAccessor.HttpContext.Request.Host.Port;
