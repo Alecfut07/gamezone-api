@@ -107,7 +107,7 @@ namespace gamezone_api.Migrations
                 column: "address_id",
                 principalTable: "addresses",
                 principalColumn: "id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.NoAction);
         }
 
         /// <inheritdoc />

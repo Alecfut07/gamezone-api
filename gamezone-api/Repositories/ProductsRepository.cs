@@ -191,8 +191,15 @@ namespace gamezone_api.Repositories
             }
             else
             {
-                context.Products.Remove(productToRemove);
-                await context.SaveChangesAsync();
+                try
+                {
+                    context.Products.Remove(productToRemove);
+                    await context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                }
             }
         }
 	}

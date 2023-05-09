@@ -58,19 +58,19 @@ namespace gamezone_api.Migrations
                         column: x => x.condition_id,
                         principalTable: "conditions",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_product_variants_editions_edition_id",
                         column: x => x.edition_id,
                         principalTable: "editions",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
                         name: "FK_product_variants_products_product_id",
                         column: x => x.product_id,
                         principalTable: "products",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
