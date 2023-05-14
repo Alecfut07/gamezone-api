@@ -8,6 +8,7 @@ using gamezone_api.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -62,8 +63,14 @@ builder.Services
         };
     });
 
+// REDIS SERVER CONNECTION
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:Redis");
+});
+
 // SQL SERVER CONNECTION
-builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration["ConnectionStrings:SQL_Server"]);
+builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration["DatabaseSettings:SQL_Server"]);
 
 // MAPPERS
 builder.Services.AddScoped<ProductsMapper>();
