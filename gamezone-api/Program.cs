@@ -13,6 +13,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using StackExchange.Redis;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -23,10 +24,11 @@ builder.Services.AddCors(options =>
         options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          //policy.WithOrigins("http://localhost:3000");
-                          policy.AllowAnyHeader()
+                          policy.WithOrigins("http://localhost:3000")
+                              .AllowAnyHeader()
                               .AllowAnyMethod()
-                              .AllowAnyOrigin()
+                              //.AllowAnyOrigin()
+                              .AllowCredentials()
                               .WithExposedHeaders("Authorization");
                       });
 });
@@ -64,10 +66,10 @@ builder.Services
     });
 
 // REDIS SERVER CONNECTION
-builder.Services.AddStackExchangeRedisCache(options =>
-{
-    options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:Redis");
-});
+//builder.Services.AddStackExchangeRedisCache(options =>
+//{
+//    options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:Redis");
+//});
 
 // SQL SERVER CONNECTION
 builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration["DatabaseSettings:SQL_Server"]);
@@ -98,6 +100,12 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPublisherService, PublisherService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+builder.Services.AddScoped<IDatabase>((serviceProvider) =>
+{
+    ConnectionMultiplexer connection = ConnectionMultiplexer.Connect("localhost");
+    return connection.GetDatabase();
+});
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -124,7 +132,7 @@ if (app.Environment.IsDevelopment())
         string.Join("\n", endpointSources.SelectMany(source => source.Endpoints)));
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 

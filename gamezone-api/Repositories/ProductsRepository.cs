@@ -5,6 +5,7 @@ using gamezone_api.Models;
 using gamezone_api.Networking;
 using gamezone_api.Parameters;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace gamezone_api.Repositories
 {
