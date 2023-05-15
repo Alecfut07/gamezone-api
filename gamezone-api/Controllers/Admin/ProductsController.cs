@@ -24,7 +24,6 @@ namespace gamezone_api.Controllers.Admin
         [HttpGet]
         public async Task<ActionResult<ProductResponse>> GetProducts()
         {
-            var value = HttpContext.Request.Cookies["name"];
             var products = await productService.GetProducts();
             return Ok(products);
         }

@@ -89,6 +89,7 @@ builder.Services.AddScoped<EditionsRepository>();
 builder.Services.AddScoped<AuthRepository>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<PublishersRepository>();
+builder.Services.AddScoped<CartsRepository>();
 
 // SERVICES
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -99,6 +100,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPublisherService, PublisherService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<ICartsService, CartService>();
 
 builder.Services.AddScoped<IDatabase>((serviceProvider) =>
 {

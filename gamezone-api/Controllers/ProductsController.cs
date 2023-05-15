@@ -6,7 +6,6 @@ using gamezone_api.Parameters;
 using gamezone_api.Helpers;
 using Newtonsoft.Json;
 using NuGet.ContentModel;
-using StackExchange.Redis;
 
 namespace gamezone_api.Controllers;
 
@@ -15,23 +14,10 @@ namespace gamezone_api.Controllers;
 public class ProductsController : ControllerBase
 {
     IProductService productService;
-    IDatabase _db;
 
-    public ProductsController(IProductService productService, IDatabase db)
+    public ProductsController(IProductService productService)
     {
         this.productService = productService;
-        _db = db;
-    }
-
-    [HttpGet]
-    [Route("Redis")]
-    public bool GetKeyFromRedis()
-    {
-        string expectedStringData = "Hello world";
-        _db.StringSet("key003", expectedStringData);
-        var dataFromCache = _db.StringGet("key003");
-        var redisValue = _db.StringGet("llave");
-        return true;
     }
 
     // GET /products/id
