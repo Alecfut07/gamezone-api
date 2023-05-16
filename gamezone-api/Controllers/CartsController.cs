@@ -78,6 +78,21 @@ namespace gamezone_api.Controllers
 			}
 			return NoContent();
 		}
+
+		[HttpDelete]
+		public async Task<IActionResult> RemoveItemInCart([FromBody] CartRequest cartRequest)
+		{
+			try
+			{
+				var uuid = HttpContext.Request.Cookies["uuid"];
+				await cartsService.RemoveItemInCart(uuid, cartRequest); 
+			}
+			catch (Exception ex)
+			{
+				return NotFound();
+			}
+			return NoContent();
+		}
 	}
 }
 

@@ -34,6 +34,11 @@ namespace gamezone_api.Services
 		{
 			await cartsRepository.RemoveAllItemsInCart(uuid);
 		}
+
+		public async Task RemoveItemInCart(string uuid, CartRequest cartRequest)
+		{
+			await cartsRepository.RemoveItemInCart(uuid, cartRequest);
+		}
 	}
 
 	public interface ICartsService
@@ -45,6 +50,8 @@ namespace gamezone_api.Services
 		Task UpdateQuantity(string uuid, CartRequest cartRequest);
 
 		Task RemoveAllItemsInCart(string uuid);
+
+		Task RemoveItemInCart(string uuid, CartRequest cartRequest);
 	}
 }
 

@@ -85,6 +85,12 @@ namespace gamezone_api.Repositories
 			//await _db.HashDeleteAsync(key, fieldsKeysToRemove);
 			await _db.KeyDeleteAsync(key);
 		}
-	}
+
+		public async Task RemoveItemInCart(string uuid, CartRequest cartRequest)
+		{
+			var key = new RedisKey($"cart:{uuid}");
+			await _db.HashDeleteAsync(key, $"product:{cartRequest.ProductId}");
+		}
+    }
 }
 
