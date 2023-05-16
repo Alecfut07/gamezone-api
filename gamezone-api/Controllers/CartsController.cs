@@ -65,12 +65,12 @@ namespace gamezone_api.Controllers
 
 		[HttpDelete]
 		[Route("remove")]
-		public async Task<IActionResult> RemoveItemInCart()
+		public async Task<IActionResult> RemoveAllItemsInCart()
 		{
 			try
 			{
 				var uuid = HttpContext.Request.Cookies["uuid"];
-				await cartsService.RemoveItemInCart(uuid);
+				await cartsService.RemoveAllItemsInCart(uuid);
 			}
 			catch (Exception ex)
 			{

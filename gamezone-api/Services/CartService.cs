@@ -30,9 +30,9 @@ namespace gamezone_api.Services
 			await cartsRepository.UpdateQuantity(uuid, cartRequest);
 		}
 
-		public async Task RemoveItemInCart(string uuid)
+		public async Task RemoveAllItemsInCart(string uuid)
 		{
-			await cartsRepository.RemoveItemInCart(uuid);
+			await cartsRepository.RemoveAllItemsInCart(uuid);
 		}
 	}
 
@@ -44,7 +44,7 @@ namespace gamezone_api.Services
 
 		Task UpdateQuantity(string uuid, CartRequest cartRequest);
 
-		Task RemoveItemInCart(string uuid);
+		Task RemoveAllItemsInCart(string uuid);
 	}
 }
 

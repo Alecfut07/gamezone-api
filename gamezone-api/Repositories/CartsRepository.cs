@@ -72,12 +72,12 @@ namespace gamezone_api.Repositories
 			var key = new RedisKey($"cart:{uuid}");
 			var fieldQuantity = new HashEntry[]
 			{
-				new HashEntry("product:quantity", cartRequest.Quantity),
+				new HashEntry($"product:{cartRequest.ProductId}", cartRequest.Quantity),
 			};
-            await _db.HashSetAsync(key, fieldQuantity);
+			await _db.HashSetAsync(key, fieldQuantity);
         }
 
-		public async Task RemoveItemInCart(string uuid)
+		public async Task RemoveAllItemsInCart(string uuid)
 		{
 			var key = new RedisKey($"cart:{uuid}");
 			//HashEntry[] fieldsToRemove = await _db.HashGetAllAsync(key);
