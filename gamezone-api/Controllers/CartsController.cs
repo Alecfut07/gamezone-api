@@ -17,18 +17,18 @@ namespace gamezone_api.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetCart()
+		public async Task<ActionResult<CartResponse>> GetCart()
 		{
 			try
 			{
 				var uuid = HttpContext.Request.Cookies["uuid"];
-				await cartsService.GetCart(uuid);
+				var cartResponse = await cartsService.GetCart(uuid);
+				return Ok(cartResponse);
 			}
 			catch (Exception ex)
 			{
 				return NotFound();
 			}
-			return NoContent();
 		}
 
 		[HttpPost]

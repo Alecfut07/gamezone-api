@@ -15,9 +15,9 @@ namespace gamezone_api.Services
 			this.cartsRepository = cartsRepository;
 		}
 
-		public async Task GetCart(string uuid)
+		public async Task<CartResponse> GetCart(string uuid)
 		{
-			await cartsRepository.GetCart(uuid);
+			return await cartsRepository.GetCart(uuid);
 		}
 
 		public async Task AddItemToCart(string uuid, CartRequest cartRequest)
@@ -38,7 +38,7 @@ namespace gamezone_api.Services
 
 	public interface ICartsService
 	{
-		Task GetCart(string uuid);
+		Task<CartResponse> GetCart(string uuid);
 
 		Task AddItemToCart(string uuid, CartRequest cartRequest);
 

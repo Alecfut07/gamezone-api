@@ -12,39 +12,35 @@ namespace gamezone_api.Repositories
 	{
 		private IDatabase _db;
 		private GamezoneContext context;
-		private ProductsMapper productsMapper;
+        private ProductsMapper productsMapper;
+        private CartsMapper cartsMapper;
 
-		public CartsRepository(GamezoneContext dbContext, IDatabase db, ProductsMapper productsMapper)
+        public CartsRepository(GamezoneContext dbContext, IDatabase db, ProductsMapper productsMapper, CartsMapper cartsMapper)
 		{
 			context = dbContext;
 			_db = db;
 			this.productsMapper = productsMapper;
+			this.cartsMapper = cartsMapper;
 		}
 
-		public async Task GetCart(string uuid)
+		public async Task<CartResponse> GetCart(string uuid)
 		{
 			var key = new RedisKey($"cart:{uuid}");
 			var cart = await _db.HashGetAllAsync(key);
 
-			var productEntries = cart.ToList().ConvertAll((c) => new RedisKey(c.Name)).ToArray();
-			var jsonProducts = _db.StringGet(productEntries);
-
-			//JsonSerializer.Deserialize<Product>(product.ToString());
-			var products = jsonProducts.ToList().ConvertAll((p) => JsonSerializer.Deserialize<Product>(p.ToString()));
-			//var cartResponse = new
-			//{
-			//	cart_id = key,
-			//	product_id = cart[0].Key,
-			//	quantity = cart[0].Value,
-			//	products = new[]
-			//	{
-			//		new
-			//		{
-
-			//		}
-			//	}
-			//};
-			Console.WriteLine();
+			var products = cart.ToList().ConvertAll((c) => {
+				var redisKey = new RedisKey(c.Name);
+                var jsonProduct = _db.StringGet(redisKey);
+                var productCacheEntry = JsonSerializer.Deserialize<ProductCacheEntry>(jsonProduct.ToString());
+				var productId = long.Parse(c.Name.ToString().Split(":").Last());
+				var quantity = int.Parse(c.Value);
+				return cartsMapper.Map(productId, quantity, productCacheEntry);
+            });
+			var cartResponse = new CartResponse
+			{
+				products = products
+            };
+			return cartResponse;
 		}
 
 		public async Task AddItemToCart(string uuid, CartRequest cartRequest)
@@ -60,19 +56,14 @@ namespace gamezone_api.Repositories
 				.SingleOrDefaultAsync(p => p.Id == cartRequest.ProductId);
 
 			var productKey = new RedisKey($"product:{cartRequest.ProductId}");
-
-			var anonymousProduct = new
-			{
+			var productCacheEntry = new ProductCacheEntry
+            {
 				Name = product.Name,
 				Price = (double)product.ProductVariants.First().Price
 			};
 
-			var productJson = JsonSerializer.Serialize(anonymousProduct);
+			var productJson = JsonSerializer.Serialize(productCacheEntry);
             await _db.StringSetAsync(productKey, productJson);
-			//var productFields = new HashEntry[] {
-			//	new HashEntry($"product:{cartRequest.ProductId}", "JSON")
-			//};
-            //await _db.HashSetAsync(key, productFields);
         }
 
 

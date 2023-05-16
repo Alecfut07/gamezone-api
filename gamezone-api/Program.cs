@@ -80,6 +80,7 @@ builder.Services.AddScoped<ConditionsMapper>();
 builder.Services.AddScoped<EditionsMapper>();
 builder.Services.AddScoped<UsersMapper>();
 builder.Services.AddScoped<PublishersMapper>();
+builder.Services.AddScoped<CartsMapper>();
 
 // REPOSITORIES
 builder.Services.AddScoped<ProductsRepository>();
