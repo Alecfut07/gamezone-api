@@ -64,7 +64,7 @@ namespace gamezone_api.Controllers
 		}
 
 		[HttpDelete]
-		[Route("remove")]
+		[Route("remove_all")]
 		public async Task<IActionResult> RemoveAllItemsInCart()
 		{
 			try
@@ -80,6 +80,7 @@ namespace gamezone_api.Controllers
 		}
 
 		[HttpDelete]
+		[Route("remove")]
 		public async Task<IActionResult> RemoveItemInCart([FromBody] CartRequest cartRequest)
 		{
 			try
