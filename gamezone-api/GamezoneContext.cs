@@ -115,8 +115,6 @@ namespace gamezone_api
 
                 user.Property(u => u.Phone).IsRequired(false).HasMaxLength(20);
 
-                user.HasIndex(u => u.Phone).IsUnique();
-
                 user.Property(u => u.Birthdate).IsRequired(false);
 
                 user.HasOne(u => u.Address);
