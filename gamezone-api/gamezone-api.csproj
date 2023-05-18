@@ -29,6 +29,7 @@
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
     <PackageReference Include="StackExchange.Redis" Version="2.6.111" />
+    <PackageReference Include="Stripe.net" Version="41.16.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +43,10 @@
     <None Remove="Helpers\" />
     <None Remove="Parameters\" />
     <None Remove="Controllers\Admin\" />
+    <None Remove="Models\Stripe\" />
+    <None Remove="Application\" />
+    <None Remove="Services\Stripe\" />
+    <None Remove="Controllers\Stripe\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -54,6 +59,10 @@
     <Folder Include="Helpers\" />
     <Folder Include="Parameters\" />
     <Folder Include="Controllers\Admin\" />
+    <Folder Include="Models\Stripe\" />
+    <Folder Include="Application\" />
+    <Folder Include="Services\Stripe\" />
+    <Folder Include="Controllers\Stripe\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Migrations\20230426180929_AddSampleProducts.Designer.cs" />

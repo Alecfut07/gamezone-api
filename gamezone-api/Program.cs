@@ -1,10 +1,12 @@
 ﻿using System.Text;
 using gamezone_api;
+using gamezone_api.Application;
 using gamezone_api.Helpers;
 using gamezone_api.Mappers;
 using gamezone_api.Models;
 using gamezone_api.Repositories;
 using gamezone_api.Services;
+using gamezone_api.Services.Stripe;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +16,8 @@ using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using StackExchange.Redis;
+using Stripe;
+using ProductService = gamezone_api.Services.ProductService;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -88,6 +92,7 @@ builder.Services.AddScoped<ProductsRepository>();
 builder.Services.AddScoped<ConditionsRepository>();
 builder.Services.AddScoped<EditionsRepository>();
 builder.Services.AddScoped<AuthRepository>();
+
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<PublishersRepository>();
 builder.Services.AddScoped<CartsRepository>();
@@ -103,6 +108,14 @@ builder.Services.AddScoped<IPublisherService, PublisherService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<ICartsService, CartService>();
 
+// STRIPE CONNECTION
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+builder.Services.AddScoped<CustomerService>();
+builder.Services.AddScoped<ChargeService>();
+builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<IStripeAppService, StripeAppService>();
+
+// REDIS SERVER CONNECTION
 builder.Services.AddScoped<IDatabase>((serviceProvider) =>
 {
     ConnectionMultiplexer connection = ConnectionMultiplexer.Connect("localhost");
@@ -114,6 +127,7 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.Converters.Add(new DateTimeConverter());
     });
+
 builder.Services.AddHttpLogging(logging =>
 {
     logging.LoggingFields = HttpLoggingFields.All;
