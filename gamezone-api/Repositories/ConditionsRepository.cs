@@ -17,34 +17,29 @@ namespace gamezone_api.Repositories
             this.conditionsMapper = conditionsMapper;
         }
 
-        public async Task<IEnumerable<ConditionResponse>> GetConditions()
+        public async Task<List<Condition>> GetConditions()
         {
             var conditions = await context.Conditions.ToListAsync();
-
-            var conditionsResponse = conditions.ConvertAll<ConditionResponse>((c => conditionsMapper.Map(c)));
-            return conditionsResponse;
+            return conditions;
         }
 
-        public async Task<ConditionResponse?> GetConditionById(int id)
+        public async Task<Condition?> GetConditionById(int id)
         {
             var condition = await context.Conditions.FindAsync(id);
-
-            var conditionResponse = conditionsMapper.Map(condition);
-            return conditionResponse;
+            return condition;
         }
 
-        public async Task<ConditionResponse?> CreateNewCondition(ConditionRequest conditionRequest)
+        public async Task<Condition?> CreateNewCondition(ConditionRequest conditionRequest)
         {
             var newCondition = conditionsMapper.Map(conditionRequest);
 
             context.Conditions.Add(newCondition);
             await context.SaveChangesAsync();
 
-            var conditionResponse = conditionsMapper.Map(newCondition);
-            return conditionResponse;
+            return newCondition;
         }
 
-        public async Task<ConditionResponse?> UpdateCondition(int id, ConditionRequest conditionRequest)
+        public async Task<Condition?> UpdateCondition(int id, ConditionRequest conditionRequest)
         {
             var result = await context.Conditions
                 .Where((c) => c.Id == id)
@@ -56,9 +51,7 @@ namespace gamezone_api.Repositories
             if (result > 0)
             {
                 var updatedCondition = await context.Conditions.FindAsync(id);
-
-                var conditionResponse = conditionsMapper.Map(updatedCondition);
-                return conditionResponse;
+                return updatedCondition;
             }
             else
             {
@@ -72,7 +65,7 @@ namespace gamezone_api.Repositories
 
             if (conditionToDelete == null)
             {
-                throw new ArgumentException();
+                throw new KeyNotFoundException();
             }
             else
             {

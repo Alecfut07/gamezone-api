@@ -18,20 +18,16 @@ namespace gamezone_api.Repositories
 
         }
 
-		public async Task<IEnumerable<EditionResponse>> GetEditions()
+		public async Task<List<Edition>> GetEditions()
 		{
             var editions = await context.Editions.ToListAsync();
-
-            var editionsResponse = editions.ConvertAll<EditionResponse>((e) => editionsMapper.Map(e));
-            return editionsResponse;
+            return editions;
         }
 
-		public async Task<EditionResponse?> GetEditionById(int id)
+		public async Task<Edition?> GetEditionById(int id)
 		{
             var edition = await context.Editions.FindAsync(id);
-
-            var editionResponse = editionsMapper.Map(edition);
-            return editionResponse;
+            return edition;
         }
 
 		public async Task<EditionResponse?> CreateNewEdition(EditionRequest editionRequest)

@@ -19,8 +19,15 @@ namespace gamezone_api.Controllers.Admin
         [HttpGet]
         public async Task<ActionResult<ConditionResponse>> GetConditions()
         {
-            var conditions = await conditionService.GetConditions();
-            return Ok(conditions);
+            try
+            {
+                var conditions = await conditionService.GetConditions();
+                return Ok(conditions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // POST: /conditions
@@ -33,9 +40,19 @@ namespace gamezone_api.Controllers.Admin
             }
             else
             {
-                var newCondition = await conditionService.CreateNewCondition(condition);
-
-                return Ok(newCondition);
+                try
+                {
+                    var newCondition = await conditionService.CreateNewCondition(condition);
+                    if (newCondition == null)
+                    {
+                        return NotFound();
+                    }
+                    return Ok(newCondition);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
             }
 
         }
@@ -47,12 +64,15 @@ namespace gamezone_api.Controllers.Admin
             try
             {
                 var updatedCondition = await conditionService.UpdateCondition(id, conditionRequest);
-
+                if (updatedCondition == null)
+                {
+                    return NotFound();
+                }
                 return Ok(updatedCondition);
             }
             catch (Exception ex)
             {
-                return NotFound();
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
 
         }
@@ -69,7 +89,7 @@ namespace gamezone_api.Controllers.Admin
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-            catch (ArgumentException ex)
+            catch (KeyNotFoundException ex)
             {
                 return NotFound();
             }

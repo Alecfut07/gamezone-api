@@ -1,4 +1,5 @@
 ﻿using System;
+using gamezone_api.Mappers;
 using gamezone_api.Models;
 using gamezone_api.Networking;
 using gamezone_api.Repositories;
@@ -9,34 +10,53 @@ namespace gamezone_api.Services
 	public class ConditionService : IConditionService
 	{
 		private ConditionsRepository conditionsRepository;
+		private ConditionsMapper conditionsMapper;
 
-		public ConditionService(ConditionsRepository conditionsRepository)
+		public ConditionService(ConditionsRepository conditionsRepository, ConditionsMapper conditionsMapper)
 		{
 			this.conditionsRepository = conditionsRepository;
+			this.conditionsMapper = conditionsMapper;
 		}
 
 		public async Task<IEnumerable<ConditionResponse?>> GetConditions()
 		{
 			var conditions = await conditionsRepository.GetConditions();
-			return conditions;
+            var conditionsResponse = conditions.ConvertAll<ConditionResponse>((c => conditionsMapper.Map(c)));
+            return conditionsResponse;
 		}
 
 		public async Task<ConditionResponse?> GetConditionById(int id)
 		{
 			var condition = await conditionsRepository.GetConditionById(id);
-			return condition;
+			if (condition != null)
+			{
+                var conditionResponse = conditionsMapper.Map(condition);
+				return conditionResponse;
+            }
+			return null;
 		}
 
 		public async Task<ConditionResponse?> CreateNewCondition(ConditionRequest newCondition)
 		{
 			var createdCondition = await conditionsRepository.CreateNewCondition(newCondition);
-			return createdCondition;
+			if (createdCondition != null)
+			{
+				var conditionResponse = conditionsMapper.Map(createdCondition);
+				return conditionResponse;
+			}
+            return null;
 		}
 
 		public async Task<ConditionResponse?> UpdateCondition(int id, ConditionRequest conditionRequest)
 		{
-			return await conditionsRepository.UpdateCondition(id, conditionRequest);
-		}
+			var updatedCondition = await conditionsRepository.UpdateCondition(id, conditionRequest);
+			if (updatedCondition != null)
+			{
+				var conditionResponse = conditionsMapper.Map(updatedCondition);
+				return conditionResponse;
+			}
+			return null;
+        }
 
 		public async Task DeleteCondition(int id)
 		{

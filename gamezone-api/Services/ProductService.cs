@@ -60,7 +60,8 @@ namespace gamezone_api.Services
 
         public async Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest)
         {
-            var product = await productsRepository.SaveNewProduct(productRequest);
+            var newProduct = productsMapper.Map(productRequest);
+            var product = await productsRepository.SaveNewProduct(newProduct);
             var productResponse = productsMapper.Map(product);
             return productResponse;
         }
@@ -114,13 +115,14 @@ namespace gamezone_api.Services
 
         public async Task<ProductResponse?> UpdateProduct(long id, ProductRequest productRequest)
         {
-            var product = await productsRepository.UpdateProduct(id, productRequest);
+            var productToUpdate = productsMapper.Map(productRequest);
+            var product = await productsRepository.UpdateProduct(id, productToUpdate);
 
-            if (product != null)
+            if (product == null)
             {
-                return productsMapper.Map(product);
+                throw new KeyNotFoundException();
             }
-            return null;
+            return productsMapper.Map(product);
         }
 
         public async Task DeleteProduct(long id)

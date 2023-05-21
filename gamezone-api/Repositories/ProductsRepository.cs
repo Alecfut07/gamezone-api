@@ -12,12 +12,10 @@ namespace gamezone_api.Repositories
 	public class ProductsRepository
 	{
         private GamezoneContext context;
-        private ProductsMapper productsMapper;
 
-        public ProductsRepository(GamezoneContext dbContext, ProductsMapper productsMapper)
+        public ProductsRepository(GamezoneContext dbContext)
 		{
 			context = dbContext;
-            this.productsMapper = productsMapper;
 		}
 
         public async Task<List<Product>> GetProducts()
@@ -79,69 +77,60 @@ namespace gamezone_api.Repositories
             return products;
         }
 
-        public async Task<Product> SaveNewProduct(ProductRequest productRequest)
+        public async Task<Product> SaveNewProduct(Product product)
         {
-            var newProduct = productsMapper.Map(productRequest);
-            newProduct.CreateDate = DateTime.UtcNow;
-            newProduct.UpdateDate = DateTime.UtcNow;
+            product.CreateDate = DateTime.UtcNow;
+            product.UpdateDate = DateTime.UtcNow;
 
-            context.Products.Add(newProduct);
+            await context.Products.AddAsync(product);
             await context.SaveChangesAsync();
 
-            var product = await context.Products
+            var newproduct = await context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
-                .SingleAsync(p => p.Id == newProduct.Id);
+                .SingleAsync(p => p.Id == product.Id);
 
-            return product;
+            return newproduct;
         }
 
-        public async Task<Product?> UpdateProduct(long id, ProductRequest productRequest)
+        public async Task<Product?> UpdateProduct(long id, Product product)
         {
-            var product = await context.Products
+            var productToUpdate = await context.Products
                     .Include(p => p.ProductVariants)
                     .SingleOrDefaultAsync(p => p.Id == id);
 
-            if (product != null)
+            if (productToUpdate != null)
             {
-                product.Name = productRequest.Name;
-                product.Description = productRequest.Description;
-                product.ImageKey = productRequest.ImageKey;
-                product.ReleaseDate = productRequest.ReleaseDate;
-                product.UpdateDate = DateTime.UtcNow;
+                productToUpdate.Name = product.Name;
+                productToUpdate.Description = product.Description;
+                productToUpdate.ImageKey = product.ImageKey;
+                productToUpdate.ReleaseDate = product.ReleaseDate;
+                productToUpdate.UpdateDate = DateTime.UtcNow;
 
-                var incomingProductVariants = productsMapper.Map(productRequest.ProductVariantRequests.ToList());
-                product.ProductVariants
+                var incomingProductVariants = product.ProductVariants;
+                productToUpdate.ProductVariants
                     .Where((pv) => !incomingProductVariants.Contains(pv))
                     .ToList()
                     .ForEach((pv) => context.Entry(pv).State = EntityState.Deleted);
 
-                product.ProductVariants = incomingProductVariants;
+                productToUpdate.ProductVariants = incomingProductVariants;
 
                 await context.SaveChangesAsync();
 
                 var updatedProduct = await context.Products
                    .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                    .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
-                   .SingleAsync(p => p.Id == product.Id);
+                   .SingleAsync(p => p.Id == productToUpdate.Id);
 
                 return updatedProduct;
             }
-            else
-            {
-                return null;
-            }
+            return null;
         }
 
         public async Task DeleteProduct(long id)
         {
             var productToRemove = await context.Products.FindAsync(id);
-
-            if (productToRemove == null)
-            {
-                throw new KeyNotFoundException();
-            }
-            else
+            if (productToRemove != null)
             {
                 context.Products.Remove(productToRemove);
                 await context.SaveChangesAsync();

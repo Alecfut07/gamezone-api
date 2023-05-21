@@ -24,50 +24,68 @@ public class ProductsController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<ProductResponse?>> GetProductById([FromRoute] long id)
     {
-        var product = await productService.GetProductById(id);
-        if (product == null)
+        try
         {
-            return NotFound();
+            var product = await productService.GetProductById(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return Ok(product);
         }
-        return Ok(product);
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
     }
 
-   // GET /products? pagenumber = 1 & pagesize = 10
-   [HttpGet]
+    // GET /products? pagenumber = 1 & pagesize = 10
+    [HttpGet]
     public async Task<ActionResult<List<ProductResponse>>> GetProductsByPaging([FromQuery] ProductParameters productParameters)
     {
-        var products = await productService.GetProductsByPaging(productParameters);
-        if (products is PagedList<ProductResponse>)
+        try
         {
-            var paginatedProducts = products as PagedList<ProductResponse>;
-            var metadata = new
+            var products = await productService.GetProductsByPaging(productParameters);
+            if (products is PagedList<ProductResponse>)
             {
-                paginatedProducts.TotalCount,
-                paginatedProducts.PageSize,
-                paginatedProducts.CurrentPage,
-                paginatedProducts.TotalPages,
-                paginatedProducts.HasPrevious,
-                paginatedProducts.HasNext,
-            };
+                var paginatedProducts = products as PagedList<ProductResponse>;
+                var metadata = new
+                {
+                    paginatedProducts.TotalCount,
+                    paginatedProducts.PageSize,
+                    paginatedProducts.CurrentPage,
+                    paginatedProducts.TotalPages,
+                    paginatedProducts.HasPrevious,
+                    paginatedProducts.HasNext,
+                };
 
-            HttpContext.Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+                HttpContext.Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            }
+            return Ok(products);
         }
-
-        return Ok(products);
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
     }
 
     [HttpGet]
     [Route("Search")]
     public async Task<ActionResult<List<ProductResponse>>> SearchProducts([FromQuery] SearchParameter searchParameter)
     {
-        var products = await productService.SearchProducts(searchParameter);
-
-        if (products == null)
+        try
         {
-            return NotFound();
+            var products = await productService.SearchProducts(searchParameter);
+            if (products == null)
+            {
+                return NotFound();
+            }
+            return Ok(products);
         }
-
-        return Ok(products);
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
     }
 }
 

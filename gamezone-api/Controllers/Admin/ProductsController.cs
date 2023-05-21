@@ -13,7 +13,7 @@ namespace gamezone_api.Controllers.Admin
     [Route("/admin/[controller]")]
     public class ProductsController : ControllerBase
     {
-        IProductService productService;
+        private IProductService productService;
 
         public ProductsController(IProductService productService)
         {

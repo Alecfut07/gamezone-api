@@ -19,12 +19,19 @@ namespace gamezone_api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ConditionResponse?>> GetConditionById([FromRoute] int id)
         {
-            var condition = await conditionService.GetConditionById(id);
-            if (condition == null)
+            try
             {
-                return NotFound();
+                var condition = await conditionService.GetConditionById(id);
+                if (condition == null)
+                {
+                    return NotFound();
+                }
+                return Ok(condition);
             }
-            return Ok(condition);
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }

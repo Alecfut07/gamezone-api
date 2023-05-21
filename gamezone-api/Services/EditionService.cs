@@ -1,4 +1,5 @@
 ﻿using System;
+using gamezone_api.Mappers;
 using gamezone_api.Models;
 using gamezone_api.Networking;
 using gamezone_api.Repositories;
@@ -9,22 +10,30 @@ namespace gamezone_api.Services
 	public class EditionService : IEditionService
 	{
 		private EditionsRepository editionsRepository;
+		private EditionsMapper editionsMapper;
 
-		public EditionService(EditionsRepository editionsRepository)
+		public EditionService(EditionsRepository editionsRepository, EditionsMapper editionsMapper)
 		{
 			this.editionsRepository = editionsRepository;
+			this.editionsMapper = editionsMapper;
 		}
 
 		public async Task<IEnumerable<EditionResponse?>> GetEditions()
 		{
 			var editions = await editionsRepository.GetEditions();
-			return editions;
+            var editionsResponse = editions.ConvertAll<EditionResponse>((e) => editionsMapper.Map(e));
+            return editionsResponse;
 		}
 
 		public async Task<EditionResponse?> GetEditionById(int id)
 		{
 			var edition = await editionsRepository.GetEditionById(id);
-			return edition;
+			if (edition != null)
+			{
+				var editionResponse = editionsMapper.Map(edition);
+				return editionResponse;
+			}
+			return null;
 		}
 
 		public async Task<EditionResponse?> CreateNewEdition(EditionRequest editionRequest)
