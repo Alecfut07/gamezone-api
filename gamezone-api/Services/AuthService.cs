@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
+using gamezone_api.Mappers;
 using gamezone_api.Models;
 using gamezone_api.Networking;
 using gamezone_api.Repositories;
@@ -13,16 +14,18 @@ using NuGet.Common;
 
 namespace gamezone_api.Services
 {
-    public class AuthService : IAuthService
+    public class AuthService : BaseService, IAuthService
     {
-        private AuthRepository authRepository;
-
         private readonly IConfiguration _configuration;
+        private AuthRepository _authRepository;
+        private UsersMapper _usersMapper;
 
-        public AuthService(AuthRepository authRepository, IConfiguration configuration)
+        public AuthService(Microsoft.Extensions.Logging.ILogger logger, IConfiguration configuration, AuthRepository authRepository, UsersMapper usersMapper)
+            : base(logger)
         {
-            this.authRepository = authRepository;
             _configuration = configuration;
+            _authRepository = authRepository;
+            _usersMapper = usersMapper;
         }
 
         private bool ValidateEmail(string email)
@@ -58,17 +61,26 @@ namespace gamezone_api.Services
 
         public async Task<AuthResponse> CreateNewUser(AuthRequest authRequest)
         {
-            if (!ValidateEmail(authRequest.Email))
+            try
             {
-                throw new ArgumentException();
+                if (!ValidateEmail(authRequest.Email))
+                {
+                    throw new ArgumentException();
+                }
+                else
+                {
+                    var newUser = _usersMapper.Map(authRequest);
+                    var user = await _authRepository.CreateNewUser(newUser);
+
+                    var authResponse = new AuthResponse { Token = GenerateToken(user) };
+
+                    return authResponse;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var user = await authRepository.CreateNewUser(authRequest);
-
-                var authResponse = new AuthResponse { Token = GenerateToken(user) };
-
-                return authResponse;
+                _logger.LogError(ex, null);
+                throw;
             }
         }
 
@@ -80,24 +92,32 @@ namespace gamezone_api.Services
 
         public async Task<AuthResponse> Login(AuthRequest authRequest)
         {
-            if (!ValidateEmail(authRequest.Email))
+            try
             {
-                throw new ArgumentException();
-            }
-            else
-            {
-                var user = await authRepository.FindUserByEmail(authRequest.Email);
-
-                if (!ValidatePassword(authRequest.Password, user.Password))
+                if (!ValidateEmail(authRequest.Email))
                 {
                     throw new ArgumentException();
                 }
                 else
                 {
-                    var authResponse = new AuthResponse { Token = GenerateToken(user) };
+                    var user = await _authRepository.FindUserByEmail(authRequest.Email);
 
-                    return authResponse;
+                    if (!ValidatePassword(authRequest.Password, user.Password))
+                    {
+                        throw new ArgumentException();
+                    }
+                    else
+                    {
+                        var authResponse = new AuthResponse { Token = GenerateToken(user) };
+
+                        return authResponse;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
             }
         }
     }

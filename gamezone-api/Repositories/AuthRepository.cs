@@ -9,32 +9,33 @@ namespace gamezone_api.Repositories
 {
     public class AuthRepository
     {
-        private GamezoneContext context;
-        private UsersMapper usersMapper;
+        private GamezoneContext _context;
 
-        public AuthRepository(GamezoneContext dbContext, UsersMapper usersMapper)
+        public AuthRepository(GamezoneContext context)
         {
-            context = dbContext;
-            this.usersMapper = usersMapper;
+            _context = context;
         }
 
-        public async Task<User> CreateNewUser(AuthRequest authRequest)
+        public async Task<User> CreateNewUser(User user)
         {
-            var newUser = usersMapper.Map(authRequest);
-            newUser.Password = BCrypt.Net.BCrypt.HashPassword(authRequest.Password, workFactor: 12);
-            newUser.CreateDate = DateTime.UtcNow;
-            newUser.UpdateDate = DateTime.UtcNow;
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password, workFactor: 12);
+            user.CreateDate = DateTime.UtcNow;
+            user.UpdateDate = DateTime.UtcNow;
 
-            context.Users.Add(newUser);
-            await context.SaveChangesAsync();
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
 
-            return newUser;
-        }
-
-        public async Task<User> FindUserByEmail(string email)
-        {
-            var user = await context.Users.SingleOrDefaultAsync(u => u.Email == email);
             return user;
+        }
+
+        public async Task<User?> FindUserByEmail(string email)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+            if (user != null)
+            {
+                return user;
+            }
+            return null;
         }
     }
 }

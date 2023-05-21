@@ -8,11 +8,11 @@ namespace gamezone_api.Controllers
     [Route("users")]
     public class AuthController : ControllerBase
     {
-        IAuthService authService;
+        IAuthService _authService;
 
         public AuthController(IAuthService authService)
         {
-            this.authService = authService;
+            _authService = authService;
         }
 
         // POST for sign-up: /users/sign-up
@@ -20,22 +20,22 @@ namespace gamezone_api.Controllers
         [Route("sign_up")]
         public async Task<ActionResult<AuthResponse>> SignUp([FromBody] AuthRequest authRequest)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            else
+            {
+                try
                 {
-                    var authResponse = await authService.CreateNewUser(authRequest);
+                    var authResponse = await _authService.CreateNewUser(authRequest);
                     HttpContext.Response.Headers.Add("Authorization", $"Bearer {authResponse.Token}");
                     return NoContent();
                 }
-                else
+                catch (Exception ex)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError);
                 }
-            }
-            catch (ArgumentException ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
 
@@ -44,22 +44,23 @@ namespace gamezone_api.Controllers
         [Route("sign_in")]
         public async Task<ActionResult<AuthResponse>> SignIn([FromBody] AuthRequest authRequest)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (ModelState.IsValid)
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            else
+            {
+                try
                 {
-                    var authResponse = await authService.Login(authRequest);
+                    var authResponse = await _authService.Login(authRequest);
                     HttpContext.Response.Headers.Add("Authorization", $"Bearer {authResponse.Token}");
                     return NoContent();
                 }
-                else
+                catch (Exception ex)
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
+                    return Unauthorized();
                 }
-            }
-            catch (ArgumentException ex)
-            {
-                return Unauthorized();
+
             }
         }
     }
