@@ -8,11 +8,11 @@ namespace gamezone_api.Controllers.Admin
     [Route("/admin/[controller]")]
     public class ConditionsController : ControllerBase
     {
-        IConditionService conditionService;
+        IConditionService _conditionService;
 
         public ConditionsController(IConditionService conditionService)
         {
-            this.conditionService = conditionService;
+            _conditionService = conditionService;
         }
 
         // GET: /conditions
@@ -21,7 +21,7 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                var conditions = await conditionService.GetConditions();
+                var conditions = await _conditionService.GetConditions();
                 return Ok(conditions);
             }
             catch (Exception ex)
@@ -42,7 +42,7 @@ namespace gamezone_api.Controllers.Admin
             {
                 try
                 {
-                    var newCondition = await conditionService.CreateNewCondition(condition);
+                    var newCondition = await _conditionService.CreateNewCondition(condition);
                     return Ok(newCondition);
                 }
                 catch (Exception ex)
@@ -59,7 +59,7 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                var updatedCondition = await conditionService.UpdateCondition(id, conditionRequest);
+                var updatedCondition = await _conditionService.UpdateCondition(id, conditionRequest);
                 if (updatedCondition == null)
                 {
                     return NotFound();
@@ -78,7 +78,7 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                await conditionService.DeleteCondition(id);
+                await _conditionService.DeleteCondition(id);
             }
             catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
             {

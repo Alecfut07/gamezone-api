@@ -10,19 +10,26 @@ namespace gamezone_api.Controllers.Admin
     [Route("/admin/[controller]")]
     public class EditionsController : ControllerBase
     {
-        IEditionService editionService;
+        IEditionService _editionService;
 
         public EditionsController(IEditionService editionService)
         {
-            this.editionService = editionService;
+            _editionService = editionService;
         }
 
         // GET: /editions
         [HttpGet]
         public async Task<ActionResult<EditionResponse?>> GetEditions()
         {
-            var editions = await editionService.GetEditions();
-            return Ok(editions);
+            try
+            {
+                var editions = await _editionService.GetEditions();
+                return Ok(editions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // POST: /editions
@@ -35,8 +42,15 @@ namespace gamezone_api.Controllers.Admin
             }
             else
             {
-                var newEdition = await editionService.CreateNewEdition(editionRequest);
-                return Ok(newEdition);
+                try
+                {
+                    var newEdition = await _editionService.CreateNewEdition(editionRequest);
+                    return Ok(newEdition);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
             }
         }
 
@@ -46,7 +60,7 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                var updatedEdition = await editionService.UpdateEdition(id, editionRequest);
+                var updatedEdition = await _editionService.UpdateEdition(id, editionRequest);
                 return Ok(updatedEdition);
             }
             catch (Exception ex)
@@ -61,7 +75,7 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                await editionService.DeleteEdition(id);
+                await _editionService.DeleteEdition(id);
             }
             catch(Microsoft.EntityFrameworkCore.DbUpdateException ex)
             {

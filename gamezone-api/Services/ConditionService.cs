@@ -73,7 +73,8 @@ namespace gamezone_api.Services
         {
             try
             {
-                var updatedCondition = await _conditionsRepository.UpdateCondition(id, conditionRequest);
+                var conditionToUpdate = _conditionsMapper.Map(conditionRequest);
+                var updatedCondition = await _conditionsRepository.UpdateCondition(id, conditionToUpdate);
                 if (updatedCondition != null)
                 {
                     var conditionResponse = _conditionsMapper.Map(updatedCondition);

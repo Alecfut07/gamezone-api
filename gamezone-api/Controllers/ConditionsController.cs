@@ -8,11 +8,11 @@ namespace gamezone_api.Controllers
     [Route("[controller]")]
     public class ConditionsController : ControllerBase
     {
-        IConditionService conditionService;
+        IConditionService _conditionService;
 
         public ConditionsController(IConditionService conditionService)
         {
-            this.conditionService = conditionService;
+            _conditionService = conditionService;
         }
 
         // GET by id: /conditions/id
@@ -21,7 +21,7 @@ namespace gamezone_api.Controllers
         {
             try
             {
-                var condition = await conditionService.GetConditionById(id);
+                var condition = await _conditionService.GetConditionById(id);
                 if (condition == null)
                 {
                     return NotFound();

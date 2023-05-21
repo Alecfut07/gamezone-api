@@ -13,11 +13,11 @@ namespace gamezone_api.Controllers.Admin
     [Route("/admin/[controller]")]
     public class ProductsController : ControllerBase
     {
-        private IProductService productService;
+        private IProductService _productService;
 
         public ProductsController(IProductService productService)
         {
-            this.productService = productService;
+            _productService = productService;
         }
 
         // GET: /products
@@ -26,7 +26,7 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                var products = await productService.GetProducts();
+                var products = await _productService.GetProducts();
                 return Ok(products);
             }
             catch (Exception ex)
@@ -48,7 +48,7 @@ namespace gamezone_api.Controllers.Admin
                 try
                 {
                     string protocol = HttpContext.Request.Host.Host;
-                    var newProduct = await productService.SaveNewProduct(productRequest);
+                    var newProduct = await _productService.SaveNewProduct(productRequest);
                     return Ok(newProduct);
                 }
                 catch (Exception ex)
@@ -64,7 +64,7 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                var newImageUploaded = productService.UploadImage(imageRequest);
+                var newImageUploaded = _productService.UploadImage(imageRequest);
                 if (newImageUploaded == null)
                 {
                     return NotFound();
@@ -87,7 +87,7 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                var updatedProduct = await productService.UpdateProduct(id, productRequest);
+                var updatedProduct = await _productService.UpdateProduct(id, productRequest);
                 if (updatedProduct == null)
                 {
                     return NotFound();
@@ -106,7 +106,7 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                await productService.DeleteProduct(id);
+                await _productService.DeleteProduct(id);
             }
             catch (KeyNotFoundException ex)
             {

@@ -8,47 +8,47 @@ namespace gamezone_api.Repositories
 {
     public class ConditionsRepository
     {
-        private GamezoneContext context;
+        private GamezoneContext _context;
 
-        public ConditionsRepository(GamezoneContext dbContext)
+        public ConditionsRepository(GamezoneContext context)
         {
-            context = dbContext;
+            _context = context;
         }
 
         public async Task<List<Condition>> GetConditions()
         {
-            var conditions = await context.Conditions.ToListAsync();
+            var conditions = await _context.Conditions.ToListAsync();
             return conditions;
         }
 
         public async Task<Condition?> GetConditionById(int id)
         {
-            var condition = await context.Conditions.FindAsync(id);
+            var condition = await _context.Conditions.FindAsync(id);
             return condition;
         }
 
         public async Task<Condition> CreateNewCondition(Condition condition)
         {
-            context.Conditions.Add(condition);
-            await context.SaveChangesAsync();
+            _context.Conditions.Add(condition);
+            await _context.SaveChangesAsync();
 
-            var newCondition = await context.Conditions.SingleAsync(c => c.Id == condition.Id);
+            var newCondition = await _context.Conditions.SingleAsync(c => c.Id == condition.Id);
 
             return newCondition;
         }
 
-        public async Task<Condition?> UpdateCondition(int id, ConditionRequest conditionRequest)
+        public async Task<Condition?> UpdateCondition(int id, Condition condition)
         {
-            var result = await context.Conditions
+            var result = await _context.Conditions
                 .Where((c) => c.Id == id)
                 .ExecuteUpdateAsync((cond) =>
                     cond
-                        .SetProperty((c) => c.State, conditionRequest.State)
+                        .SetProperty((c) => c.State, condition.State)
                         );
 
             if (result > 0)
             {
-                var updatedCondition = await context.Conditions.FindAsync(id);
+                var updatedCondition = await _context.Conditions.FindAsync(id);
                 return updatedCondition;
             }
             else
@@ -59,7 +59,7 @@ namespace gamezone_api.Repositories
 
         public async Task DeleteCondition(int id)
         {
-            var conditionToDelete = await context.Conditions.FindAsync(id);
+            var conditionToDelete = await _context.Conditions.FindAsync(id);
 
             if (conditionToDelete == null)
             {
@@ -67,8 +67,8 @@ namespace gamezone_api.Repositories
             }
             else
             {
-                context.Conditions.Remove(conditionToDelete);
-                await context.SaveChangesAsync();
+                _context.Conditions.Remove(conditionToDelete);
+                await _context.SaveChangesAsync();
             }
         }
     }

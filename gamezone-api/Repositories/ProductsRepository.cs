@@ -11,16 +11,16 @@ namespace gamezone_api.Repositories
 {
 	public class ProductsRepository
 	{
-        private GamezoneContext context;
+        private GamezoneContext _context;
 
-        public ProductsRepository(GamezoneContext dbContext)
+        public ProductsRepository(GamezoneContext context)
 		{
-			context = dbContext;
+			_context = context;
 		}
 
         public async Task<List<Product>> GetProducts()
         {
-            var products = await context.Products
+            var products = await _context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .ToListAsync();
@@ -30,7 +30,7 @@ namespace gamezone_api.Repositories
 
         public async Task<Product?> GetProductById(long id)
         {
-            var product = await context.Products
+            var product = await _context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .SingleOrDefaultAsync(p => p.Id == id);
@@ -40,7 +40,7 @@ namespace gamezone_api.Repositories
 
         public async Task<List<Product>> GetProductsByPaging(ProductParameters productParameters)
         {
-            var products = await context.Products
+            var products = await _context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .ToListAsync();
@@ -68,7 +68,7 @@ namespace gamezone_api.Repositories
         public async Task<List<Product>> SearchProducts(SearchParameter searchParameter)
         {
             var query = searchParameter.Query ?? "";
-            var products = await context.Products
+            var products = await _context.Products
                 .Where((prod) => prod.Name.ToLower().Contains(query.ToLower()))
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
@@ -82,10 +82,10 @@ namespace gamezone_api.Repositories
             product.CreateDate = DateTime.UtcNow;
             product.UpdateDate = DateTime.UtcNow;
 
-            await context.Products.AddAsync(product);
-            await context.SaveChangesAsync();
+            await _context.Products.AddAsync(product);
+            await _context.SaveChangesAsync();
 
-            var newProduct = await context.Products
+            var newProduct = await _context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .SingleAsync(p => p.Id == product.Id);
@@ -95,7 +95,7 @@ namespace gamezone_api.Repositories
 
         public async Task<Product?> UpdateProduct(long id, Product product)
         {
-            var productToUpdate = await context.Products
+            var productToUpdate = await _context.Products
                     .Include(p => p.ProductVariants)
                     .SingleOrDefaultAsync(p => p.Id == id);
 
@@ -111,13 +111,13 @@ namespace gamezone_api.Repositories
                 productToUpdate.ProductVariants
                     .Where((pv) => !incomingProductVariants.Contains(pv))
                     .ToList()
-                    .ForEach((pv) => context.Entry(pv).State = EntityState.Deleted);
+                    .ForEach((pv) => _context.Entry(pv).State = EntityState.Deleted);
 
                 productToUpdate.ProductVariants = incomingProductVariants;
 
-                await context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
 
-                var updatedProduct = await context.Products
+                var updatedProduct = await _context.Products
                    .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                    .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                    .SingleAsync(p => p.Id == productToUpdate.Id);
@@ -129,11 +129,11 @@ namespace gamezone_api.Repositories
 
         public async Task DeleteProduct(long id)
         {
-            var productToRemove = await context.Products.FindAsync(id);
+            var productToRemove = await _context.Products.FindAsync(id);
             if (productToRemove != null)
             {
-                context.Products.Remove(productToRemove);
-                await context.SaveChangesAsync();
+                _context.Products.Remove(productToRemove);
+                await _context.SaveChangesAsync();
             }
         }
 	}

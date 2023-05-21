@@ -8,54 +8,49 @@ namespace gamezone_api.Repositories
 {
 	public class EditionsRepository
 	{
-		private GamezoneContext context;
-        private EditionsMapper editionsMapper;
+		private GamezoneContext _context;
 
-		public EditionsRepository(GamezoneContext dbContext, EditionsMapper editionsMapper)
+		public EditionsRepository(GamezoneContext context)
 		{
-			context = dbContext;
-            this.editionsMapper = editionsMapper;
+            _context = context;
 
         }
 
 		public async Task<List<Edition>> GetEditions()
 		{
-            var editions = await context.Editions.ToListAsync();
+            var editions = await _context.Editions.ToListAsync();
             return editions;
         }
 
 		public async Task<Edition?> GetEditionById(int id)
 		{
-            var edition = await context.Editions.FindAsync(id);
+            var edition = await _context.Editions.FindAsync(id);
             return edition;
         }
 
-		public async Task<EditionResponse?> CreateNewEdition(EditionRequest editionRequest)
+		public async Task<Edition> CreateNewEdition(Edition edition)
 		{
-            var newEdition = editionsMapper.Map(editionRequest);
+            _context.Editions.Add(edition);
+            await _context.SaveChangesAsync();
 
-            context.Editions.Add(newEdition);
-            await context.SaveChangesAsync();
+            var newEdition = await _context.Editions.SingleAsync(e => e.Id == edition.Id);
 
-            var editionResponse = editionsMapper.Map(newEdition);
-            return editionResponse;
+            return newEdition;
         }
 
-		public async Task<EditionResponse?> UpdateEdition(int id, EditionRequest editionRequest)
+		public async Task<Edition?> UpdateEdition(int id, Edition edition)
 		{
-            var result = await context.Editions
+            var result = await _context.Editions
                 .Where((e) => e.Id == id)
                 .ExecuteUpdateAsync((edit) =>
                     edit
-                        .SetProperty((e) => e.Type, editionRequest.Type)
+                        .SetProperty((e) => e.Type, edition.Type)
                         );
 
             if (result > 0)
             {
-                var updatedEdition = await context.Editions.FindAsync(id);
-
-                var editionResponse = editionsMapper.Map(updatedEdition);
-                return editionResponse;
+                var updatedEdition = await _context.Editions.FindAsync(id);
+                return updatedEdition;
             }
             else
             {
@@ -65,7 +60,7 @@ namespace gamezone_api.Repositories
 
         public async Task DeleteEdition(int id)
         {
-            var editionToDelete = await context.Editions.FindAsync(id);
+            var editionToDelete = await _context.Editions.FindAsync(id);
 
             if (editionToDelete == null)
             {
@@ -73,8 +68,8 @@ namespace gamezone_api.Repositories
             }
             else
             {
-                context.Editions.Remove(editionToDelete);
-                await context.SaveChangesAsync();
+                _context.Editions.Remove(editionToDelete);
+                await _context.SaveChangesAsync();
             }
         }
 	}

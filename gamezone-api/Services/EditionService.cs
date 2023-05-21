@@ -7,62 +7,113 @@ using Microsoft.EntityFrameworkCore;
 
 namespace gamezone_api.Services
 {
-	public class EditionService : IEditionService
-	{
-		private EditionsRepository editionsRepository;
-		private EditionsMapper editionsMapper;
+    public class EditionService : BaseService, IEditionService
+    {
+        private EditionsRepository _editionsRepository;
+        private EditionsMapper _editionsMapper;
 
-		public EditionService(EditionsRepository editionsRepository, EditionsMapper editionsMapper)
-		{
-			this.editionsRepository = editionsRepository;
-			this.editionsMapper = editionsMapper;
-		}
+        public EditionService(ILogger logger, EditionsRepository editionsRepository, EditionsMapper editionsMapper)
+            : base(logger)
+        {
+            _editionsRepository = editionsRepository;
+            _editionsMapper = editionsMapper;
+        }
 
-		public async Task<IEnumerable<EditionResponse?>> GetEditions()
-		{
-			var editions = await editionsRepository.GetEditions();
-            var editionsResponse = editions.ConvertAll<EditionResponse>((e) => editionsMapper.Map(e));
-            return editionsResponse;
-		}
+        public async Task<IEnumerable<EditionResponse?>> GetEditions()
+        {
+            try
+            {
+                var editions = await _editionsRepository.GetEditions();
+                var editionsResponse = editions.ConvertAll<EditionResponse>((e) => _editionsMapper.Map(e));
+                return editionsResponse;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
 
-		public async Task<EditionResponse?> GetEditionById(int id)
-		{
-			var edition = await editionsRepository.GetEditionById(id);
-			if (edition != null)
-			{
-				var editionResponse = editionsMapper.Map(edition);
-				return editionResponse;
-			}
-			return null;
-		}
+        public async Task<EditionResponse?> GetEditionById(int id)
+        {
+            try
+            {
+                var edition = await _editionsRepository.GetEditionById(id);
+                if (edition != null)
+                {
+                    var editionResponse = _editionsMapper.Map(edition);
+                    return editionResponse;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
 
-		public async Task<EditionResponse?> CreateNewEdition(EditionRequest editionRequest)
-		{
-			return await editionsRepository.CreateNewEdition(editionRequest);
-		}
+        public async Task<EditionResponse?> CreateNewEdition(EditionRequest editionRequest)
+        {
+            try
+            {
+                var newEdition = _editionsMapper.Map(editionRequest);
+                var createdEdition = await _editionsRepository.CreateNewEdition(newEdition);
+                var editionResponse = _editionsMapper.Map(newEdition);
+                return editionResponse;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
 
-		public async Task<EditionResponse?> UpdateEdition(int id, EditionRequest editionRequest)
-		{
-			return await editionsRepository.UpdateEdition(id, editionRequest);
-		}
+        public async Task<EditionResponse?> UpdateEdition(int id, EditionRequest editionRequest)
+        {
+            try
+            {
+                var editionToUpdate = _editionsMapper.Map(editionRequest);
+                var updatedEdition = await _editionsRepository.UpdateEdition(id, editionToUpdate);
+                if (updatedEdition != null)
+                {
+                    var editionResponse = _editionsMapper.Map(updatedEdition);
+                    return editionResponse;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
 
-		public async Task DeleteEdition(int id)
-		{
-			await editionsRepository.DeleteEdition(id); 
-		}
-	}
+        public async Task DeleteEdition(int id)
+        {
+            try
+            {
+                await _editionsRepository.DeleteEdition(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
+    }
 
-	public interface IEditionService
-	{
-		Task<IEnumerable<EditionResponse?>> GetEditions();
+    public interface IEditionService
+    {
+        Task<IEnumerable<EditionResponse?>> GetEditions();
 
-		Task<EditionResponse?> GetEditionById(int id);
+        Task<EditionResponse?> GetEditionById(int id);
 
-		Task<EditionResponse?> CreateNewEdition(EditionRequest newEdition);
+        Task<EditionResponse?> CreateNewEdition(EditionRequest newEdition);
 
-		Task<EditionResponse?> UpdateEdition(int id, EditionRequest editionRequest);
+        Task<EditionResponse?> UpdateEdition(int id, EditionRequest editionRequest);
 
-		Task DeleteEdition(int id);
-	}
+        Task DeleteEdition(int id);
+    }
 }
 

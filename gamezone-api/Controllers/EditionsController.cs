@@ -10,23 +10,30 @@ namespace gamezone_api.Controllers
     [Route("[controller]")]
     public class EditionsController : ControllerBase
     {
-        IEditionService editionService;
+        IEditionService _editionService;
 
         public EditionsController(IEditionService editionService)
         {
-            this.editionService = editionService;
+            _editionService = editionService;
         }
 
         // GET by id: /editions/id
         [HttpGet("{id}")]
         public async Task<ActionResult<EditionResponse?>> GetEditionById([FromRoute] int id)
         {
-            var edition = await editionService.GetEditionById(id);
-            if (edition == null)
+            try
             {
-                return NotFound();
+                var edition = await _editionService.GetEditionById(id);
+                if (edition == null)
+                {
+                    return NotFound();
+                }
+                return Ok(edition);
             }
-            return Ok(edition);
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
     }
 }
