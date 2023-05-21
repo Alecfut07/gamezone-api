@@ -7,6 +7,8 @@ namespace gamezone_api
 {
     public class GamezoneContext : DbContext
     {
+        public DbSet<Category> Categories { get; set; }
+
         public DbSet<Product> Products { get; set; }
 
         public DbSet<ProductVariant> ProductVariants { get; set; }
@@ -32,6 +34,20 @@ namespace gamezone_api
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // CATEGORIES
+            modelBuilder.Entity<Category>(category =>
+            {
+                category.ToTable("categories");
+
+                category.HasIndex(c => c.Id);
+
+                category.Property(c => c.Name).IsRequired().HasMaxLength(40);
+
+                category.Property(c => c.CreateDate).IsRequired();
+
+                category.Property(c => c.UpdateDate).IsRequired();
+            });
+
             // PRODUCTS
             modelBuilder.Entity<Product>(product =>
             {

@@ -20,51 +20,41 @@ namespace gamezone_api.Repositories
             this.productsMapper = productsMapper;
 		}
 
-		public async Task<IEnumerable<ProductResponse>> GetProducts()
-		{
+        public async Task<List<Product>> GetProducts()
+        {
             var products = await context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .ToListAsync();
 
-            var productsResponse = products.ConvertAll<ProductResponse>((p) => productsMapper.Map(p));
-            return productsResponse;
+            return products;
         }
 
-        public async Task<ProductResponse?> GetProductById(long id)
+        public async Task<Product?> GetProductById(long id)
         {
             var product = await context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .SingleOrDefaultAsync(p => p.Id == id);
 
-            var productResponse = productsMapper.Map(product);
-            return productResponse;
+            return product;
         }
 
-        public async Task<List<ProductResponse>> GetProductsByPaging(ProductParameters productParameters)
+        public async Task<List<Product>> GetProductsByPaging(ProductParameters productParameters)
         {
             var products = await context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .ToListAsync();
 
-            var productsResponse = products.ConvertAll<ProductResponse>((p) => productsMapper.Map(p));
-
             if (productParameters.PageNumber != null && productParameters.PageSize != null)
             {
                 var pageNumber = productParameters.PageNumber ?? 0;
                 var pageSize = productParameters.PageSize ?? 0;
 
-                //var productsByPaging = productsResponse
-                //    .OrderBy((prods) => prods.Name)
-                //    .Skip((pageNumber - 1) * pageSize)
-                //    .Take(pageSize)
-                //    .ToList();
-
-                var productsByPaging = PagedList<ProductResponse>
+                var productsByPaging = PagedList<Product>
                     .ToPagedList(
-                        productsResponse.OrderBy((prods) => prods.Name),
+                        products.OrderBy((prods) => prods.Name),
                         pageNumber,
                         pageSize
                         );
@@ -73,11 +63,11 @@ namespace gamezone_api.Repositories
             }
             else
             {
-                return productsResponse;
+                return new List<Product>();
             }
         }
 
-        public async Task<List<ProductResponse>> SearchProducts(SearchParameter searchParameter)
+        public async Task<List<Product>> SearchProducts(SearchParameter searchParameter)
         {
             var query = searchParameter.Query ?? "";
             var products = await context.Products
@@ -85,13 +75,11 @@ namespace gamezone_api.Repositories
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .ToListAsync();
-                
 
-            var productsResponse = products.ConvertAll<ProductResponse>((p) => productsMapper.Map(p));
-            return productsResponse.Any() ? productsResponse : null;
+            return products;
         }
 
-        public async Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest)
+        public async Task<Product> SaveNewProduct(ProductRequest productRequest)
         {
             var newProduct = productsMapper.Map(productRequest);
             newProduct.CreateDate = DateTime.UtcNow;
@@ -103,27 +91,16 @@ namespace gamezone_api.Repositories
             var product = await context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
-                .SingleOrDefaultAsync(p => p.Id == newProduct.Id);
+                .SingleAsync(p => p.Id == newProduct.Id);
 
-            var productResponse = productsMapper.Map(product);
-
-            return productResponse;
+            return product;
         }
 
-        //public async Task<ProductResponse?> UploadImage(long id, ProductRequest productRequest)
-        //{
-        //    var product = await context.Products
-        //        .Include(p => p.ProductVariants)
-        //        .SingleAsync(p => p.Id == id);
-
-
-        //}
-
-        public async Task<ProductResponse?> UpdateProduct(long id, ProductRequest productRequest)
+        public async Task<Product?> UpdateProduct(long id, ProductRequest productRequest)
         {
             var product = await context.Products
                     .Include(p => p.ProductVariants)
-                    .SingleAsync(p => p.Id == id);
+                    .SingleOrDefaultAsync(p => p.Id == id);
 
             if (product != null)
             {
@@ -148,38 +125,12 @@ namespace gamezone_api.Repositories
                    .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                    .SingleAsync(p => p.Id == product.Id);
 
-                var productResponse = productsMapper.Map(updatedProduct);
-
-                return productResponse;
+                return updatedProduct;
             }
             else
             {
                 return null;
             }
-
-            //var result = await context.Products
-            //    .Where((p) => p.Id == id)
-            //    .ExecuteUpdateAsync((prod) =>
-            //        prod
-            //            .SetProperty((p) => p.ImageURL, productRequest.ImageURL)
-            //            .SetProperty((p) => p.Name, productRequest.Name)
-            //            .SetProperty((p) => p.ReleaseDate, productRequest.ReleaseDate)
-            //            .SetProperty((p) => p.Description, productRequest.Description)
-            //            .SetProperty((p) => p.UpdateDate, DateTime.UtcNow)
-            //            );
-
-            //if (result > 0)
-            //{
-            //    var updatedProduct = await context.Products
-            //        .SingleAsync(p => p.Id == id);
-
-            //    var productResponse = productsMapper.Map(updatedProduct);
-            //    return productResponse;
-            //}
-            //else
-            //{
-            //    return null;
-            //}
         }
 
         public async Task DeleteProduct(long id)
@@ -188,19 +139,12 @@ namespace gamezone_api.Repositories
 
             if (productToRemove == null)
             {
-                throw new ArgumentNullException();
+                throw new KeyNotFoundException();
             }
             else
             {
-                try
-                {
-                    context.Products.Remove(productToRemove);
-                    await context.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                }
+                context.Products.Remove(productToRemove);
+                await context.SaveChangesAsync();
             }
         }
 	}

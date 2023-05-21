@@ -85,6 +85,7 @@ builder.Services.AddScoped<EditionsMapper>();
 builder.Services.AddScoped<UsersMapper>();
 builder.Services.AddScoped<PublishersMapper>();
 builder.Services.AddScoped<CartsMapper>();
+builder.Services.AddScoped<CategoriesMapper>();
 
 // REPOSITORIES
 builder.Services.AddScoped<ProductsRepository>();
@@ -92,10 +93,10 @@ builder.Services.AddScoped<ProductsRepository>();
 builder.Services.AddScoped<ConditionsRepository>();
 builder.Services.AddScoped<EditionsRepository>();
 builder.Services.AddScoped<AuthRepository>();
-
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<PublishersRepository>();
 builder.Services.AddScoped<CartsRepository>();
+builder.Services.AddScoped<CategoriesRepository>();
 
 // SERVICES
 builder.Services.AddScoped<IProductService, ProductService>();
@@ -107,6 +108,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPublisherService, PublisherService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<ICartsService, CartService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 // STRIPE CONNECTION
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];

@@ -24,8 +24,15 @@ namespace gamezone_api.Controllers.Admin
         [HttpGet]
         public async Task<ActionResult<ProductResponse>> GetProducts()
         {
-            var products = await productService.GetProducts();
-            return Ok(products);
+            try
+            {
+                var products = await productService.GetProducts();
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // POST /products
@@ -38,9 +45,16 @@ namespace gamezone_api.Controllers.Admin
             }
             else
             {
-                string protocol = HttpContext.Request.Host.Host;
-                var newProduct = await productService.SaveNewProduct(productRequest);
-                return Ok(newProduct);
+                try
+                {
+                    string protocol = HttpContext.Request.Host.Host;
+                    var newProduct = await productService.SaveNewProduct(productRequest);
+                    return Ok(newProduct);
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
             }
         }
 
@@ -50,7 +64,6 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-
                 var newImageUploaded = await productService.UploadImage(imageRequest);
                 return Ok(newImageUploaded);
             } catch(ArgumentNullException error)
@@ -63,12 +76,19 @@ namespace gamezone_api.Controllers.Admin
         [HttpPut("{id}")]
         public async Task<ActionResult<ProductResponse?>> UpdateProduct([FromRoute] long id, [FromBody] ProductRequest productRequest)
         {
-            var updatedProduct = await productService.UpdateProduct(id, productRequest);
-            if (updatedProduct == null)
+            try
             {
-                return NotFound();
+                var updatedProduct = await productService.UpdateProduct(id, productRequest);
+                if (updatedProduct == null)
+                {
+                    return NotFound();
+                }
+                return Ok(updatedProduct);
             }
-            return Ok(updatedProduct);
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // DELETE /products/id
@@ -79,7 +99,7 @@ namespace gamezone_api.Controllers.Admin
             {
                 await productService.DeleteProduct(id);
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException ex)
             {
                 return NotFound();
             }
