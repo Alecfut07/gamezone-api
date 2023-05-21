@@ -99,6 +99,15 @@ builder.Services.AddScoped<CartsRepository>();
 builder.Services.AddScoped<CategoriesRepository>();
 
 // SERVICES
+builder.Services.AddScoped<ILogger>((serviceProvider) =>
+{
+    var loggerFactory = LoggerFactory.Create(loggingBuilder => loggingBuilder
+    .SetMinimumLevel(LogLevel.Trace)
+    .AddConsole());
+
+    return loggerFactory.CreateLogger<ILogger>();
+});
+
 builder.Services.AddScoped<IProductService, ProductService>();
 //builder.Services.AddScoped<IProductVariantService, ProductVariantService>();
 builder.Services.AddScoped<IConditionService, ConditionService>();

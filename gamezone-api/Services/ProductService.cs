@@ -14,72 +14,112 @@ using Stripe;
 
 namespace gamezone_api.Services
 {
-    public class ProductService : IProductService
+    public class ProductService : BaseService, IProductService
     {
-        private ProductsRepository productsRepository;
-        private ProductsMapper productsMapper;
+        private ProductsRepository _productsRepository;
+        private ProductsMapper _productsMapper;
 
-        public ProductService(ProductsRepository productsRepository, ProductsMapper productsMapper)
+        public ProductService(ILogger logger, ProductsRepository productsRepository, ProductsMapper productsMapper)
+            : base(logger)
         {
-            this.productsRepository = productsRepository;
-            this.productsMapper = productsMapper;
+            _productsRepository = productsRepository;
+            _productsMapper = productsMapper;
         }
 
         public async Task<IEnumerable<ProductResponse>> GetProducts()
         {
-            var products = await productsRepository.GetProducts();
-            return products.ConvertAll<ProductResponse>((p) => productsMapper.Map(p));
+            try
+            {
+                var products = await _productsRepository.GetProducts();
+                return products.ConvertAll<ProductResponse>((p) => _productsMapper.Map(p));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
         }
 
         public async Task<ProductResponse?> GetProductById(long id)
         {
-            var product = await productsRepository.GetProductById(id);
-            if (product != null)
+            try
             {
-                var productResponse = productsMapper.Map(product);
-                return productResponse;
+                var product = await _productsRepository.GetProductById(id);
+                if (product != null)
+                {
+                    var productResponse = _productsMapper.Map(product);
+                    return productResponse;
+                }
+                return null;
             }
-            return null;
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
         }
 
         public async Task<List<ProductResponse>> GetProductsByPaging(ProductParameters productParameters)
         {
-            var products = await productsRepository.GetProductsByPaging(productParameters);
-            var productsResponse = products.ConvertAll<ProductResponse>((p) => productsMapper.Map(p));
-            return productsResponse;
-
+            try
+            {
+                var products = await _productsRepository.GetProductsByPaging(productParameters);
+                var productsResponse = products.ConvertAll<ProductResponse>((p) => _productsMapper.Map(p));
+                return productsResponse;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
         }
 
         public async Task<List<ProductResponse>> SearchProducts(SearchParameter searchParameter)
         {
-            var products = await productsRepository.SearchProducts(searchParameter);
-            var productsResponse = products.ConvertAll<ProductResponse>((p) => productsMapper.Map(p));
-            //productsResponse.Any() ? productsResponse : null;
-            return productsResponse;
+            try
+            {
+                var products = await _productsRepository.SearchProducts(searchParameter);
+                var productsResponse = products.ConvertAll<ProductResponse>((p) => _productsMapper.Map(p));
+                return productsResponse;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
         }
 
         public async Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest)
         {
-            var newProduct = productsMapper.Map(productRequest);
-            var product = await productsRepository.SaveNewProduct(newProduct);
-            var productResponse = productsMapper.Map(product);
-            return productResponse;
+            try
+            {
+                var newProduct = _productsMapper.Map(productRequest);
+                var product = await _productsRepository.SaveNewProduct(newProduct);
+                var productResponse = _productsMapper.Map(product);
+                return productResponse;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
         }
 
-        public async Task<ImageResponse?> UploadImage(ImageRequest imageRequest)
+        public ImageResponse? UploadImage(ImageRequest imageRequest)
         {
-            var file = imageRequest.Image;
-            if (file == null)
+            try
             {
-                throw new ArgumentNullException();
-            }
-            else
-            {
-                var folderName = Path.Combine("Resources", "Images");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
-
-                try
+                var file = imageRequest.Image;
+                if (file == null)
                 {
+                    throw new ArgumentNullException();
+                }
+                else
+                {
+                    var folderName = Path.Combine("Resources", "Images");
+                    var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
                     if (!Directory.Exists(pathToSave))
                     {
                         // Create the directory
@@ -102,32 +142,46 @@ namespace gamezone_api.Services
                         };
                         return response;
                     }
-
+                    return null;
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("The process failed: {0}", ex.ToString());
-                }
-
-                return null;
+            }
+            catch (IOException ex)
+            {
+                _logger.LogError(ex, "The process failed");
+                throw;
             }
         }
 
         public async Task<ProductResponse?> UpdateProduct(long id, ProductRequest productRequest)
         {
-            var productToUpdate = productsMapper.Map(productRequest);
-            var product = await productsRepository.UpdateProduct(id, productToUpdate);
-
-            if (product == null)
+            try
             {
-                throw new KeyNotFoundException();
+                var productToUpdate = _productsMapper.Map(productRequest);
+                var product = await _productsRepository.UpdateProduct(id, productToUpdate);
+                if (product == null)
+                {
+                    throw new KeyNotFoundException();
+                }
+                return _productsMapper.Map(product);
             }
-            return productsMapper.Map(product);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
         }
 
         public async Task DeleteProduct(long id)
         {
-            await productsRepository.DeleteProduct(id);
+            try
+            {
+                await _productsRepository.DeleteProduct(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
         }
     }
 
@@ -143,7 +197,7 @@ namespace gamezone_api.Services
 
         Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest);
 
-        Task<ImageResponse?> UploadImage(ImageRequest imageRequest);
+        ImageResponse? UploadImage(ImageRequest imageRequest);
 
         Task<ProductResponse?> UpdateProduct(long id, ProductRequest product);
 

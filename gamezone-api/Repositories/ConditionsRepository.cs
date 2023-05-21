@@ -9,12 +9,10 @@ namespace gamezone_api.Repositories
     public class ConditionsRepository
     {
         private GamezoneContext context;
-        private ConditionsMapper conditionsMapper;
 
-        public ConditionsRepository(GamezoneContext dbContext, ConditionsMapper conditionsMapper)
+        public ConditionsRepository(GamezoneContext dbContext)
         {
             context = dbContext;
-            this.conditionsMapper = conditionsMapper;
         }
 
         public async Task<List<Condition>> GetConditions()
@@ -29,12 +27,12 @@ namespace gamezone_api.Repositories
             return condition;
         }
 
-        public async Task<Condition?> CreateNewCondition(ConditionRequest conditionRequest)
+        public async Task<Condition> CreateNewCondition(Condition condition)
         {
-            var newCondition = conditionsMapper.Map(conditionRequest);
-
-            context.Conditions.Add(newCondition);
+            context.Conditions.Add(condition);
             await context.SaveChangesAsync();
+
+            var newCondition = await context.Conditions.SingleAsync(c => c.Id == condition.Id);
 
             return newCondition;
         }

@@ -7,74 +7,112 @@ using Microsoft.EntityFrameworkCore;
 
 namespace gamezone_api.Services
 {
-	public class ConditionService : IConditionService
-	{
-		private ConditionsRepository conditionsRepository;
-		private ConditionsMapper conditionsMapper;
+    public class ConditionService : BaseService, IConditionService
+    {
+        private ConditionsRepository _conditionsRepository;
+        private ConditionsMapper _conditionsMapper;
 
-		public ConditionService(ConditionsRepository conditionsRepository, ConditionsMapper conditionsMapper)
-		{
-			this.conditionsRepository = conditionsRepository;
-			this.conditionsMapper = conditionsMapper;
-		}
-
-		public async Task<IEnumerable<ConditionResponse?>> GetConditions()
-		{
-			var conditions = await conditionsRepository.GetConditions();
-            var conditionsResponse = conditions.ConvertAll<ConditionResponse>((c => conditionsMapper.Map(c)));
-            return conditionsResponse;
-		}
-
-		public async Task<ConditionResponse?> GetConditionById(int id)
-		{
-			var condition = await conditionsRepository.GetConditionById(id);
-			if (condition != null)
-			{
-                var conditionResponse = conditionsMapper.Map(condition);
-				return conditionResponse;
-            }
-			return null;
-		}
-
-		public async Task<ConditionResponse?> CreateNewCondition(ConditionRequest newCondition)
-		{
-			var createdCondition = await conditionsRepository.CreateNewCondition(newCondition);
-			if (createdCondition != null)
-			{
-				var conditionResponse = conditionsMapper.Map(createdCondition);
-				return conditionResponse;
-			}
-            return null;
-		}
-
-		public async Task<ConditionResponse?> UpdateCondition(int id, ConditionRequest conditionRequest)
-		{
-			var updatedCondition = await conditionsRepository.UpdateCondition(id, conditionRequest);
-			if (updatedCondition != null)
-			{
-				var conditionResponse = conditionsMapper.Map(updatedCondition);
-				return conditionResponse;
-			}
-			return null;
+        public ConditionService(ILogger logger, ConditionsRepository conditionsRepository, ConditionsMapper conditionsMapper)
+            : base(logger)
+        {
+            _conditionsRepository = conditionsRepository;
+            _conditionsMapper = conditionsMapper;
         }
 
-		public async Task DeleteCondition(int id)
-		{
-			await conditionsRepository.DeleteCondition(id);
-		}
+        public async Task<IEnumerable<ConditionResponse?>> GetConditions()
+        {
+            try
+            {
+                var conditions = await _conditionsRepository.GetConditions();
+                var conditionsResponse = conditions.ConvertAll<ConditionResponse>((c => _conditionsMapper.Map(c)));
+                return conditionsResponse;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
+
+        public async Task<ConditionResponse?> GetConditionById(int id)
+        {
+            try
+            {
+                var condition = await _conditionsRepository.GetConditionById(id);
+                if (condition != null)
+                {
+                    var conditionResponse = _conditionsMapper.Map(condition);
+                    return conditionResponse;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
+
+        public async Task<ConditionResponse?> CreateNewCondition(ConditionRequest conditionRequest)
+        {
+            try
+            {
+                var newCondition = _conditionsMapper.Map(conditionRequest);
+                var createdCondition = await _conditionsRepository.CreateNewCondition(newCondition);
+                var conditionResponse = _conditionsMapper.Map(createdCondition);
+                return conditionResponse;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
+
+        public async Task<ConditionResponse?> UpdateCondition(int id, ConditionRequest conditionRequest)
+        {
+            try
+            {
+                var updatedCondition = await _conditionsRepository.UpdateCondition(id, conditionRequest);
+                if (updatedCondition != null)
+                {
+                    var conditionResponse = _conditionsMapper.Map(updatedCondition);
+                    return conditionResponse;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
+
+        public async Task DeleteCondition(int id)
+        {
+            try
+            {
+                await _conditionsRepository.DeleteCondition(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
     }
 
-	public interface IConditionService
-	{
-		Task<IEnumerable<ConditionResponse?>> GetConditions();
+    public interface IConditionService
+    {
+        Task<IEnumerable<ConditionResponse?>> GetConditions();
 
-		Task<ConditionResponse?> GetConditionById(int id);
+        Task<ConditionResponse?> GetConditionById(int id);
 
-		Task<ConditionResponse?> CreateNewCondition(ConditionRequest newCondition);
+        Task<ConditionResponse?> CreateNewCondition(ConditionRequest newCondition);
 
-		Task<ConditionResponse?> UpdateCondition(int id, ConditionRequest condition);
+        Task<ConditionResponse?> UpdateCondition(int id, ConditionRequest condition);
 
-		Task DeleteCondition(int id);
-	}
+        Task DeleteCondition(int id);
+    }
 }
 

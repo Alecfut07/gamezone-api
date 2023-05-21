@@ -43,10 +43,6 @@ namespace gamezone_api.Controllers.Admin
                 try
                 {
                     var newCondition = await conditionService.CreateNewCondition(condition);
-                    if (newCondition == null)
-                    {
-                        return NotFound();
-                    }
                     return Ok(newCondition);
                 }
                 catch (Exception ex)
@@ -74,7 +70,6 @@ namespace gamezone_api.Controllers.Admin
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-
         }
 
         // DELETE: /conditions/id

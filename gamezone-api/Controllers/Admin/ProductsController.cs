@@ -60,13 +60,22 @@ namespace gamezone_api.Controllers.Admin
 
         // POST: admin/products/upload
         [HttpPost("upload")]
-        public async Task<ActionResult<ImageResponse?>> UploadImage([FromForm] ImageRequest imageRequest)
+        public ActionResult<ImageResponse?> UploadImage([FromForm] ImageRequest imageRequest)
         {
             try
             {
-                var newImageUploaded = await productService.UploadImage(imageRequest);
+                var newImageUploaded = productService.UploadImage(imageRequest);
+                if (newImageUploaded == null)
+                {
+                    return NotFound();
+                }
                 return Ok(newImageUploaded);
-            } catch(ArgumentNullException error)
+            }
+            catch(ArgumentNullException ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            catch(IOException ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }

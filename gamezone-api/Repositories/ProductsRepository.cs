@@ -85,12 +85,12 @@ namespace gamezone_api.Repositories
             await context.Products.AddAsync(product);
             await context.SaveChangesAsync();
 
-            var newproduct = await context.Products
+            var newProduct = await context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .SingleAsync(p => p.Id == product.Id);
 
-            return newproduct;
+            return newProduct;
         }
 
         public async Task<Product?> UpdateProduct(long id, Product product)
