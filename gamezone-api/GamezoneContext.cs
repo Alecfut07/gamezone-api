@@ -46,6 +46,8 @@ namespace gamezone_api
                 category.Property(c => c.CreateDate).IsRequired();
 
                 category.Property(c => c.UpdateDate).IsRequired();
+
+                category.HasOne(c => c.ParentCategory);
             });
 
             // PRODUCTS

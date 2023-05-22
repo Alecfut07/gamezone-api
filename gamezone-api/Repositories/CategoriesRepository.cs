@@ -29,6 +29,9 @@ namespace gamezone_api.Repositories
 
 		public async Task<Category> CreateNewCategory(Category category)
 		{
+			category.CreateDate = DateTime.Now;
+			category.UpdateDate = DateTime.Now;
+
 			_context.Categories.Add(category);
 			await _context.SaveChangesAsync();
 
@@ -43,6 +46,8 @@ namespace gamezone_api.Repositories
 				.ExecuteUpdateAsync((cate) =>
 					cate
 						.SetProperty((c) => c.Name, category.Name)
+						.SetProperty((c) => c.ParentCategoryId, category.ParentCategoryId)
+						.SetProperty((c) => c.UpdateDate, DateTime.Now)
 						);
 
 			if (result > 0)

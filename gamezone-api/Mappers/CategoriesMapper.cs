@@ -10,7 +10,8 @@ namespace gamezone_api.Mappers
 		{
 			return new Category
 			{
-				Name = categoryRequest.Name
+				Name = categoryRequest.Name,
+				ParentCategoryId = categoryRequest.ParentCategoryId
 			};
 		}
 
@@ -19,7 +20,10 @@ namespace gamezone_api.Mappers
 			return new CategoryResponse
 			{
 				Id = category.Id,
-				Name = category.Name
+				Name = category.Name,
+				CreateDate = category.CreateDate,
+				UpdateDate = category.UpdateDate,
+				ParentCategoryId = category.ParentCategoryId
 			};
 		}
 	}
