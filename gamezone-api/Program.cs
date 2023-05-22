@@ -17,7 +17,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using StackExchange.Redis;
 using Stripe;
-using ProductService = gamezone_api.Services.ProductService;
+using ProductsService = gamezone_api.Services.ProductsService;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -88,7 +88,7 @@ builder.Services.AddScoped<CartsMapper>();
 builder.Services.AddScoped<CategoriesMapper>();
 
 // REPOSITORIES
-builder.Services.AddScoped<ProductsRepository>();
+builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
 //builder.Services.AddScoped<ProductVariantsRepository>();
 builder.Services.AddScoped<ConditionsRepository>();
 builder.Services.AddScoped<EditionsRepository>();
@@ -108,16 +108,16 @@ builder.Services.AddScoped<ILogger>((serviceProvider) =>
     return loggerFactory.CreateLogger<ILogger>();
 });
 
-builder.Services.AddScoped<IProductService, ProductService>();
+builder.Services.AddScoped<IProductService, ProductsService>();
 //builder.Services.AddScoped<IProductVariantService, ProductVariantService>();
-builder.Services.AddScoped<IConditionService, ConditionService>();
-builder.Services.AddScoped<IEditionService, EditionService>();
+builder.Services.AddScoped<IConditionService, ConditionsService>();
+builder.Services.AddScoped<IEditionService, EditionsService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IPublisherService, PublisherService>();
+builder.Services.AddScoped<IUserService, UsersService>();
+builder.Services.AddScoped<IPublisherService, PublishersService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddScoped<ICartsService, CartService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICartsService, CartsService>();
+builder.Services.AddScoped<ICategoryService, CategoriesService>();
 
 // STRIPE CONNECTION
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];

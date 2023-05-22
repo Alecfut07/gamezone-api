@@ -4,13 +4,13 @@ using gamezone_api.Repositories;
 
 namespace gamezone_api.Services
 {
-	public class UserService : IUserService
+	public class UsersService : IUserService
 	{
 		private UserRepository userRepository;
 
 		private readonly IConfiguration _configuration;
 
-		public UserService(UserRepository userRepository, IConfiguration configuration)
+		public UsersService(UserRepository userRepository, IConfiguration configuration)
 		{
 			this.userRepository = userRepository;
 			_configuration = configuration;

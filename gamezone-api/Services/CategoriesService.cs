@@ -4,11 +4,11 @@ using gamezone_api.Repositories;
 
 namespace gamezone_api.Services
 {
-	public class CategoryService : ICategoryService
+	public class CategoriesService : ICategoryService
 	{
 		private CategoriesRepository categoriesRepository;
 
-		public CategoryService(CategoriesRepository categoriesRepository)
+		public CategoriesService(CategoriesRepository categoriesRepository)
 		{
 			this.categoriesRepository = categoriesRepository;
 		}

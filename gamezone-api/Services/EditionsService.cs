@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace gamezone_api.Services
 {
-    public class EditionService : BaseService, IEditionService
+    public class EditionsService : BaseService, IEditionService
     {
         private EditionsRepository _editionsRepository;
         private EditionsMapper _editionsMapper;
 
-        public EditionService(ILogger logger, EditionsRepository editionsRepository, EditionsMapper editionsMapper)
+        public EditionsService(ILogger logger, EditionsRepository editionsRepository, EditionsMapper editionsMapper)
             : base(logger)
         {
             _editionsRepository = editionsRepository;

@@ -7,12 +7,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace gamezone_api.Services
 {
-    public class ConditionService : BaseService, IConditionService
+    public class ConditionsService : BaseService, IConditionService
     {
         private ConditionsRepository _conditionsRepository;
         private ConditionsMapper _conditionsMapper;
 
-        public ConditionService(ILogger logger, ConditionsRepository conditionsRepository, ConditionsMapper conditionsMapper)
+        public ConditionsService(ILogger logger, ConditionsRepository conditionsRepository, ConditionsMapper conditionsMapper)
             : base(logger)
         {
             _conditionsRepository = conditionsRepository;

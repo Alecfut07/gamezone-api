@@ -5,12 +5,12 @@ using gamezone_api.Repositories;
 
 namespace gamezone_api.Services
 {
-    public class PublisherService : BaseService, IPublisherService
+    public class PublishersService : BaseService, IPublisherService
     {
         private PublishersRepository _publishersRepository;
         private PublishersMapper _publishersMapper;
 
-        public PublisherService(ILogger logger, PublishersRepository publishersRepository)
+        public PublishersService(ILogger logger, PublishersRepository publishersRepository)
             : base(logger)
         {
             _publishersRepository = publishersRepository;

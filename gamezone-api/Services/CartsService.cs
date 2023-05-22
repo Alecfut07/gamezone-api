@@ -8,12 +8,12 @@ using Microsoft.AspNetCore.Cors.Infrastructure;
 
 namespace gamezone_api.Services
 {
-    public class CartService : BaseService, ICartsService
+    public class CartsService : BaseService, ICartsService
     {
         private CartsRepository _cartsRepository;
         private CartsMapper _cartsMapper;
 
-        public CartService(ILogger logger, CartsRepository cartsRepository, CartsMapper cartsMapper)
+        public CartsService(ILogger logger, CartsRepository cartsRepository, CartsMapper cartsMapper)
             : base(logger)
         {
             _cartsRepository = cartsRepository;

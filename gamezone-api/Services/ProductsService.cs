@@ -14,12 +14,12 @@ using Stripe;
 
 namespace gamezone_api.Services
 {
-    public class ProductService : BaseService, IProductService
+    public class ProductsService : BaseService, IProductService
     {
-        private ProductsRepository _productsRepository;
+        private IProductsRepository _productsRepository;
         private ProductsMapper _productsMapper;
 
-        public ProductService(ILogger logger, ProductsRepository productsRepository, ProductsMapper productsMapper)
+        public ProductsService(ILogger logger, IProductsRepository productsRepository, ProductsMapper productsMapper)
             : base(logger)
         {
             _productsRepository = productsRepository;

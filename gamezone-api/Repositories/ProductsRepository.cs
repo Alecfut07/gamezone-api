@@ -9,7 +9,7 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace gamezone_api.Repositories
 {
-	public class ProductsRepository
+	public class ProductsRepository: IProductsRepository
 	{
         private GamezoneContext _context;
 
@@ -137,5 +137,15 @@ namespace gamezone_api.Repositories
             }
         }
 	}
-}
 
+    public interface IProductsRepository
+    {
+        Task<List<Product>> GetProducts();
+        Task<Product?> GetProductById(long id);
+        Task<List<Product>> GetProductsByPaging(ProductParameters productParameters);
+        Task<List<Product>> SearchProducts(SearchParameter searchParameter);
+        Task<Product> SaveNewProduct(Product product);
+        Task<Product?> UpdateProduct(long id, Product product);
+        Task DeleteProduct(long id);
+    }
+}
