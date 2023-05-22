@@ -1,5 +1,6 @@
 ﻿using System;
 using gamezone_api.Mappers;
+using gamezone_api.Models;
 using gamezone_api.Networking;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,57 +8,47 @@ namespace gamezone_api.Repositories
 {
 	public class PublishersRepository
 	{
-		private GamezoneContext context;
-		private PublishersMapper publishersMapper;
+		private GamezoneContext _context;
 
-		public PublishersRepository(GamezoneContext dbContext, PublishersMapper publishersMapper)
+		public PublishersRepository(GamezoneContext context)
 		{
-			context = dbContext;
-			this.publishersMapper = publishersMapper;
+            _context = context;
 		}
 
-		public async Task<IEnumerable<PublisherResponse>> GetPublishers()
+		public async Task<List<Publisher>> GetPublishers()
 		{
-			var publishers = await context.Publishers.ToListAsync();
-
-			var publishersResponse = publishers.ConvertAll<PublisherResponse>((pub) => publishersMapper.Map(pub));
-			return publishersResponse;
+			var publishers = await _context.Publishers.ToListAsync();
+			return publishers;
 		}
 
-		public async Task<PublisherResponse> GetPublisherById(int id)
+		public async Task<Publisher?> GetPublisherById(int id)
 		{
-			var publisher = await context.Publishers.FindAsync(id);
-
-			var publisherResponse = publishersMapper.Map(publisher);
-			return publisherResponse;
+			var publisher = await _context.Publishers.FindAsync(id);
+			return publisher;
 		}
 
-		public async Task<PublisherResponse> CreateNewPublisher(PublisherRequest publisherRequest)
+		public async Task<Publisher> CreateNewPublisher(Publisher publisher)
 		{
-			var newPublisher = publishersMapper.Map(publisherRequest);
+			_context.Publishers.Add(publisher);
+			await _context.SaveChangesAsync();
 
-			context.Publishers.Add(newPublisher);
-			await context.SaveChangesAsync();
-
-			var publisherResponse = publishersMapper.Map(newPublisher);
-			return publisherResponse;
+			var newPublisher = await _context.Publishers.SingleAsync(p => p.Id == publisher.Id);
+			return newPublisher;
 		}
 
-		public async Task<PublisherResponse> UpdatePublisher(int id, PublisherRequest publisherRequest)
+		public async Task<Publisher?> UpdatePublisher(int id, Publisher publisher)
 		{
-			var result = await context.Publishers
+			var result = await _context.Publishers
 				.Where((pub) => pub.Id == id)
 				.ExecuteUpdateAsync((pub) =>
 					pub
-						.SetProperty((pub) => pub.Name, publisherRequest.Name)
+						.SetProperty((pub) => pub.Name, publisher.Name)
 						);
 
 			if (result > 0)
 			{
-				var updatedPublisher = await context.Publishers.FindAsync(id);
-
-				var publisherResponse = publishersMapper.Map(updatedPublisher);
-				return publisherResponse;
+				var updatedPublisher = await _context.Publishers.FindAsync(id);
+				return updatedPublisher;
 			}
 			else
 			{
@@ -67,16 +58,16 @@ namespace gamezone_api.Repositories
 
 		public async Task DeletePublisher(int id)
 		{
-			var publisherToDelete = await context.Publishers.FindAsync(id);
+			var publisherToDelete = await _context.Publishers.FindAsync(id);
 
 			if (publisherToDelete == null)
 			{
-				throw new ArgumentException();
+				throw new KeyNotFoundException();
 			}
 			else
 			{
-				context.Publishers.Remove(publisherToDelete);
-				await context.SaveChangesAsync();
+                _context.Publishers.Remove(publisherToDelete);
+				await _context.SaveChangesAsync();
 			}
 		}
 	}

@@ -21,24 +21,19 @@ namespace gamezone_api.Repositories
 			_cartsMapper = cartsMapper;
 		}
 
-		public async Task<CartResponse> GetCart(string uuid)
+		public async Task<List<(long, int, ProductCacheEntry)>> GetCart(string uuid)
 		{
 			var key = new RedisKey($"cart:{uuid}");
-			var cart = await _db.HashGetAllAsync(key);
-
-			var products = cart.ToList().ConvertAll((c) => {
-				var redisKey = new RedisKey(c.Name);
+			var cartEntries = await _db.HashGetAllAsync(key);
+            var tuples = cartEntries.ToList().ConvertAll((c) => {
+                var redisKey = new RedisKey(c.Name);
                 var jsonProduct = _db.StringGet(redisKey);
+                var productId = long.Parse(c.Name.ToString().Split(":").Last());
+                var quantity = int.Parse(c.Value);
                 var productCacheEntry = JsonSerializer.Deserialize<ProductCacheEntry>(jsonProduct.ToString());
-				var productId = long.Parse(c.Name.ToString().Split(":").Last());
-				var quantity = int.Parse(c.Value);
-				return _cartsMapper.Map(productId, quantity, productCacheEntry);
+                return (productId, quantity, productCacheEntry);
             });
-			var cartResponse = new CartResponse
-			{
-				products = products
-            };
-			return cartResponse;
+            return tuples;
 		}
 
 		public async Task AddItemToCart(string uuid, CartRequest cartRequest)

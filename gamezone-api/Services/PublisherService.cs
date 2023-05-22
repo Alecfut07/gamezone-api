@@ -1,59 +1,116 @@
 ﻿using System;
+using gamezone_api.Mappers;
 using gamezone_api.Networking;
 using gamezone_api.Repositories;
 
 namespace gamezone_api.Services
 {
-	public class PublisherService : IPublisherService
-	{
-		private PublishersRepository publishersRepository;
-
-		public PublisherService(PublishersRepository publishersRepository)
-		{
-			this.publishersRepository = publishersRepository;
-		}
-
-		public async Task<IEnumerable<PublisherResponse?>> GetPublishers()
-		{
-			var publishers = await publishersRepository.GetPublishers();
-			return publishers;
-		}
-
-		public async Task<PublisherResponse?> GetPublisherById(int id)
-		{
-			var conditionResponse = await publishersRepository.GetPublisherById(id);
-			return conditionResponse;
-		}
-
-		public async Task<PublisherResponse?> CreateNewPublisher(PublisherRequest publisherRequest)
-		{
-			var publisherResponse = await publishersRepository.CreateNewPublisher(publisherRequest);
-			return publisherResponse;
-		}
-
-		public async Task<PublisherResponse?> UpdatePublisher(int id, PublisherRequest publisherRequest)
-		{
-			var publisherResponse = await publishersRepository.UpdatePublisher(id, publisherRequest);
-			return publisherResponse;
-		}
-
-		public async Task DeletePublisher(int id)
-		{
-			await publishersRepository.DeletePublisher(id);
-		}
-	}
-
-	public interface IPublisherService
+    public class PublisherService : BaseService, IPublisherService
     {
-		Task<IEnumerable<PublisherResponse?>> GetPublishers();
+        private PublishersRepository _publishersRepository;
+        private PublishersMapper _publishersMapper;
 
-		Task<PublisherResponse?> GetPublisherById(int id);
+        public PublisherService(ILogger logger, PublishersRepository publishersRepository)
+            : base(logger)
+        {
+            _publishersRepository = publishersRepository;
+        }
 
-		Task<PublisherResponse?> CreateNewPublisher(PublisherRequest publisherRequest);
+        public async Task<IEnumerable<PublisherResponse?>> GetPublishers()
+        {
+            try
+            {
+                var publishers = await _publishersRepository.GetPublishers();
+                var publishersResponse = publishers.ConvertAll<PublisherResponse>((pub) => _publishersMapper.Map(pub));
+                return publishersResponse;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
 
-		Task<PublisherResponse?> UpdatePublisher(int id, PublisherRequest publisherRequest);
+        public async Task<PublisherResponse?> GetPublisherById(int id)
+        {
+            try
+            {
+                var publisher = await _publishersRepository.GetPublisherById(id);
+                if (publisher != null)
+                {
+                    var publisherResponse = _publishersMapper.Map(publisher);
+                    return publisherResponse;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
 
-		Task DeletePublisher(int id);
-	}
+        public async Task<PublisherResponse?> CreateNewPublisher(PublisherRequest publisherRequest)
+        {
+            try
+            {
+                var newPublisher = _publishersMapper.Map(publisherRequest);
+                var createdPublisher = await _publishersRepository.CreateNewPublisher(newPublisher);
+                var publisherResponse = _publishersMapper.Map(createdPublisher);
+                return publisherResponse;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
+
+        public async Task<PublisherResponse?> UpdatePublisher(int id, PublisherRequest publisherRequest)
+        {
+            try
+            {
+                var publisherToUpdate = _publishersMapper.Map(publisherRequest);
+                var updatedPublisher = await _publishersRepository.UpdatePublisher(id, publisherToUpdate);
+                if (updatedPublisher != null)
+                {
+                    var publisherResponse = _publishersMapper.Map(updatedPublisher);
+                    return publisherResponse;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
+
+        public async Task DeletePublisher(int id)
+        {
+            try
+            {
+                await _publishersRepository.DeletePublisher(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
+    }
+
+    public interface IPublisherService
+    {
+        Task<IEnumerable<PublisherResponse?>> GetPublishers();
+
+        Task<PublisherResponse?> GetPublisherById(int id);
+
+        Task<PublisherResponse?> CreateNewPublisher(PublisherRequest publisherRequest);
+
+        Task<PublisherResponse?> UpdatePublisher(int id, PublisherRequest publisherRequest);
+
+        Task DeletePublisher(int id);
+    }
 }
 
