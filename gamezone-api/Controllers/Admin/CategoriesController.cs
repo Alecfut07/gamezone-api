@@ -9,13 +9,11 @@ namespace gamezone_api.Controllers.Admin
 	[Route("/admin/[controller]")]
 	public class CategoriesController : ControllerBase
 	{
-		private ILogger _logger;
-		ICategoryService categoryService;
+		ICategoryService _categoryService;
 
-		public CategoriesController(ILogger logger, ICategoryService categoryService)
+		public CategoriesController(ICategoryService categoryService)
 		{
-			_logger = logger;
-			this.categoryService = categoryService;
+			_categoryService = categoryService;
 		}
 
 		// GET: /admin/categories
@@ -24,14 +22,73 @@ namespace gamezone_api.Controllers.Admin
 		{
 			try
 			{
-				var categories = await categoryService.GetCategories();
+				var categories = await _categoryService.GetCategories();
 				return Ok(categories);
 			}
 			catch (Exception ex)
 			{
-				_logger.LogError($"Something went wrong: {ex}");
 				return StatusCode(StatusCodes.Status500InternalServerError);
 			}
+		}
+
+		// POST: /admin/categories
+		[HttpPost]
+		public async Task<ActionResult<CategoryResponse>> CreateNewCategory([FromBody] CategoryRequest categoryRequest)
+		{
+			if (!ModelState.IsValid)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
+			else
+			{
+				try
+				{
+					var newCategory = await _categoryService.CreateNewCategory(categoryRequest);
+					return Ok(newCategory);
+				}
+				catch (Exception ex)
+				{
+					return StatusCode(StatusCodes.Status500InternalServerError);
+				}
+			}
+		}
+
+		// UPDATE: /admin/categories
+		[HttpPut("{id}")]
+		public async Task<ActionResult<CategoryResponse?>> UpdateCategory([FromRoute] long id, [FromBody] CategoryRequest categoryRequest)
+		{
+			try
+			{
+				var updatedCategory = await _categoryService.UpdateCategory(id, categoryRequest);
+				if (updatedCategory == null)
+				{
+					return NotFound();
+				}
+				return Ok(updatedCategory);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
+		}
+
+		// DELETE: /admin/categories
+		[HttpDelete("{id}")]
+		public async Task<ActionResult> DeleteCategory([FromRoute] long id)
+		{
+			try
+			{
+				await _categoryService.DeleteCategory(id);
+			}
+			catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
+			catch (Exception ex)
+			{
+				return NotFound();
+			}
+			return NoContent();
 		}
 	}
 }

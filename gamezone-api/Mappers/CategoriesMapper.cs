@@ -6,8 +6,12 @@ namespace gamezone_api.Mappers
 {
 	public class CategoriesMapper
 	{
-		public CategoriesMapper()
+		public Category Map(CategoryRequest categoryRequest)
 		{
+			return new Category
+			{
+				Name = categoryRequest.Name
+			};
 		}
 
 		public CategoryResponse Map(Category category)
