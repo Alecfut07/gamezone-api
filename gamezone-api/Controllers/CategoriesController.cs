@@ -1,5 +1,6 @@
 ﻿using System;
 using gamezone_api.Networking;
+using gamezone_api.Parameters;
 using gamezone_api.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,6 +29,24 @@ namespace gamezone_api.Controllers
 					return NotFound();
 				}
 				return Ok(category);
+			}
+			catch (Exception ex)
+			{
+				return StatusCode(StatusCodes.Status500InternalServerError);
+			}
+		}
+
+		[HttpGet]
+		public async Task<ActionResult<List<CategoryResponse>>> GetFilterCategories([FromQuery] CategoriesParameters categoriesParameters)
+		{
+			try
+			{
+				var categories = await _categoryService.GetFilterCategories(categoriesParameters);
+				if (categories == null)
+				{
+					return NotFound();
+				}
+				return Ok(categories);
 			}
 			catch (Exception ex)
 			{
