@@ -11,16 +11,14 @@ namespace gamezone_api.Repositories
 	public class CartsRepository
 	{
 		private IDatabase _db;
-		private GamezoneContext context;
-        private ProductsMapper productsMapper;
-        private CartsMapper cartsMapper;
+		private GamezoneContext _context;
+        private CartsMapper _cartsMapper;
 
-        public CartsRepository(GamezoneContext dbContext, IDatabase db, ProductsMapper productsMapper, CartsMapper cartsMapper)
+        public CartsRepository(IDatabase db, GamezoneContext context, CartsMapper cartsMapper)
 		{
-			context = dbContext;
 			_db = db;
-			this.productsMapper = productsMapper;
-			this.cartsMapper = cartsMapper;
+			_context = context;
+			_cartsMapper = cartsMapper;
 		}
 
 		public async Task<CartResponse> GetCart(string uuid)
@@ -34,7 +32,7 @@ namespace gamezone_api.Repositories
                 var productCacheEntry = JsonSerializer.Deserialize<ProductCacheEntry>(jsonProduct.ToString());
 				var productId = long.Parse(c.Name.ToString().Split(":").Last());
 				var quantity = int.Parse(c.Value);
-				return cartsMapper.Map(productId, quantity, productCacheEntry);
+				return _cartsMapper.Map(productId, quantity, productCacheEntry);
             });
 			var cartResponse = new CartResponse
 			{
@@ -51,7 +49,7 @@ namespace gamezone_api.Repositories
 			};
 			await _db.HashSetAsync(key, fields);
 
-			var product = await context.Products
+			var product = await _context.Products
 				.Include(p => p.ProductVariants)
 				.SingleOrDefaultAsync(p => p.Id == cartRequest.ProductId);
 

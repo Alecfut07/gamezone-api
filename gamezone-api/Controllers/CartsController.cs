@@ -9,11 +9,11 @@ namespace gamezone_api.Controllers
     [Route("[controller]")]
     public class CartsController : ControllerBase
 	{
-		ICartsService cartsService;
+		ICartsService _cartsService;
 
 		public CartsController(ICartsService cartsService)
 		{
-			this.cartsService = cartsService;
+            _cartsService = cartsService;
 		}
 
 		[HttpGet]
@@ -22,7 +22,7 @@ namespace gamezone_api.Controllers
 			try
 			{
 				var uuid = HttpContext.Request.Cookies["uuid"];
-				var cartResponse = await cartsService.GetCart(uuid);
+				var cartResponse = await _cartsService.GetCart(uuid);
 				return Ok(cartResponse);
 			}
 			catch (Exception ex)
@@ -38,7 +38,7 @@ namespace gamezone_api.Controllers
 			try
 			{
 				var uuid = HttpContext.Request.Cookies["uuid"];
-				await cartsService.AddItemToCart(uuid, cartRequest);
+				await _cartsService.AddItemToCart(uuid, cartRequest);
 			}
 			catch (Exception ex)
 			{
@@ -54,7 +54,7 @@ namespace gamezone_api.Controllers
 			try
 			{
 				var uuid = HttpContext.Request.Cookies["uuid"];
-				await cartsService.UpdateQuantity(uuid, cartRequest);
+				await _cartsService.UpdateQuantity(uuid, cartRequest);
 			}
 			catch (Exception ex)
 			{
@@ -70,7 +70,7 @@ namespace gamezone_api.Controllers
 			try
 			{
 				var uuid = HttpContext.Request.Cookies["uuid"];
-				await cartsService.RemoveAllItemsInCart(uuid);
+				await _cartsService.RemoveAllItemsInCart(uuid);
 			}
 			catch (Exception ex)
 			{
@@ -86,7 +86,7 @@ namespace gamezone_api.Controllers
 			try
 			{
 				var uuid = HttpContext.Request.Cookies["uuid"];
-				await cartsService.RemoveItemInCart(uuid, cartRequest); 
+				await _cartsService.RemoveItemInCart(uuid, cartRequest); 
 			}
 			catch (Exception ex)
 			{
