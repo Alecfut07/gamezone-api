@@ -33,6 +33,7 @@ namespace gamezone_api.Repositories
             var product = await _context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants)
                 .SingleOrDefaultAsync(p => p.Id == id);
 
             return product;
@@ -88,6 +89,7 @@ namespace gamezone_api.Repositories
             var newProduct = await _context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(cpv => cpv.Category)
                 .SingleAsync(p => p.Id == product.Id);
 
             return newProduct;

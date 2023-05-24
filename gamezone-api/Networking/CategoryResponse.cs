@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text.Json.Serialization;
+using gamezone_api.Models;
 
 namespace gamezone_api.Networking
 {
@@ -17,6 +18,6 @@ namespace gamezone_api.Networking
 
 		[JsonPropertyName("parent_category_id")]
 		public long? ParentCategoryId { get; set; }
-	}
+    }
 }
 

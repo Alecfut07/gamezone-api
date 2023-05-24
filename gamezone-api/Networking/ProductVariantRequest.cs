@@ -17,6 +17,9 @@ namespace gamezone_api.Networking
         [Required]
         [JsonPropertyName("edition_id")]
         public int EditionId { get; set; }
+
+        [JsonPropertyName("categories")]
+        public ICollection<CategoryProductVariantRequest> CategoriesRequests { get; set; }
     }
 }
 

@@ -29,6 +29,8 @@ namespace gamezone_api.Models
 		public DateTime UpdateDate { get; set; }
 
         public virtual Category? ParentCategory { get; set; }
+
+		public ICollection<CategoryProductVariant> CategoriesProductVariants { get; set; }
 	}
 }
 

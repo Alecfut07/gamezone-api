@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using gamezone_api.Models;
 
 namespace gamezone_api.Networking
 {
@@ -13,6 +14,9 @@ namespace gamezone_api.Networking
         public virtual ConditionResponse Condition { get; set; }
 
         public virtual EditionResponse Edition { get; set; }
+
+        [JsonPropertyName("categories")]
+        public ICollection<CategoryProductVariantResponse> CategoriesResponses { get; set; }
     }
 }
 

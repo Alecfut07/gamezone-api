@@ -13,6 +13,8 @@ namespace gamezone_api
 
         public DbSet<ProductVariant> ProductVariants { get; set; }
 
+        public DbSet<CategoryProductVariant> CategoriesProductVariants { get; set; }
+
         public DbSet<Condition> Conditions { get; set; }
 
         public DbSet<Edition> Editions { get; set; }
@@ -90,6 +92,24 @@ namespace gamezone_api
                 productVariants.Property(pv => pv.Price).IsRequired();
 
                 //productVariants.HasData(ProductVariantsSeed.InitData());
+            });
+
+            // CATEGORIES_PRODUCT_VARIANTS
+            modelBuilder.Entity<CategoryProductVariant>(categoriesProductVariants =>
+            {
+                categoriesProductVariants.ToTable("categories_product_variants");
+
+                categoriesProductVariants.HasKey(cpv => cpv.Id);
+
+                categoriesProductVariants
+                    .HasOne(cpv => cpv.Category)
+                    .WithMany(c => c.CategoriesProductVariants)
+                    .HasForeignKey(cpv => cpv.CategoryId);
+
+                categoriesProductVariants
+                    .HasOne(cpv => cpv.ProductVariant)
+                    .WithMany(pv => pv.CategoriesProductVariants)
+                    .HasForeignKey(cpv => cpv.ProductVariantId);
             });
 
             // CONDITIONS

@@ -71,6 +71,8 @@ namespace gamezone_api.Mappers
                 Price = productVariantRequest.Price,
                 ConditionId = productVariantRequest.ConditionId,
                 EditionId = productVariantRequest.EditionId,
+                CategoriesProductVariants = Map(productVariantRequest.CategoriesRequests.ToList(), productVariantRequest.Id)
+                //CategoryId = productVariantRequest.CategoryProductVariantId
             };
         }
 
@@ -87,12 +89,41 @@ namespace gamezone_api.Mappers
                 Price = productVariant.Price,
                 Condition = _conditionsMapper.Map(productVariant.Condition),
                 Edition = _editionsMapper.Map(productVariant.Edition),
+                CategoriesResponses = Map(productVariant.CategoriesProductVariants.ToList())
             };
         }
 
         public List<ProductVariantResponse> Map(List<ProductVariant> productVariants)
         {
             return productVariants.ConvertAll<ProductVariantResponse>((pv) => Map(pv));
+        }
+
+        public CategoryProductVariant Map(CategoryProductVariantRequest categoryProductVariantRequest, long productVariantId)
+        {
+            return new CategoryProductVariant
+            {
+                CategoryId = categoryProductVariantRequest.CategoryProductVariantId,
+                ProductVariantId = productVariantId
+            };
+        }
+
+        public List<CategoryProductVariant> Map(List<CategoryProductVariantRequest> categoryProductVariantRequests, long id)
+        {
+            return categoryProductVariantRequests.ConvertAll<CategoryProductVariant>((cpvr) => Map(cpvr, id));
+        }
+
+        public CategoryProductVariantResponse Map(CategoryProductVariant category)
+        {
+            return new CategoryProductVariantResponse
+            {
+                Id = category.CategoryId,
+                Name = category.Category.Name
+            };
+        }
+
+        public List<CategoryProductVariantResponse> Map(List<CategoryProductVariant> categories)
+        {
+            return categories.ConvertAll<CategoryProductVariantResponse>((c) => Map(c));
         }
     }
 }
