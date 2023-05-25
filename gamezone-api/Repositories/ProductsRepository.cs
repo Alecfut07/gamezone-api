@@ -69,11 +69,33 @@ namespace gamezone_api.Repositories
 
         public async Task<List<Product>> SearchProducts(SearchParameter searchParameter)
         {
-            var query = searchParameter.Query ?? "";
+            var name = searchParameter.Name ?? "";
+            var category = searchParameter.Category ?? "";
+
+            //var queryName = _context.Products.Where((prod) => prod.Name.ToLower().Contains(name.ToLower())).ToList();
+
+            //var queryCategory = _context.Products
+            //    .Include(p => p.ProductVariants)
+            //        .ThenInclude(pv => pv.CategoriesProductVariants.Where(x => x.Category.Name.ToLower().Contains(category.ToLower())))
+            //            .ThenInclude(cpv => cpv.Category)
+            //                .ToList();
+
+            var productVariantsOfTheCategory = await _context.Categories
+                .Where(c => c.Name == category)
+                .Include(c => c.CategoriesProductVariants)
+                .SelectMany(c => c.CategoriesProductVariants.Select(cpv => cpv.ProductVariantId))
+                //.SelectMany(c => c.CategoriesProductVariants.Select(cpv => cpv.ProductVariant))
+                .ToListAsync();
+
+            // [1, 2, 3].map (n => n * 100)  // [100, 200, 300]
+            // [1, 2, 3].map (n => new List<int>() { n }) // List { List { 1 }, List { 2 }, List { 3 } }
+            // [1, 2, 3].flatMap (n => new List<int>() { n }) // List { 1, 2, 3} }
+
             var products = await _context.Products
-                .Where((prod) => prod.Name.ToLower().Contains(query.ToLower()))
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
+                .Include(p => p.ProductVariants)
+                .Where(p => p.Name.ToLower().Contains(name.ToLower()) && p.ProductVariants.Any(pv => productVariantsOfTheCategory.Contains(pv.Id)))
                 .ToListAsync();
 
             return products;

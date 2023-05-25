@@ -7,7 +7,10 @@ namespace gamezone_api.Parameters
 	public class SearchParameter
 	{
         [BindProperty(Name = "q", SupportsGet = true)]
-        public string? Query { get; set; } = null;
+        public string? Name { get; set; } = null;
+
+        [BindProperty(Name = "category", SupportsGet = true)]
+        public string? Category { get; set; } = null;
     }
 }
 
