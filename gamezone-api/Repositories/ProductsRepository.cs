@@ -72,17 +72,10 @@ namespace gamezone_api.Repositories
             var name = searchParameter.Name ?? "";
             var category = searchParameter.Category ?? "";
 
-            //var queryName = _context.Products.Where((prod) => prod.Name.ToLower().Contains(name.ToLower())).ToList();
-
-            //var queryCategory = _context.Products
-            //    .Include(p => p.ProductVariants)
-            //        .ThenInclude(pv => pv.CategoriesProductVariants.Where(x => x.Category.Name.ToLower().Contains(category.ToLower())))
-            //            .ThenInclude(cpv => cpv.Category)
-            //                .ToList();
-
             var productVariantsOfTheCategory = await _context.Categories
                 .Where(c => c.Name == category)
-                .Include(c => c.CategoriesProductVariants)
+                //.Include(c => c.CategoriesProductVariants)
+                //.Include(c => c.CategoriesProductVariants).ThenInclude(x => x.Category)
                 .SelectMany(c => c.CategoriesProductVariants.Select(cpv => cpv.ProductVariantId))
                 //.SelectMany(c => c.CategoriesProductVariants.Select(cpv => cpv.ProductVariant))
                 .ToListAsync();
@@ -94,7 +87,8 @@ namespace gamezone_api.Repositories
             var products = await _context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
-                .Include(p => p.ProductVariants)
+                //.Include(p => p.ProductVariants)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(x => x.Category)
                 .Where(p => p.Name.ToLower().Contains(name.ToLower()) && p.ProductVariants.Any(pv => productVariantsOfTheCategory.Contains(pv.Id)))
                 .ToListAsync();
 
