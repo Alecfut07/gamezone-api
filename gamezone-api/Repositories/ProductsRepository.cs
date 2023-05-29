@@ -45,6 +45,7 @@ namespace gamezone_api.Repositories
             var products = await _context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(cpv => cpv.Category)
                 .ToListAsync();
 
             if (productParameters.PageNumber != null && productParameters.PageSize != null)
