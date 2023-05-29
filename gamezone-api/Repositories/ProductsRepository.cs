@@ -69,8 +69,8 @@ namespace gamezone_api.Repositories
 
         public async Task<List<Product>> SearchProducts(SearchParameter searchParameter)
         {
-            var name = searchParameter.Name ?? "";
-            var category = searchParameter.Category ?? "";
+            var name = searchParameter.Name ?? null;
+            var category = searchParameter.Category ?? null;
 
             var productVariantsOfTheCategory = await _context.Categories
                 .Where(c => c.Name == category)
@@ -84,15 +84,41 @@ namespace gamezone_api.Repositories
             // [1, 2, 3].map (n => new List<int>() { n }) // List { List { 1 }, List { 2 }, List { 3 } }
             // [1, 2, 3].flatMap (n => new List<int>() { n }) // List { 1, 2, 3} }
 
-            var products = await _context.Products
+            if (name != null && category != null)
+            {
+                var products = await _context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 //.Include(p => p.ProductVariants)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(x => x.Category)
                 .Where(p => p.Name.ToLower().Contains(name.ToLower()) && p.ProductVariants.Any(pv => productVariantsOfTheCategory.Contains(pv.Id)))
                 .ToListAsync();
+                return products;
+            }
+            else if (name != null && category == null)
+            {
+                var products = await _context.Products
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
+                //.Include(p => p.ProductVariants)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(x => x.Category)
+                .Where(p => p.Name.ToLower().Contains(name.ToLower()))
+                .ToListAsync();
+                return products;
+            }
+            else if (name == null && category != null)
+            {
+                var products = await _context.Products
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
+                //.Include(p => p.ProductVariants)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(x => x.Category)
+                .Where(p => p.ProductVariants.Any(pv => productVariantsOfTheCategory.Contains(pv.Id)))
+                .ToListAsync();
+                return products;
+            }
 
-            return products;
+            return null;
         }
 
         public async Task<Product> SaveNewProduct(Product product)
