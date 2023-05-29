@@ -32,7 +32,6 @@ namespace gamezone_api.Services
             {
                 var products = await _productsRepository.GetProducts();
                 return products.ConvertAll<ProductResponse>((p) => _productsMapper.Map(p));
-
             }
             catch (Exception ex)
             {
@@ -60,13 +59,30 @@ namespace gamezone_api.Services
             }
         }
 
-        public async Task<List<ProductResponse>> GetProductsByPaging(ProductParameters productParameters)
+        public async Task<PagedList<ProductResponse>> GetProductsByPaging(ProductParameters productParameters)
         {
             try
             {
                 var products = await _productsRepository.GetProductsByPaging(productParameters);
                 var productsResponse = products.ConvertAll<ProductResponse>((p) => _productsMapper.Map(p));
-                return productsResponse;
+                if (productParameters.PageNumber != null && productParameters.PageSize != null)
+                {
+                    var pageNumber = productParameters.PageNumber ?? 0;
+                    var pageSize = productParameters.PageSize ?? 0;
+
+                    var productsByPaging = PagedList<ProductResponse>
+                        .ToPagedList(
+                            productsResponse.OrderBy((prods) => prods.Name),
+                            pageNumber,
+                            pageSize
+                            );
+
+                    return productsByPaging;
+                }
+                else
+                {
+                    return new PagedList<ProductResponse>();
+                }
             }
             catch (Exception ex)
             {
@@ -191,7 +207,7 @@ namespace gamezone_api.Services
 
         Task<ProductResponse?> GetProductById(long id);
 
-        Task<List<ProductResponse>> GetProductsByPaging(ProductParameters productParameters);
+        Task<PagedList<ProductResponse>> GetProductsByPaging(ProductParameters productParameters);
 
         Task<List<ProductResponse>> SearchProducts(SearchParameter searchParameter);
 

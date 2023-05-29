@@ -11,6 +11,11 @@ namespace gamezone_api.Helpers
 		public bool HasPrevious => CurrentPage > 1;
 		public bool HasNext => CurrentPage < TotalPages;
 
+		public PagedList() : base()
+		{
+
+		}
+
 		public PagedList(List<T> items, int count, int pageNumber, int pageSize)
 		{
 			TotalCount = count;

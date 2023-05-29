@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Printing;
 using gamezone_api.Helpers;
 using gamezone_api.Mappers;
 using gamezone_api.Models;
@@ -42,30 +43,17 @@ namespace gamezone_api.Repositories
 
         public async Task<List<Product>> GetProductsByPaging(ProductParameters productParameters)
         {
+            var pageNumber = productParameters.PageNumber ?? 0;
+            var pageSize = productParameters.PageSize ?? 0;
+
             var products = await _context.Products
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                 .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(cpv => cpv.Category)
+                .Skip((pageNumber - 1) * pageSize).Take(pageSize)
                 .ToListAsync();
 
-            if (productParameters.PageNumber != null && productParameters.PageSize != null)
-            {
-                var pageNumber = productParameters.PageNumber ?? 0;
-                var pageSize = productParameters.PageSize ?? 0;
-
-                var productsByPaging = PagedList<Product>
-                    .ToPagedList(
-                        products.OrderBy((prods) => prods.Name),
-                        pageNumber,
-                        pageSize
-                        );
-
-                return productsByPaging;
-            }
-            else
-            {
-                return new List<Product>();
-            }
+            return products;
         }
 
         public async Task<List<Product>> SearchProducts(SearchParameter searchParameter)
