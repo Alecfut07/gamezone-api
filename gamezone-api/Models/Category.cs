@@ -17,10 +17,8 @@ namespace gamezone_api.Models
 		[Column("parent_category_id")]
 		public long? ParentCategoryId { get; set; }
 
-		//[Column("parent_category")]
-		//public Category ParentCategory { get; set; }
-
-		//public List<Category> SubCategories { get; set; }
+		[Column("handle")]
+		public string Handle { get; set; }
 
 		[Column("create_date")]
 		public DateTime CreateDate { get; set; }

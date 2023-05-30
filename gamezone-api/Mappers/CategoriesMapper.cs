@@ -26,6 +26,7 @@ namespace gamezone_api.Mappers
 			{
 				Id = category.Id,
 				Name = category.Name,
+				Handle = category.Handle,
 				CreateDate = category.CreateDate,
 				UpdateDate = category.UpdateDate,
 				SubCategories = subcategories.ConvertAll(subcategory => Map(subcategory))
@@ -34,10 +35,11 @@ namespace gamezone_api.Mappers
 
 		public SubCategoryResponse Map(Category subcategory)
 		{
-            var subcategoryResponse = new SubCategoryResponse
-            {
-                Id = subcategory.Id,
-                Name = subcategory.Name,
+			var subcategoryResponse = new SubCategoryResponse
+			{
+				Id = subcategory.Id,
+				Name = subcategory.Name,
+				Handle = subcategory.Handle,
                 CreateDate = subcategory.CreateDate,
                 UpdateDate = subcategory.UpdateDate,
                 ParentCategoryId = subcategory.ParentCategoryId

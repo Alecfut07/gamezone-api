@@ -65,7 +65,7 @@ namespace gamezone_api.Repositories
             var pageSize = searchParameter.PageSize ?? 0;
 
             var productVariantsOfTheCategory = await _context.Categories
-                .Where(c => c.Name == category)
+                .Where(c => c.Handle == category)
                 //.Include(c => c.CategoriesProductVariants)
                 //.Include(c => c.CategoriesProductVariants).ThenInclude(x => x.Category)
                 .SelectMany(c => c.CategoriesProductVariants.Select(cpv => cpv.ProductVariantId))

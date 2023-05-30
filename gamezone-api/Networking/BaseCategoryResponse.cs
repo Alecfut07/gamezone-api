@@ -9,6 +9,8 @@ namespace gamezone_api.Networking
 
         public string Name { get; set; }
 
+        public string Handle { get; set; }
+
         [JsonPropertyName("create_date")]
         public DateTime CreateDate { get; set; }
 
