@@ -73,6 +73,7 @@ namespace gamezone_api.Services
                     var productsByPaging = PagedList<ProductResponse>
                         .ToPagedList(
                             productsResponse.OrderBy((prods) => prods.Name),
+                            0,
                             pageNumber,
                             pageSize
                             );
@@ -91,13 +92,31 @@ namespace gamezone_api.Services
             }
         }
 
-        public async Task<List<ProductResponse>> SearchProducts(SearchParameter searchParameter)
+        public async Task<PagedList<ProductResponse>> SearchProducts(SearchParameter searchParameter)
         {
             try
             {
-                var products = await _productsRepository.SearchProducts(searchParameter);
+                var (count, products) = await _productsRepository.SearchProducts(searchParameter);
                 var productsResponse = products.ConvertAll<ProductResponse>((p) => _productsMapper.Map(p));
-                return productsResponse;
+                if (searchParameter.PageNumber != null && searchParameter.PageSize != null)
+                {
+                    var pageNumber = searchParameter.PageNumber ?? 0;
+                    var pageSize = searchParameter.PageSize ?? 0;
+
+                    var productsByPaging = PagedList<ProductResponse>
+                        .ToPagedList(
+                            productsResponse.OrderBy((prods) => prods.Name),
+                            count,
+                            pageNumber,
+                            pageSize
+                            );
+
+                    return productsByPaging;
+                }
+                else
+                {
+                    return new PagedList<ProductResponse>();
+                }
             }
             catch (Exception ex)
             {
@@ -209,7 +228,7 @@ namespace gamezone_api.Services
 
         Task<PagedList<ProductResponse>> GetProductsByPaging(ProductParameters productParameters);
 
-        Task<List<ProductResponse>> SearchProducts(SearchParameter searchParameter);
+        Task<PagedList<ProductResponse>> SearchProducts(SearchParameter searchParameter);
 
         Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest);
 

@@ -76,6 +76,21 @@ public class ProductsController : ControllerBase
         try
         {
             var products = await productService.SearchProducts(searchParameter);
+            if (products is PagedList<ProductResponse>)
+            {
+                var paginatedProducts = products as PagedList<ProductResponse>;
+                var metadata = new
+                {
+                    paginatedProducts.TotalCount,
+                    paginatedProducts.PageSize,
+                    paginatedProducts.CurrentPage,
+                    paginatedProducts.TotalPages,
+                    paginatedProducts.HasPrevious,
+                    paginatedProducts.HasNext,
+                };
+
+                HttpContext.Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(metadata));
+            }
             if (products == null)
             {
                 return NotFound();

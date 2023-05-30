@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing.Printing;
+using System.Linq.Expressions;
 using gamezone_api.Helpers;
 using gamezone_api.Mappers;
 using gamezone_api.Models;
@@ -56,10 +57,12 @@ namespace gamezone_api.Repositories
             return products;
         }
 
-        public async Task<List<Product>> SearchProducts(SearchParameter searchParameter)
+        public async Task<(int, List<Product>)> SearchProducts(SearchParameter searchParameter)
         {
             var name = searchParameter.Name ?? null;
             var category = searchParameter.Category ?? null;
+            var pageNumber = searchParameter.PageNumber ?? 0;
+            var pageSize = searchParameter.PageSize ?? 0;
 
             var productVariantsOfTheCategory = await _context.Categories
                 .Where(c => c.Name == category)
@@ -73,41 +76,22 @@ namespace gamezone_api.Repositories
             // [1, 2, 3].map (n => new List<int>() { n }) // List { List { 1 }, List { 2 }, List { 3 } }
             // [1, 2, 3].flatMap (n => new List<int>() { n }) // List { 1, 2, 3} }
 
+            Expression<Func<Product, bool>> predicate = null;
             if (name != null && category != null)
             {
-                var products = await _context.Products
-                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
-                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
-                //.Include(p => p.ProductVariants)
-                .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(x => x.Category)
-                .Where(p => p.Name.ToLower().Contains(name.ToLower()) && p.ProductVariants.Any(pv => productVariantsOfTheCategory.Contains(pv.Id)))
-                .ToListAsync();
-                return products;
+                predicate = (p => p.Name.ToLower().Contains(name.ToLower()) && p.ProductVariants.Any(pv => productVariantsOfTheCategory.Contains(pv.Id)));
             }
             else if (name != null && category == null)
             {
-                var products = await _context.Products
-                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
-                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
-                //.Include(p => p.ProductVariants)
-                .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(x => x.Category)
-                .Where(p => p.Name.ToLower().Contains(name.ToLower()))
-                .ToListAsync();
-                return products;
+                predicate = p => p.Name.ToLower().Contains(name.ToLower());
             }
             else if (name == null && category != null)
             {
-                var products = await _context.Products
-                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
-                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
-                //.Include(p => p.ProductVariants)
-                .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(x => x.Category)
-                .Where(p => p.ProductVariants.Any(pv => productVariantsOfTheCategory.Contains(pv.Id)))
-                .ToListAsync();
-                return products;
+                predicate = p => p.ProductVariants.Any(pv => productVariantsOfTheCategory.Contains(pv.Id));
             }
-
-            return null;
+            var products = await GetProductsByPredicate(predicate, pageNumber, pageSize);
+            var count = await GetProductsCount(predicate);
+            return (count, products);
         }
 
         public async Task<Product> SaveNewProduct(Product product)
@@ -170,14 +154,39 @@ namespace gamezone_api.Repositories
                 await _context.SaveChangesAsync();
             }
         }
-	}
+
+        private async Task<List<Product>> GetProductsByPredicate(Expression<Func<Product, bool>> predicate, int pageNumber, int pageSize)
+        {
+            var products = await _context.Products
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(x => x.Category)
+                .Where(predicate)
+                .Skip((pageNumber - 1) * pageSize).Take(pageSize)
+                .ToListAsync();
+
+            return products;
+        }
+
+        private async Task<int> GetProductsCount(Expression<Func<Product, bool>> predicate)
+        {
+            var count = await _context.Products
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(x => x.Category)
+                .Where(predicate)
+                .CountAsync();
+
+            return count;
+        }
+    }
 
     public interface IProductsRepository
     {
         Task<List<Product>> GetProducts();
         Task<Product?> GetProductById(long id);
         Task<List<Product>> GetProductsByPaging(ProductParameters productParameters);
-        Task<List<Product>> SearchProducts(SearchParameter searchParameter);
+        Task<(int, List<Product>)> SearchProducts(SearchParameter searchParameter);
         Task<Product> SaveNewProduct(Product product);
         Task<Product?> UpdateProduct(long id, Product product);
         Task DeleteProduct(long id);
