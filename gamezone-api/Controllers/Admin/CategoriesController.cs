@@ -20,6 +20,7 @@ namespace gamezone_api.Controllers.Admin
 
 		// GET: /admin/categories
 		[HttpGet]
+		[AllowAnonymous]
 		public async Task<ActionResult<CategoryResponse>> GetCategories()
 		{
 			try
