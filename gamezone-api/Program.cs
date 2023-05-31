@@ -9,6 +9,7 @@ using gamezone_api.Repositories;
 using gamezone_api.Services;
 using gamezone_api.Services.Stripe;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
