@@ -115,6 +115,7 @@ namespace gamezone_api.Repositories
         {
             var productToUpdate = await _context.Products
                     .Include(p => p.ProductVariants)
+                    .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(cpv => cpv.Category)
                     .SingleOrDefaultAsync(p => p.Id == id);
 
             if (productToUpdate != null)
@@ -133,16 +134,19 @@ namespace gamezone_api.Repositories
 
                 productToUpdate.ProductVariants = incomingProductVariants;
 
+                _context.Entry(productToUpdate).State = EntityState.Modified;
+
                 await _context.SaveChangesAsync();
 
                 var updatedProduct = await _context.Products
                    .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
                    .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
+                   .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(cpv => cpv.Category)
                    .SingleAsync(p => p.Id == productToUpdate.Id);
 
                 return updatedProduct;
             }
-            return null;
+            return productToUpdate;
         }
 
         public async Task DeleteProduct(long id)
