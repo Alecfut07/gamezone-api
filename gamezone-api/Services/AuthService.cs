@@ -124,27 +124,6 @@ namespace gamezone_api.Services
                 throw;
             }
         }
-
-        //public async Task<AuthResponse> SignOut(AuthRequest authRequest)
-        //{
-        //    try
-        //    {
-        //        if (!ValidateEmail(authRequest.Email))
-        //        {
-        //            throw new ArgumentException();
-        //        }
-        //        else
-        //        {
-        //            var user = await _authRepository.FindUserByEmail(authRequest.Email);
-
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, null);
-        //        throw;
-        //    }
-        //}
     }
 
     public interface IAuthService
