@@ -146,12 +146,17 @@ namespace gamezone_api.Repositories
 
                 return updatedProduct;
             }
-            return productToUpdate;
+            return null;
         }
 
         public async Task DeleteProduct(long id)
         {
-            var productToRemove = await _context.Products.FindAsync(id);
+            var productToRemove = await _context.Products
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(x => x.Category)
+                .FirstAsync(p => p.Id == id);
+                //.FindAsync(id);
             if (productToRemove != null)
             {
                 _context.Products.Remove(productToRemove);
