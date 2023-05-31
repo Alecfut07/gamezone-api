@@ -1,6 +1,8 @@
 ﻿using gamezone_api.Networking;
 using gamezone_api.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Primitives;
 
 namespace gamezone_api.Controllers
 {
@@ -8,11 +10,13 @@ namespace gamezone_api.Controllers
     [Route("users")]
     public class AuthController : ControllerBase
     {
-        IAuthService _authService;
+        private IAuthService _authService;
+        private ITokenManager _tokenManager;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, ITokenManager tokenManager)
         {
             _authService = authService;
+            _tokenManager = tokenManager;
         }
 
         // POST for sign-up: /users/sign-up
@@ -61,6 +65,32 @@ namespace gamezone_api.Controllers
                     return Unauthorized();
                 }
 
+            }
+        }
+
+        // POST for sign-out: /users/sign-out
+        [HttpPost]
+        [Route("sign_out")]
+        public async Task<ActionResult> SignOut([FromHeader] string authorization)
+        {
+            if (!ModelState.IsValid)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            else
+            {
+                try
+                {
+                    var accessToken = HttpContext.Request.Headers["Authorization"];
+                    
+                    var deactivatedToken = await _tokenManager.DeactivateToken(accessToken);
+
+                    return NoContent();
+                }
+                catch (Exception ex)
+                {
+                    return Unauthorized();
+                }
             }
         }
     }

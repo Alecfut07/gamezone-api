@@ -47,6 +47,7 @@
     <None Remove="Application\" />
     <None Remove="Services\Stripe\" />
     <None Remove="Controllers\Stripe\" />
+    <None Remove="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -63,6 +64,7 @@
     <Folder Include="Application\" />
     <Folder Include="Services\Stripe\" />
     <Folder Include="Controllers\Stripe\" />
+    <Folder Include="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Migrations\20230426180929_AddSampleProducts.Designer.cs" />

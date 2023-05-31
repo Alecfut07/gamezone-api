@@ -7,6 +7,8 @@ namespace gamezone_api
 {
     public class GamezoneContext : DbContext
     {
+        public DbSet<JwtDenyList> JwtDenyLists { get; set; }
+
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Product> Products { get; set; }
@@ -36,6 +38,18 @@ namespace gamezone_api
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // JWT DENY LIST
+            modelBuilder.Entity<JwtDenyList>(jwtDenyList =>
+            {
+                jwtDenyList.ToTable("jwt_deny_list");
+
+                jwtDenyList.HasIndex(jwtDL => jwtDL.Id);
+
+                jwtDenyList.Property(jwtDL => jwtDL.Jti).IsRequired();
+
+                jwtDenyList.Property(jwtDL => jwtDL.ExpiryDate).IsRequired();
+            });
+
             // CATEGORIES
             modelBuilder.Entity<Category>(category =>
             {

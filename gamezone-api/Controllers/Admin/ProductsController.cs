@@ -6,9 +6,11 @@ using gamezone_api.Parameters;
 using gamezone_api.Helpers;
 using Newtonsoft.Json;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace gamezone_api.Controllers.Admin
 {
+    [Authorize]
     [ApiController]
     [Route("/admin/[controller]")]
     public class ProductsController : ControllerBase

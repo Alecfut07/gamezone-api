@@ -32,6 +32,27 @@ namespace gamezone_api.Helpers
 
             return userId;
 		}
+
+		public static string GetJti(string header)
+		{
+            if (header == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var token = GetAccessToken(header);
+
+            if (token == null)
+            {
+                throw new ArgumentException();
+            }
+
+            var handler = new JwtSecurityTokenHandler();
+			var jwtSecurityToken = handler.ReadJwtToken(token);
+			return jwtSecurityToken.Id;
+		}
+
+
 	}
 }
 

@@ -45,11 +45,15 @@ namespace gamezone_api.Services
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
             var signinCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            DateTimeOffset now = DateTimeOffset.UtcNow;
+            long unixTimeMilliseconds = now.ToUnixTimeMilliseconds();
             var tokeOptions = new JwtSecurityToken(
                 issuer: issuer,
                 audience: audience,
                 claims: new List<Claim>
                 {
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, unixTimeMilliseconds.ToString()),
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
                 },
                 expires: DateTime.Now.AddDays(1),
@@ -120,6 +124,27 @@ namespace gamezone_api.Services
                 throw;
             }
         }
+
+        //public async Task<AuthResponse> SignOut(AuthRequest authRequest)
+        //{
+        //    try
+        //    {
+        //        if (!ValidateEmail(authRequest.Email))
+        //        {
+        //            throw new ArgumentException();
+        //        }
+        //        else
+        //        {
+        //            var user = await _authRepository.FindUserByEmail(authRequest.Email);
+
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError(ex, null);
+        //        throw;
+        //    }
+        //}
     }
 
     public interface IAuthService

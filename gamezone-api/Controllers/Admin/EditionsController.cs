@@ -2,10 +2,12 @@
 using gamezone_api.Models;
 using gamezone_api.Networking;
 using gamezone_api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace gamezone_api.Controllers.Admin
 {
+    [Authorize]
     [ApiController]
     [Route("/admin/[controller]")]
     public class EditionsController : ControllerBase

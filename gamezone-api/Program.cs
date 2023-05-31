@@ -3,6 +3,7 @@ using gamezone_api;
 using gamezone_api.Application;
 using gamezone_api.Helpers;
 using gamezone_api.Mappers;
+using gamezone_api.Middlewares;
 using gamezone_api.Models;
 using gamezone_api.Repositories;
 using gamezone_api.Services;
@@ -75,8 +76,21 @@ builder.Services
 //    options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:Redis");
 //});
 
+// REDIS SERVER CONNECTION
+builder.Services.AddScoped<IDatabase>((serviceProvider) =>
+{
+    ConnectionMultiplexer connection = ConnectionMultiplexer.Connect("localhost");
+    return connection.GetDatabase();
+});
+
+builder.Services.AddResponseCaching();
+builder.Services.AddDistributedMemoryCache();
+
 // SQL SERVER CONNECTION
 builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration["DatabaseSettings:SQL_Server"]);
+
+// MIDDLEWARES
+//builder.Services.AddTransient<TokenManagerMiddleware>();
 
 // MAPPERS
 builder.Services.AddScoped<ProductsMapper>();
@@ -88,6 +102,7 @@ builder.Services.AddScoped<CartsMapper>();
 builder.Services.AddScoped<CategoriesMapper>();
 
 // REPOSITORIES
+builder.Services.AddScoped<TokenManagerRepository>();
 builder.Services.AddScoped<IProductsRepository, ProductsRepository>();
 //builder.Services.AddScoped<ProductVariantsRepository>();
 builder.Services.AddScoped<ConditionsRepository>();
@@ -118,6 +133,8 @@ builder.Services.AddScoped<IPublisherService, PublishersService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<ICartsService, CartsService>();
 builder.Services.AddScoped<ICategoryService, CategoriesService>();
+builder.Services.AddScoped<ITokenManager, TokenManagerService>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 // STRIPE CONNECTION
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
@@ -125,13 +142,6 @@ builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<ChargeService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<IStripeAppService, StripeAppService>();
-
-// REDIS SERVER CONNECTION
-builder.Services.AddScoped<IDatabase>((serviceProvider) =>
-{
-    ConnectionMultiplexer connection = ConnectionMultiplexer.Connect("localhost");
-    return connection.GetDatabase();
-});
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -173,6 +183,8 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Resources")),
     RequestPath = "/public"
 });
+
+app.UseMiddleware<TokenManagerMiddleware>();
 
 app.UseCors(MyAllowSpecificOrigins);
 
