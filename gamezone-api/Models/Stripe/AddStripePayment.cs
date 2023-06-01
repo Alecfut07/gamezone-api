@@ -1,4 +1,6 @@
 ﻿using System;
+using Stripe;
+
 namespace gamezone_api.Models.Stripe
 {
 	public record AddStripePayment(string CustomerId, string ReceiptEmail, string Description, string Currency, long Amount);
