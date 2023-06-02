@@ -2,17 +2,19 @@
 using Stripe;
 using gamezone_api.Services.Stripe;
 using gamezone_api.Models.Stripe;
+using Stripe.Tax;
+using Azure.Core;
 
 namespace gamezone_api.Application
 {
-	public class StripeAppService : IStripeAppService
-	{
+    public class StripeAppService : IStripeAppService
+    {
         private readonly ChargeService _chargeService;
         private readonly CustomerService _customerService;
         private readonly TokenService _tokenService;
 
         public StripeAppService(ChargeService chargeService, CustomerService customerService, TokenService tokenService)
-		{
+        {
             _chargeService = chargeService;
             _customerService = customerService;
             _tokenService = tokenService;
