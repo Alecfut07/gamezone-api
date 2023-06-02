@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Stripe.Checkout;
 using Stripe.Tax;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace gamezone_api.Controllers.Stripe
 {
@@ -38,6 +39,37 @@ namespace gamezone_api.Controllers.Stripe
             StripePayment createdPayment = await _stripeService.AddStripePaymentAsync(payment, ct);
 
             return StatusCode(StatusCodes.Status200OK, createdPayment);
+        }
+
+        [HttpPost("calculate_estimated_tax")]
+        public async Task<ActionResult> CalculateEstimatedTax([FromBody] SubtotalRequest subtotalRequest)
+        {
+            var ipAddress = HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            if (ipAddress != null)
+            {
+                var options = new CalculationCreateOptions
+                {
+                    Currency = "usd",
+                    LineItems = new List<CalculationLineItemOptions>
+                {
+                    new CalculationLineItemOptions { Amount = subtotalRequest.Amount, Reference = "L1" },
+                },
+                    CustomerDetails = new CalculationCustomerDetailsOptions { IpAddress = "107.2.247.241" },
+                };
+                var service = new CalculationService();
+                var estimatedCalculation = service.Create(options);
+                string formattedEstimatedTaxValue = string.Format(
+                    "{0:#.00}", Convert.ToDouble(estimatedCalculation.TaxAmountExclusive) / 100);
+
+                // Return the estimated tax amount as a JSON response
+                var preview = new Dictionary<string, dynamic>
+                {
+                    { "estimated_tax_amount", Convert.ToDouble(formattedEstimatedTaxValue) },
+                };
+
+                return Ok(preview);
+            }
+            return StatusCode(StatusCodes.Status500InternalServerError);
         }
 
         [HttpPost("calculate_tax")]
@@ -83,11 +115,13 @@ namespace gamezone_api.Controllers.Stripe
             };
             var service = new CalculationService();
             var calculation = service.Create(options);
+            string formattedTaxValue = string.Format(
+            "{0:#.00}", Convert.ToDouble(calculation.TaxAmountExclusive) / 100);
 
             // Return the tax amount as a JSON response
             var preview = new Dictionary<string, dynamic>
             {
-                { "tax_amount", Convert.ToDouble(calculation.TaxAmountExclusive) },
+                { "tax_amount", Convert.ToDouble(formattedTaxValue) },
             };
 
             return Ok(preview);
