@@ -87,7 +87,7 @@ namespace gamezone_api.Controllers.Stripe
             // Return the tax amount as a JSON response
             var preview = new Dictionary<string, dynamic>
             {
-                { "tax_amount", calculation.TaxAmountExclusive },
+                { "tax_amount", Convert.ToDouble(calculation.TaxAmountExclusive) },
             };
 
             return Ok(preview);
