@@ -30,6 +30,6 @@ namespace gamezone_api.Models
         [Column("update_date")]
         public DateTime UpdateDate { get; set; }
 
-        public virtual ICollection<ProductVariant> ProductVariants { get; set; } 
+        public virtual ICollection<ProductVariant> ProductVariants { get; set; }
     }
 }
