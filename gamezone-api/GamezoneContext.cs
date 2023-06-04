@@ -61,8 +61,6 @@ namespace gamezone_api
 
                 category.Property(c => c.Handle).IsRequired().HasMaxLength(40);
 
-                category.HasIndex(c => c.Handle).IsUnique();
-
                 category.Property(c => c.CreateDate).IsRequired();
 
                 category.Property(c => c.UpdateDate).IsRequired();
