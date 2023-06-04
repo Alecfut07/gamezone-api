@@ -8,6 +8,7 @@ using gamezone_api.Models;
 using gamezone_api.Repositories;
 using gamezone_api.Services;
 using gamezone_api.Services.Stripe;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpLogging;
@@ -23,7 +24,6 @@ using ProductsService = gamezone_api.Services.ProductsService;
 
 
 DotNetEnv.Env.Load();
-
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -182,6 +182,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+if (!Directory.Exists("Resources"))
+{
+    // Create the directory
+    DirectoryInfo di = Directory.CreateDirectory("Resources");
+}
 
 app.UseStaticFiles(new StaticFileOptions
 {
