@@ -21,6 +21,10 @@ using StackExchange.Redis;
 using Stripe;
 using ProductsService = gamezone_api.Services.ProductsService;
 
+
+DotNetEnv.Env.Load();
+
+
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 var builder = WebApplication.CreateBuilder(args);
@@ -67,7 +71,7 @@ builder.Services
             ValidateIssuerSigningKey = true,
             ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
             ValidAudience = builder.Configuration["JWT:ValidAudience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET"))),
         };
     });
 
@@ -80,7 +84,7 @@ builder.Services
 // REDIS SERVER CONNECTION
 builder.Services.AddScoped<IDatabase>((serviceProvider) =>
 {
-    ConnectionMultiplexer connection = ConnectionMultiplexer.Connect("localhost");
+    ConnectionMultiplexer connection = ConnectionMultiplexer.Connect(Environment.GetEnvironmentVariable("REDIS_URL"));
     return connection.GetDatabase();
 });
 
@@ -88,7 +92,7 @@ builder.Services.AddResponseCaching();
 builder.Services.AddDistributedMemoryCache();
 
 // SQL SERVER CONNECTION
-builder.Services.AddSqlServer<GamezoneContext>(builder.Configuration["DatabaseSettings:SQL_Server"]);
+builder.Services.AddSqlServer<GamezoneContext>(Environment.GetEnvironmentVariable("DATABASE_URL"));
 
 // MIDDLEWARES
 //builder.Services.AddTransient<TokenManagerMiddleware>();
@@ -138,7 +142,7 @@ builder.Services.AddScoped<ITokenManager, TokenManagerService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 // STRIPE CONNECTION
-StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("STRIPE_SECRET");
 builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<ChargeService>();
 builder.Services.AddScoped<TokenService>();

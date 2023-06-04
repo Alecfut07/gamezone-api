@@ -30,6 +30,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
     <PackageReference Include="StackExchange.Redis" Version="2.6.111" />
     <PackageReference Include="Stripe.net" Version="41.16.0" />
+    <PackageReference Include="DotNetEnv" Version="2.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,6 +49,7 @@
     <None Remove="Services\Stripe\" />
     <None Remove="Controllers\Stripe\" />
     <None Remove="Middlewares\" />
+    <None Remove="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -65,6 +67,7 @@
     <Folder Include="Services\Stripe\" />
     <Folder Include="Controllers\Stripe\" />
     <Folder Include="Middlewares\" />
+    <Folder Include="Resources\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Migrations\20230426180929_AddSampleProducts.Designer.cs" />
