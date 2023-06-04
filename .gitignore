@@ -405,4 +405,6 @@ ASALocalRun/
 .localhistory/
 
 # Resources folder
-Resources/
+Resources
+
+.env
