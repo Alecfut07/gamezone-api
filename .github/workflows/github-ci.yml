@@ -67,4 +67,4 @@ jobs:
           push: true
           context: "gamezone-api"
           tags: ${{ env.IMAGE_NAME }}
-          file: Dockerfile
+          file: gamezone-api/Dockerfile
