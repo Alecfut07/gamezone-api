@@ -40,15 +40,14 @@ name: .NET Core Desktop
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 env:
   IMAGE_NAME: alecfut07/gamezone-api:latest
 
 jobs:
-
   build:
     runs-on: ubuntu-20.04
     steps:
@@ -66,5 +65,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
+          context: "{{defaultContext}}:gamezone-api"
           tags: ${{ env.IMAGE_NAME }}
           file: gamezone-api/Dockerfile
