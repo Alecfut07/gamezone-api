@@ -36,7 +36,25 @@ namespace gamezone_api.Controllers
 			}
 		}
 
-		[HttpGet]
+        [HttpGet("{id}/{parentCategoryId}")]
+        public async Task<ActionResult<CategoryResponse?>> GetCategoryWithSubcategory([FromRoute] long id, [FromRoute] long parentCategoryId)
+        {
+            try
+            {
+                var categoryWithSubCategory = await _categoryService.GetCategoryWithSubcategory(id, parentCategoryId);
+                if (categoryWithSubCategory == null)
+                {
+                    return NotFound();
+                }
+                return Ok(categoryWithSubCategory);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpGet]
 		public async Task<ActionResult<List<CategoryResponse>>> GetFilterCategories([FromQuery] CategoriesParameters categoriesParameters)
 		{
 			try

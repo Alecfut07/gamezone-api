@@ -6,6 +6,7 @@ using gamezone_api.Parameters;
 using gamezone_api.Helpers;
 using Newtonsoft.Json;
 using NuGet.ContentModel;
+using Stripe;
 
 namespace gamezone_api.Controllers;
 
@@ -13,11 +14,11 @@ namespace gamezone_api.Controllers;
 [Route("[controller]")]
 public class ProductsController : ControllerBase
 {
-    IProductService productService;
+    IProductService _productService;
 
     public ProductsController(IProductService productService)
     {
-        this.productService = productService;
+        _productService = productService;
     }
 
     // GET /products/id
@@ -26,7 +27,7 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            var product = await productService.GetProductById(id);
+            var product = await _productService.GetProductById(id);
             if (product == null)
             {
                 return NotFound();
@@ -45,7 +46,7 @@ public class ProductsController : ControllerBase
     {
         try
         {
-            var products = await productService.GetProductsByPaging(productParameters);
+            var products = await _productService.GetProductsByPaging(productParameters);
             if (products is PagedList<ProductResponse>)
             {
                 var paginatedProducts = products as PagedList<ProductResponse>;
@@ -70,12 +71,27 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
+    [Route("/collections")]
+    public async Task<ActionResult<List<ProductResponse>>> GetProductsByCollection()
+    {
+        try
+        {
+            var productsCollection = await _productService.GetProductsByCollection();
+            return Ok(productsCollection);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    }
+
+    [HttpGet]
     [Route("Search")]
     public async Task<ActionResult<List<ProductResponse>>> SearchProducts([FromQuery] SearchParameter searchParameter)
     {
         try
         {
-            var products = await productService.SearchProducts(searchParameter);
+            var products = await _productService.SearchProducts(searchParameter);
             if (products is PagedList<ProductResponse>)
             {
                 var paginatedProducts = products as PagedList<ProductResponse>;

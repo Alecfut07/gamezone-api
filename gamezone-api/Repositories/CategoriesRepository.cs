@@ -27,6 +27,12 @@ namespace gamezone_api.Repositories
             return category;
         }
 
+        public async Task<Category?> GetCategoryWithSubcategory(long id, long parentCategoryId)
+        {
+            var categoryWithSubcategory = await _context.Categories.FirstOrDefaultAsync(c => c.Id == id && c.ParentCategoryId == parentCategoryId);
+            return categoryWithSubcategory;
+        }
+
         public async Task<List<Category>> GetParentCategories()
         {
             var parentCategories = await _context.Categories
@@ -65,6 +71,7 @@ namespace gamezone_api.Repositories
                     cate
                         .SetProperty((c) => c.Name, category.Name)
                         .SetProperty((c) => c.ParentCategoryId, category.ParentCategoryId)
+                        .SetProperty((c) => c.Handle, category.Handle)
                         .SetProperty((c) => c.UpdateDate, DateTime.Now)
                         );
 

@@ -92,6 +92,20 @@ namespace gamezone_api.Services
             }
         }
 
+        public async Task<List<ProductResponse>> GetProductsByCollection()
+        {
+            try
+            {
+                var products = await _productsRepository.GetProductsByCollection();
+                return products.ConvertAll<ProductResponse>((p) => _productsMapper.Map(p));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
+
         public async Task<PagedList<ProductResponse>> SearchProducts(SearchParameter searchParameter)
         {
             try
@@ -227,6 +241,8 @@ namespace gamezone_api.Services
         Task<ProductResponse?> GetProductById(long id);
 
         Task<PagedList<ProductResponse>> GetProductsByPaging(ProductParameters productParameters);
+
+        Task<List<ProductResponse>> GetProductsByCollection();
 
         Task<PagedList<ProductResponse>> SearchProducts(SearchParameter searchParameter);
 

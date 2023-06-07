@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using gamezone_api.Mappers;
 using gamezone_api.Models;
 using gamezone_api.Networking;
 using gamezone_api.Parameters;
 using gamezone_api.Repositories;
+using Microsoft.Extensions.FileSystemGlobbing.Internal;
 
 namespace gamezone_api.Services
 {
@@ -70,6 +72,25 @@ namespace gamezone_api.Services
                 {
                     var categoryResponse = _categoriesMapper.Map(category, new List<Category>());
                     return categoryResponse;
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, null);
+                throw;
+            }
+        }
+
+        public async Task<CategoryResponse?> GetCategoryWithSubcategory(long id, long parentCategoryId)
+        {
+            try
+            {
+                var categoryWithSubCategory = await _categoriesRepository.GetCategoryWithSubcategory(id, parentCategoryId);
+                if (categoryWithSubCategory != null)
+                {
+                    var categoryWithSubCategoryResponse = _categoriesMapper.Map(categoryWithSubCategory, new List<Category>());
+                    return categoryWithSubCategoryResponse;
                 }
                 return null;
             }
@@ -161,6 +182,8 @@ namespace gamezone_api.Services
         Task<IEnumerable<CategoryResponse>> GetCategories();
 
         Task<CategoryResponse?> GetCategoryById(long id);
+
+        Task<CategoryResponse?> GetCategoryWithSubcategory(long id, long parentCategoryId);
 
         Task<List<CategoryResponse>> GetFilterCategories(CategoriesParameters categoriesparameters);
 

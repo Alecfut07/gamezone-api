@@ -11,6 +11,7 @@ namespace gamezone_api.Mappers
 			return new Category
 			{
 				Name = categoryRequest.Name,
+				Handle = categoryRequest.Handle,
 				ParentCategoryId = categoryRequest.ParentCategoryId
 			};
 		}
@@ -29,6 +30,7 @@ namespace gamezone_api.Mappers
 				Handle = category.Handle,
 				CreateDate = category.CreateDate,
 				UpdateDate = category.UpdateDate,
+				ParentCategoryId = category.ParentCategoryId,
 				SubCategories = subcategories.ConvertAll(subcategory => Map(subcategory))
 			};
 		}

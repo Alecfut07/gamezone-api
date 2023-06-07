@@ -12,6 +12,8 @@ namespace gamezone_api.Networking
 		[JsonPropertyName("parent_category_id")]
 		public long? ParentCategoryId { get; set; }
 
-	}
+        [Required]
+        public string Handle { get; set; }
+    }
 }
 

@@ -57,6 +57,24 @@ namespace gamezone_api.Repositories
             return products;
         }
 
+        public async Task<List<Product>> GetProductsByCollection()
+        {
+            var randomProductIds = await _context.Products
+                .Select(p => p.Id)
+                .ToListAsync();
+
+            var productIds = randomProductIds.Shuffle().Take(12);
+
+            var products = await _context.Products
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
+                .Include(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(cpv => cpv.Category)
+                .Where(p => productIds.Contains(p.Id))
+                .ToListAsync();
+
+            return products;
+        }
+
         public async Task<(int, List<Product>)> SearchProducts(SearchParameter searchParameter)
         {
             var name = searchParameter.Name ?? null;
@@ -195,6 +213,7 @@ namespace gamezone_api.Repositories
         Task<List<Product>> GetProducts();
         Task<Product?> GetProductById(long id);
         Task<List<Product>> GetProductsByPaging(ProductParameters productParameters);
+        Task<List<Product>> GetProductsByCollection();
         Task<(int, List<Product>)> SearchProducts(SearchParameter searchParameter);
         Task<Product> SaveNewProduct(Product product);
         Task<Product?> UpdateProduct(long id, Product product);

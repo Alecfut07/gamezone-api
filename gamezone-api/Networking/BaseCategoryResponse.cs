@@ -11,6 +11,9 @@ namespace gamezone_api.Networking
 
         public string Handle { get; set; }
 
+        [JsonPropertyName("parent_category_id")]
+        public long? ParentCategoryId { get; set; }
+
         [JsonPropertyName("create_date")]
         public DateTime CreateDate { get; set; }
 
