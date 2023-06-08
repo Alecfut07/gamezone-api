@@ -10,11 +10,12 @@ namespace gamezone_api.Controllers.Admin
     [Authorize]
     [ApiController]
     [Route("/admin/[controller]")]
-    public class EditionsController : ControllerBase
+    public class EditionsController : ApplicationController
     {
         IEditionService _editionService;
 
-        public EditionsController(IEditionService editionService)
+        public EditionsController(IEditionService editionService, IUserService usersService)
+            : base(usersService)
         {
             _editionService = editionService;
         }
@@ -25,8 +26,16 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                var editions = await _editionService.GetEditions();
-                return Ok(editions);
+                var userLoggedIn = await GetLoggedInUser();
+                if (userLoggedIn.IsAdmin)
+                {
+                    var editions = await _editionService.GetEditions();
+                    return Ok(editions);
+                }
+                else
+                {
+                    return Forbid();
+                }
             }
             catch (Exception ex)
             {
@@ -46,8 +55,16 @@ namespace gamezone_api.Controllers.Admin
             {
                 try
                 {
-                    var newEdition = await _editionService.CreateNewEdition(editionRequest);
-                    return Ok(newEdition);
+                    var userLoggedIn = await GetLoggedInUser();
+                    if (userLoggedIn.IsAdmin)
+                    {
+                        var newEdition = await _editionService.CreateNewEdition(editionRequest);
+                        return Ok(newEdition);
+                    }
+                    else
+                    {
+                        return Forbid();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -62,8 +79,16 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                var updatedEdition = await _editionService.UpdateEdition(id, editionRequest);
-                return Ok(updatedEdition);
+                var userLoggedIn = await GetLoggedInUser();
+                if (userLoggedIn.IsAdmin)
+                {
+                    var updatedEdition = await _editionService.UpdateEdition(id, editionRequest);
+                    return Ok(updatedEdition);
+                }
+                else
+                {
+                    return Forbid();
+                }
             }
             catch (Exception ex)
             {
@@ -77,7 +102,15 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                await _editionService.DeleteEdition(id);
+                var userLoggedIn = await GetLoggedInUser();
+                if (userLoggedIn.IsAdmin)
+                {
+                    await _editionService.DeleteEdition(id);
+                }
+                else
+                {
+                    return Forbid();
+                }
             }
             catch(Microsoft.EntityFrameworkCore.DbUpdateException ex)
             {

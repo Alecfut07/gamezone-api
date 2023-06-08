@@ -27,6 +27,9 @@ namespace gamezone_api.Networking
 
         [JsonPropertyName("update_date")]
         public DateTime UpdateDate { get; set; }
+
+        [JsonPropertyName("is_admin")]
+        public bool IsAdmin { get; set; }
     }
 }
 

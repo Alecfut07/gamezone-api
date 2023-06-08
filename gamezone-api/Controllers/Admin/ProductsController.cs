@@ -13,11 +13,12 @@ namespace gamezone_api.Controllers.Admin
     [Authorize]
     [ApiController]
     [Route("/admin/[controller]")]
-    public class ProductsController : ControllerBase
+    public class ProductsController : ApplicationController
     {
         private IProductService _productService;
 
-        public ProductsController(IProductService productService)
+        public ProductsController(IProductService productService, IUserService usersService)
+            : base(usersService)
         {
             _productService = productService;
         }
@@ -28,8 +29,16 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                var products = await _productService.GetProducts();
-                return Ok(products);
+                var userLoggedIn = await GetLoggedInUser();
+                if (userLoggedIn.IsAdmin)
+                {
+                    var products = await _productService.GetProducts();
+                    return Ok(products);
+                }
+                else
+                {
+                    return Forbid();
+                }
             }
             catch (Exception ex)
             {
@@ -49,9 +58,17 @@ namespace gamezone_api.Controllers.Admin
             {
                 try
                 {
-                    string protocol = HttpContext.Request.Host.Host;
-                    var newProduct = await _productService.SaveNewProduct(productRequest);
-                    return Ok(newProduct);
+                    var userLoggedIn = await GetLoggedInUser();
+                    if (userLoggedIn.IsAdmin)
+                    {
+                        string protocol = HttpContext.Request.Host.Host;
+                        var newProduct = await _productService.SaveNewProduct(productRequest);
+                        return Ok(newProduct);
+                    }
+                    else
+                    {
+                        return Forbid();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -62,16 +79,24 @@ namespace gamezone_api.Controllers.Admin
 
         // POST: admin/products/upload
         [HttpPost("upload")]
-        public ActionResult<ImageResponse?> UploadImage([FromForm] ImageRequest imageRequest)
+        public async Task<ActionResult<ImageResponse?>> UploadImage([FromForm] ImageRequest imageRequest)
         {
             try
             {
-                var newImageUploaded = _productService.UploadImage(imageRequest);
-                if (newImageUploaded == null)
+                var userLoggedIn = await GetLoggedInUser();
+                if (userLoggedIn.IsAdmin)
                 {
-                    return NotFound();
+                    var newImageUploaded = _productService.UploadImage(imageRequest);
+                    if (newImageUploaded == null)
+                    {
+                        return NotFound();
+                    }
+                    return Ok(newImageUploaded);
                 }
-                return Ok(newImageUploaded);
+                else
+                {
+                    return Forbid();
+                }
             }
             catch(ArgumentNullException ex)
             {
@@ -89,12 +114,20 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                var updatedProduct = await _productService.UpdateProduct(id, productRequest);
-                if (updatedProduct == null)
+                var userLoggedIn = await GetLoggedInUser();
+                if (userLoggedIn.IsAdmin)
                 {
-                    return NotFound();
+                    var updatedProduct = await _productService.UpdateProduct(id, productRequest);
+                    if (updatedProduct == null)
+                    {
+                        return NotFound();
+                    }
+                    return Ok(updatedProduct);
                 }
-                return Ok(updatedProduct);
+                else
+                {
+                    return Forbid();
+                }
             }
             catch (Exception ex)
             {
@@ -108,7 +141,15 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                await _productService.DeleteProduct(id);
+                var userLoggedIn = await GetLoggedInUser();
+                if (userLoggedIn.IsAdmin)
+                {
+                    await _productService.DeleteProduct(id);
+                }
+                else
+                {
+                    return Forbid();
+                }
             }
             catch (KeyNotFoundException ex)
             {

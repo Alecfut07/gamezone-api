@@ -26,7 +26,8 @@ namespace gamezone_api.Mappers
 				Phone = user.Phone,
 				Birthdate = user.Birthdate,
 				CreateDate = user.CreateDate,
-				UpdateDate = user.UpdateDate
+				UpdateDate = user.UpdateDate,
+				IsAdmin = user.IsAdmin,
 			};
 		}
 	}

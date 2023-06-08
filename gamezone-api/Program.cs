@@ -6,6 +6,7 @@ using gamezone_api.Mappers;
 using gamezone_api.Middlewares;
 using gamezone_api.Models;
 using gamezone_api.Repositories;
+using gamezone_api.SeedData;
 using gamezone_api.Services;
 using gamezone_api.Services.Stripe;
 using Microsoft.AspNetCore;
@@ -43,8 +44,6 @@ builder.Services.AddCors(options =>
                               .WithExposedHeaders("Authorization", "X-Pagination");
                       });
 });
-
-// Add services to the container.
 
 // DISABLING THE AUTOMATIC VALIDATION FROM [ApiController]
 builder.Services.Configure<ApiBehaviorOptions>(options => options.SuppressModelStateInvalidFilter = true);
@@ -160,7 +159,26 @@ builder.Services.AddHttpLogging(logging =>
     logging.LoggingFields = HttpLoggingFields.All;
 });
 
+// SEEDDER CONFIGURATION
+builder.Services.AddScoped<UsersSeed>();
+
 var app = builder.Build();
+
+if (args.Length == 1 && args[0].ToLower() == "seeddata")
+{
+    SeedData(app);
+}
+
+void SeedData(IHost app)
+{
+    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+    using (var scope = scopedFactory.CreateScope())
+    {
+        var service = scope.ServiceProvider.GetService<UsersSeed>();
+        service.Seed();
+    }
+}
 
 app.UseHttpLogging();
 

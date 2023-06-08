@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Claims;
 using gamezone_api.Networking;
 using gamezone_api.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -9,11 +10,12 @@ namespace gamezone_api.Controllers.Admin
     [Authorize]
     [ApiController]
 	[Route("/admin/[controller]")]
-	public class CategoriesController : ControllerBase
+	public class CategoriesController : ApplicationController
 	{
 		ICategoryService _categoryService;
 
-		public CategoriesController(ICategoryService categoryService)
+		public CategoriesController(ICategoryService categoryService, IUserService usersService)
+			: base(usersService)
 		{
 			_categoryService = categoryService;
 		}
@@ -25,8 +27,8 @@ namespace gamezone_api.Controllers.Admin
 		{
 			try
 			{
-				var categories = await _categoryService.GetCategories();
-				return Ok(categories);
+                var categories = await _categoryService.GetCategories();
+                return Ok(categories);
 			}
 			catch (Exception ex)
 			{
@@ -46,8 +48,16 @@ namespace gamezone_api.Controllers.Admin
 			{
 				try
 				{
-					var newCategory = await _categoryService.CreateNewCategory(categoryRequest);
-					return Ok(newCategory);
+                    var userLoggedIn = await GetLoggedInUser();
+                    if (userLoggedIn.IsAdmin)
+					{
+						var newCategory = await _categoryService.CreateNewCategory(categoryRequest);
+						return Ok(newCategory);
+					}
+					else
+					{
+						return Forbid();
+					}
 				}
 				catch (Exception ex)
 				{
@@ -62,12 +72,20 @@ namespace gamezone_api.Controllers.Admin
 		{
 			try
 			{
-				var updatedCategory = await _categoryService.UpdateCategory(id, categoryRequest);
-				if (updatedCategory == null)
+                var userLoggedIn = await GetLoggedInUser();
+                if (userLoggedIn.IsAdmin)
 				{
-					return NotFound();
+                    var updatedCategory = await _categoryService.UpdateCategory(id, categoryRequest);
+                    if (updatedCategory == null)
+                    {
+                        return NotFound();
+                    }
+                    return Ok(updatedCategory);
+                }
+				else
+				{
+					return Forbid();
 				}
-				return Ok(updatedCategory);
 			}
 			catch (Exception ex)
 			{
@@ -81,7 +99,15 @@ namespace gamezone_api.Controllers.Admin
 		{
 			try
 			{
-				await _categoryService.DeleteCategory(id);
+                var userLoggedIn = await GetLoggedInUser();
+                if (userLoggedIn.IsAdmin)
+				{
+                    await _categoryService.DeleteCategory(id);
+				}
+				else
+				{
+					return Forbid();
+				}
 			}
 			catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
 			{

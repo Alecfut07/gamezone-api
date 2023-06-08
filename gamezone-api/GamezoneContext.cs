@@ -30,7 +30,7 @@ namespace gamezone_api
         public GamezoneContext(DbContextOptions<GamezoneContext> options) : base(options)
         {
         }
-
+        
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             //optionsBuilder.LogTo(Console.WriteLine);
@@ -177,7 +177,9 @@ namespace gamezone_api
 
                 user.Property(u => u.UpdateDate).IsRequired();
 
-                user.HasData(UsersSeed.InitData());
+                user.Property(u => u.IsAdmin).IsRequired();
+
+                //user.HasData();
             });
 
             // ADDRESSES

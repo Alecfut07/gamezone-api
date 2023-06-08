@@ -8,11 +8,12 @@ namespace gamezone_api.Controllers.Admin
     [Authorize]
     [ApiController]
     [Route("/admin/[controller]")]
-    public class ConditionsController : ControllerBase
+    public class ConditionsController : ApplicationController
     {
         IConditionService _conditionService;
 
-        public ConditionsController(IConditionService conditionService)
+        public ConditionsController(IConditionService conditionService, IUserService usersService)
+            : base(usersService)
         {
             _conditionService = conditionService;
         }
@@ -23,8 +24,16 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                var conditions = await _conditionService.GetConditions();
-                return Ok(conditions);
+                var userLoggedIn = await GetLoggedInUser();
+                if (userLoggedIn.IsAdmin)
+                {
+                    var conditions = await _conditionService.GetConditions();
+                    return Ok(conditions);
+                }
+                else
+                {
+                    return Forbid();
+                }
             }
             catch (Exception ex)
             {
@@ -44,8 +53,16 @@ namespace gamezone_api.Controllers.Admin
             {
                 try
                 {
-                    var newCondition = await _conditionService.CreateNewCondition(condition);
-                    return Ok(newCondition);
+                    var userLoggedIn = await GetLoggedInUser();
+                    if (userLoggedIn.IsAdmin)
+                    {
+                        var newCondition = await _conditionService.CreateNewCondition(condition);
+                        return Ok(newCondition);
+                    }
+                    else
+                    {
+                        return Forbid();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -61,12 +78,20 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                var updatedCondition = await _conditionService.UpdateCondition(id, conditionRequest);
-                if (updatedCondition == null)
+                var userLoggedIn = await GetLoggedInUser();
+                if (userLoggedIn.IsAdmin)
                 {
-                    return NotFound();
+                    var updatedCondition = await _conditionService.UpdateCondition(id, conditionRequest);
+                    if (updatedCondition == null)
+                    {
+                        return NotFound();
+                    }
+                    return Ok(updatedCondition);
                 }
-                return Ok(updatedCondition);
+                else
+                {
+                    return Forbid();
+                }
             }
             catch (Exception ex)
             {
@@ -80,7 +105,15 @@ namespace gamezone_api.Controllers.Admin
         {
             try
             {
-                await _conditionService.DeleteCondition(id);
+                var userLoggedIn = await GetLoggedInUser();
+                if (userLoggedIn.IsAdmin)
+                {
+                    await _conditionService.DeleteCondition(id);
+                }
+                else
+                {
+                    return Forbid();
+                }
             }
             catch (Microsoft.EntityFrameworkCore.DbUpdateException ex)
             {

@@ -38,6 +38,9 @@ namespace gamezone_api.Models
 		public DateTime UpdateDate { get; set; }
 
 		public Address? Address { get; set; }
+
+		[Column("is_admin")]
+		public bool IsAdmin { get; set; } = false;
 	}
 }
 
