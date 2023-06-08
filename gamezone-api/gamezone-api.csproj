@@ -43,12 +43,6 @@
     <None Remove="SeedData\" />
     <None Remove="Helpers\" />
     <None Remove="Parameters\" />
-    <None Remove="Controllers\Admin\" />
-    <None Remove="Models\Stripe\" />
-    <None Remove="Application\" />
-    <None Remove="Services\Stripe\" />
-    <None Remove="Controllers\Stripe\" />
-    <None Remove="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -60,12 +54,6 @@
     <Folder Include="SeedData\" />
     <Folder Include="Helpers\" />
     <Folder Include="Parameters\" />
-    <Folder Include="Controllers\Admin\" />
-    <Folder Include="Models\Stripe\" />
-    <Folder Include="Application\" />
-    <Folder Include="Services\Stripe\" />
-    <Folder Include="Controllers\Stripe\" />
-    <Folder Include="Middlewares\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Migrations\20230426180929_AddSampleProducts.Designer.cs" />
