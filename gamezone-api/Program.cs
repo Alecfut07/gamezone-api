@@ -151,7 +151,7 @@ builder.Services.AddScoped<ChargeService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<IStripeAppService, StripeAppService>();
 
-// SENDGRID
+// SENDGRID CONFIGURATION
 builder.Services.AddSendGrid(option =>
 {
     option.ApiKey = Environment.GetEnvironmentVariable("SENDGRID_SECRET");

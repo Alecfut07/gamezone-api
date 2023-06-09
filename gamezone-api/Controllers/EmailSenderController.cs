@@ -29,9 +29,17 @@ namespace gamezone_api.Controllers
             var from = new EmailAddress(Environment.GetEnvironmentVariable("SENDGRID_EMAIL_TEST"), "Alec Ortega");
             //var subject = "Sending with SendGrid is Fun";
             var to = new EmailAddress(Environment.GetEnvironmentVariable("SENDGRID_EMAIL_TEST"), "Alec Ortega");
-            var plainTextContent = message;
-            var htmlContent = "";
-            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var templateId = "d-b87a3075d0464c35aabebd357d5cc80b";
+            var dynamicTemplateData = new
+            {
+                subject = subject,
+                orderNumber = $"{Guid.NewGuid().ToString()}",
+                firstName = "Alec",
+                message = message,
+            };
+            //var plainTextContent = message;
+            //var htmlContent = "";
+            var msg = MailHelper.CreateSingleTemplateEmail(from, to, templateId, dynamicTemplateData);
             var response = await client.SendEmailAsync(msg);
             return Ok(response);
 		}
