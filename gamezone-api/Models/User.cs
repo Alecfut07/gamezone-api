@@ -41,6 +41,8 @@ namespace gamezone_api.Models
 
 		[Column("is_admin")]
 		public bool IsAdmin { get; set; } = false;
+
+		public virtual ICollection<Order> Orders { get; set; }
 	}
 }
 

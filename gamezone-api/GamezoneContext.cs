@@ -23,6 +23,8 @@ namespace gamezone_api
 
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+
         public DbSet<Address> Addresses { get; set; }
 
         public DbSet<Publisher> Publishers { get; set; }
@@ -180,6 +182,22 @@ namespace gamezone_api
                 user.Property(u => u.IsAdmin).IsRequired();
 
                 //user.HasData();
+            });
+
+            // ORDERS
+            modelBuilder.Entity<Order>(order =>
+            {
+                order.ToTable("orders");
+
+                order.HasKey(o => o.Id);
+
+                order.Property(o => o.Tax).IsRequired();
+
+                order.Property(o => o.Subtotal).IsRequired();
+
+                order.Property(o => o.Grandtotal).IsRequired();
+
+                order.HasOne(o => o.User);
             });
 
             // ADDRESSES

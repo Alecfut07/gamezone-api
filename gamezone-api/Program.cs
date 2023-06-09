@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using gamezone_api;
 using gamezone_api.Application;
+using gamezone_api.Controllers;
 using gamezone_api.Helpers;
 using gamezone_api.Mappers;
 using gamezone_api.Middlewares;
@@ -19,6 +20,8 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using SendGrid.Extensions.DependencyInjection;
+using SendGrid.Helpers.Mail;
 using StackExchange.Redis;
 using Stripe;
 using ProductsService = gamezone_api.Services.ProductsService;
@@ -147,6 +150,14 @@ builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<ChargeService>();
 builder.Services.AddScoped<TokenService>();
 builder.Services.AddScoped<IStripeAppService, StripeAppService>();
+
+// SENDGRID
+builder.Services.AddSendGrid(option =>
+{
+    option.ApiKey = Environment.GetEnvironmentVariable("SENDGRID_SECRET");
+});
+//builder.Services.AddScoped<IEmailSenderService, EmailSenderController>();
+//builder.Services.AddTransient<IEmailSenderService, EmailSenderController>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
