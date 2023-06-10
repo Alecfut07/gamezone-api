@@ -7,17 +7,17 @@ namespace gamezone_api.Networking
 	{
 		public Guid Id { get; set; }
 
-        [JsonPropertyName("tax")]
-        public decimal Tax { get; set; }
+        //[JsonPropertyName("tax")]
+        //public decimal Tax { get; set; }
 
-        [JsonPropertyName("subtotal")]
-        public decimal Subtotal { get; set; }
+        //[JsonPropertyName("subtotal")]
+        //public decimal Subtotal { get; set; }
 
         [JsonPropertyName("quantity")]
         public int Quantity { get; set; }
 
-        [JsonPropertyName("grandtotal")]
-        public decimal Grandtotal { get; set; }
+        //[JsonPropertyName("grandtotal")]
+        //public decimal Grandtotal { get; set; }
 
         public virtual OrderResponse Order { get; set; }
 
