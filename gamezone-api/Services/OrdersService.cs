@@ -7,21 +7,25 @@ namespace gamezone_api.Services
 {
 	public class OrdersService : BaseService, IOrdersService
 	{
+		private CartsRepository _cartsRepository;
 		private IOrdersRepository _ordersRepository;
 		private OrdersMapper _ordersMapper;
 
-		public OrdersService(ILogger logger, IOrdersRepository ordersRepository, OrdersMapper ordersMapper)
+		public OrdersService(ILogger logger, IOrdersRepository ordersRepository, CartsRepository cartsRepository, OrdersMapper ordersMapper)
 			: base(logger)
 		{
 			_ordersRepository = ordersRepository;
+			_cartsRepository = cartsRepository;
 			_ordersMapper = ordersMapper;
         }
 
-		public async Task<OrderResponse?> SaveNewOrder(OrderRequest orderRequest)
+		public async Task<OrderResponse?> SubmitOrder(string uuid, OrderRequest orderRequest)
 		{
 			try
 			{
-				var order = await _ordersRepository.SaveNewOrder(null);
+				var cartItems = await _cartsRepository.GetCart(uuid);
+				var newOrder = _ordersMapper.Map(orderRequest);
+				var order = await _ordersRepository.SubmitOrder(uuid, null);
 
                 return null;
 			}
@@ -35,7 +39,7 @@ namespace gamezone_api.Services
 
 	public interface IOrdersService
 	{
-		Task<OrderResponse?> SaveNewOrder(OrderRequest orderRequest);
+		Task<OrderResponse?> SubmitOrder(string uuid, OrderRequest orderRequest);
     }
 }
 

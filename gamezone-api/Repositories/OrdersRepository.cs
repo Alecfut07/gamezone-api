@@ -15,15 +15,17 @@ namespace gamezone_api.Repositories
 			_context = context;
 		}
 
-		public async Task<Models.Order> SaveNewOrder(Models.Order order)
+		public async Task<Models.Order> SubmitOrder(string uuid, Models.Order order)
 		{
+			var key = new RedisKey($"cart:{uuid}");
+			var cartEntries = await _db.HashGetAllAsync(key);
 			return null;
 		}
 	}
 
 	public interface IOrdersRepository
 	{
-		Task<Models.Order> SaveNewOrder(Models.Order order);
+		Task<Models.Order> SubmitOrder(string uuid, Models.Order order);
     }
 }
 

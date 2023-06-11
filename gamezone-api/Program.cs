@@ -108,6 +108,7 @@ builder.Services.AddScoped<UsersMapper>();
 builder.Services.AddScoped<PublishersMapper>();
 builder.Services.AddScoped<CartsMapper>();
 builder.Services.AddScoped<CategoriesMapper>();
+builder.Services.AddScoped<OrdersMapper>();
 
 // REPOSITORIES
 builder.Services.AddScoped<TokenManagerRepository>();
@@ -120,6 +121,7 @@ builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<PublishersRepository>();
 builder.Services.AddScoped<CartsRepository>();
 builder.Services.AddScoped<CategoriesRepository>();
+builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
 
 // SERVICES
 builder.Services.AddScoped<ILogger>((serviceProvider) =>
@@ -142,6 +144,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<ICartsService, CartsService>();
 builder.Services.AddScoped<ICategoryService, CategoriesService>();
 builder.Services.AddScoped<ITokenManager, TokenManagerService>();
+builder.Services.AddScoped<IOrdersService, OrdersService>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 // STRIPE CONNECTION
@@ -149,7 +152,7 @@ StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("STRIPE_SECRET")
 builder.Services.AddScoped<CustomerService>();
 builder.Services.AddScoped<ChargeService>();
 builder.Services.AddScoped<TokenService>();
-builder.Services.AddScoped<IStripeAppService, StripeAppService>();
+builder.Services.AddScoped<IPaymentsService, PaymentsService>();
 
 // SENDGRID CONFIGURATION
 builder.Services.AddSendGrid(option =>
