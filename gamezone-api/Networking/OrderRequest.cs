@@ -15,6 +15,9 @@ namespace gamezone_api.Networking
 
         [JsonPropertyName("payment")]
         public Payment Payment { get; set; }
+
+        [JsonPropertyName("order_details")]
+        public ICollection<OrderDetailRequest> OrderDetailRequests { get; set; }
     }
 }
 

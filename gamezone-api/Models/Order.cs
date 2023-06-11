@@ -27,6 +27,8 @@ namespace gamezone_api.Models
 		public long? UserId { get; set; }
 
 		public virtual User User { get; set; }
-	}
+
+        public virtual ICollection<OrderDetail> OrderDetails { get; set; }
+    }
 }
 

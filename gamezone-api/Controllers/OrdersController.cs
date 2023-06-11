@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Claims;
 using gamezone_api.Application;
+using gamezone_api.Helpers;
 using gamezone_api.Models.Stripe;
 using gamezone_api.Networking;
 using gamezone_api.Services;
@@ -36,10 +37,10 @@ namespace gamezone_api.Controllers
                 {
                     var uuid = HttpContext.Request.Cookies["uuid"];
                     var accessToken = HttpContext.Request.Headers["Authorization"];
-                    var userId = long.Parse(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+                    var userId = TokenHelper.GetUserId(accessToken);
                     var stripeCustomer = await _paymentsService.AddStripeCustomerAsync(orderRequest.Customer, ct);
                     var paymentResponse = await _paymentsService.AddStripePaymentAsync(uuid, stripeCustomer.CustomerId, orderRequest.Address, orderRequest.Payment, ct);
-                    var orderResponse = await _ordersService.SubmitOrder(uuid, orderRequest);
+                    var orderResponse = await _ordersService.SubmitOrder(uuid, userId, orderRequest, paymentResponse.Subtotal, paymentResponse.Tax, paymentResponse.Amount);
                     return Ok();
                 }
                 catch (Exception ex)

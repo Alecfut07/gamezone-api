@@ -8,7 +8,10 @@ namespace gamezone_api.Networking
 		public Guid Id { get; set; }
 
         [JsonPropertyName("user_id")]
-        public long UserId { get; set; }
+        public long? UserId { get; set; }
+
+        [JsonPropertyName("email")]
+        public string Email { get; set; }
 
         [JsonPropertyName("tax")]
         public decimal Tax { get; set; }

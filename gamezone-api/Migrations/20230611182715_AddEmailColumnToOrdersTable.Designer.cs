@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using gamezone_api;
 
@@ -11,9 +12,11 @@ using gamezone_api;
 namespace gamezone_api.Migrations
 {
     [DbContext(typeof(GamezoneContext))]
-    partial class GamezoneContextModelSnapshot : ModelSnapshot
+    [Migration("20230611182715_AddEmailColumnToOrdersTable")]
+    partial class AddEmailColumnToOrdersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -317,14 +320,6 @@ namespace gamezone_api.Migrations
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
-                    b.Property<decimal>("Subtotal")
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("subtotal");
-
-                    b.Property<decimal>("Tax")
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("tax");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
@@ -557,7 +552,7 @@ namespace gamezone_api.Migrations
             modelBuilder.Entity("gamezone_api.Models.OrderDetail", b =>
                 {
                     b.HasOne("gamezone_api.Models.Order", "Order")
-                        .WithMany("OrderDetails")
+                        .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -612,11 +607,6 @@ namespace gamezone_api.Migrations
             modelBuilder.Entity("gamezone_api.Models.Category", b =>
                 {
                     b.Navigation("CategoriesProductVariants");
-                });
-
-            modelBuilder.Entity("gamezone_api.Models.Order", b =>
-                {
-                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("gamezone_api.Models.Product", b =>

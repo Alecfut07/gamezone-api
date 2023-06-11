@@ -9,25 +9,35 @@ namespace gamezone_api.Services
 	{
 		private CartsRepository _cartsRepository;
 		private IOrdersRepository _ordersRepository;
+		private CartsMapper _cartsMapper;
 		private OrdersMapper _ordersMapper;
 
-		public OrdersService(ILogger logger, IOrdersRepository ordersRepository, CartsRepository cartsRepository, OrdersMapper ordersMapper)
+		public OrdersService(ILogger logger, IOrdersRepository ordersRepository, CartsRepository cartsRepository, OrdersMapper ordersMapper, CartsMapper cartsMapper)
 			: base(logger)
 		{
 			_ordersRepository = ordersRepository;
 			_cartsRepository = cartsRepository;
-			_ordersMapper = ordersMapper;
+			_cartsMapper = cartsMapper;
+            _ordersMapper = ordersMapper;
         }
 
-		public async Task<OrderResponse?> SubmitOrder(string uuid, OrderRequest orderRequest)
+		public async Task<OrderResponse?> SubmitOrder(string uuid, long userId, OrderRequest orderRequest, long subtotal, long tax, long amount)
 		{
 			try
 			{
-				var cartItems = await _cartsRepository.GetCart(uuid);
-				var newOrder = _ordersMapper.Map(orderRequest);
-				var order = await _ordersRepository.SubmitOrder(cartItems, newOrder);
+				var list = await _cartsRepository.GetCart(uuid);
+                var cartProducts = list.ConvertAll((tuple) =>
+                {
+                    var productId = tuple.Item1;
+                    var quantity = tuple.Item2;
+                    var productCacheEntry = tuple.Item3;
+                    return _cartsMapper.Map(productId, quantity, productCacheEntry);
+                });
+                var newOrder = _ordersMapper.Map(userId, orderRequest, subtotal, tax, amount);
+				Console.WriteLine();
+				//var order = await _ordersRepository.SubmitOrder(cartProducts, newOrder);
 
-                return null;
+				return null;
 			}
 			catch (Exception ex)
 			{
@@ -39,7 +49,7 @@ namespace gamezone_api.Services
 
 	public interface IOrdersService
 	{
-		Task<OrderResponse?> SubmitOrder(string uuid, OrderRequest orderRequest);
+		Task<OrderResponse?> SubmitOrder(string uuid, long userId, OrderRequest orderRequest, long subtotal, long tax, long amount);
     }
 }
 

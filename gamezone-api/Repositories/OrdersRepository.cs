@@ -1,6 +1,7 @@
 ﻿using System;
 using StackExchange.Redis;
 using gamezone_api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace gamezone_api.Repositories
 {
@@ -15,18 +16,24 @@ namespace gamezone_api.Repositories
 			_context = context;
 		}
 
-		public async Task<Models.Order> SubmitOrder(List<(long, int, Models.ProductCacheEntry)> cart, Models.Order order)
+		public async Task<Models.Order> SubmitOrder(List<CartProduct> cartItems, Models.Order order)
 		{
 			//var key = new RedisKey($"cart:{uuid}");
 			//var cartEntries = await _db.HashGetAllAsync(key);
+			await _context.Orders.AddAsync(order);
+			await _context.SaveChangesAsync();
 
-			return null;
+			var newOrder = await _context.Orders
+				.Include(o => o.OrderDetails).ThenInclude(od => od.Product)
+				.SingleAsync(o => o.Id == order.Id);
+
+			return newOrder;
 		}
 	}
 
 	public interface IOrdersRepository
 	{
-		Task<Models.Order> SubmitOrder(List<(long, int, Models.ProductCacheEntry)> cart, Models.Order order);
+		Task<Models.Order> SubmitOrder(List<CartProduct> cartItems, Models.Order order);
     }
 }
 

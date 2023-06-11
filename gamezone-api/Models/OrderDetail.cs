@@ -11,11 +11,17 @@ namespace gamezone_api.Models
 		[Column("id")]
 		public Guid Id { get; set; }
 
-        [Column("quantity")]
-        public int Quantity { get; set; }
+        [Column("subtotal")]
+        public decimal Subtotal { get; set; }
+
+        [Column("tax")]
+        public decimal Tax { get; set; }
 
 		[Column("grandtotal")]
 		public decimal Grandtotal { get; set; }
+
+        [Column("quantity")]
+        public int Quantity { get; set; }
 
         [ForeignKey("order_id")]
 		[Column("order_id")]
