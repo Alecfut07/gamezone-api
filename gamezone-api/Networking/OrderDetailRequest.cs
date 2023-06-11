@@ -10,7 +10,7 @@ namespace gamezone_api.Networking
         [JsonPropertyName("id")]
         public Guid Id { get; set; }
 
-        [Required]
+        //[Required]
         [JsonPropertyName("order_id")]
         public Guid OrderId { get; set; }
 
