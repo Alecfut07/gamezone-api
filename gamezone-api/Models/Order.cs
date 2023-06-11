@@ -19,9 +19,12 @@ namespace gamezone_api.Models
 		[Column("grandtotal")]
 		public decimal Grandtotal { get; set; }
 
+		[Column("email")]
+		public string Email { get; set; }
+
 		[ForeignKey("user_id")]
 		[Column("user_id")]
-		public long UserId { get; set; }
+		public long? UserId { get; set; }
 
 		public virtual User User { get; set; }
 	}

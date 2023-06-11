@@ -8,8 +8,8 @@ namespace gamezone_api.Models.Stripe
 
 	public class Payment
 	{
-		[JsonPropertyName("customer_id")]
-		public string CustomerId { get; set; }
+		//[JsonPropertyName("customer_id")]
+		//public string CustomerId { get; set; }
 
 		[JsonPropertyName("receipt_email")]
 		public string ReceiptEmail { get; set; }

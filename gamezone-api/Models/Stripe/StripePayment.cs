@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Text.Json.Serialization;
+
 namespace gamezone_api.Models.Stripe
 {
-	public record StripePayment(string CustomerId, string ReceiptEmail, string Description, string Currency, long Amount, string PaymentId);
+	public record StripePayment(string CustomerId, string PaymentId, string ReceiptEmail, string Description, string Currency, long subtotal, long tax, long Amount);
 }
 

@@ -117,7 +117,7 @@ namespace gamezone_api.Application
             return grandtotal;
         }
 
-        public async Task<StripePayment> AddStripePaymentAsync(string uuid, AddressRequest address, Payment payment, CancellationToken ct)
+        public async Task<StripePayment> AddStripePaymentAsync(string uuid, string stripeCustomerId, AddressRequest address, Payment payment, CancellationToken ct)
         {
             var list = await _cartsRepository.GetCart(uuid);
             var cartProducts = list.ConvertAll((tuple) =>
@@ -130,12 +130,12 @@ namespace gamezone_api.Application
             var subtotal = CalculateSubTotal(cartProducts);
             var tax = CalculateTax(uuid, cartProducts, address);
             var grandtotal = CalculateGrandTotal(subtotal, tax);
-            Console.WriteLine();
 
             // Set the options for the payment we would like to create at Stripe
             ChargeCreateOptions paymentOptions = new ChargeCreateOptions
             {
-                Customer = payment.CustomerId,
+                //Customer = payment.CustomerId,
+                Customer = stripeCustomerId,
                 ReceiptEmail = payment.ReceiptEmail,
                 Description = payment.Description,
                 Currency = payment.Currency,
@@ -146,13 +146,23 @@ namespace gamezone_api.Application
             var createdPayment = await _chargeService.CreateAsync(paymentOptions, null, ct);
 
             // Return the payment to requesting method
+            //return new StripePayment(
+            //  createdPayment.CustomerId,
+            //  createdPayment.ReceiptEmail,
+            //  createdPayment.Description,
+            //  createdPayment.Currency,
+            //  createdPayment.Amount,
+            //  createdPayment.Id);
+
             return new StripePayment(
-              createdPayment.CustomerId,
-              createdPayment.ReceiptEmail,
-              createdPayment.Description,
-              createdPayment.Currency,
-              createdPayment.Amount,
-              createdPayment.Id);
+                createdPayment.CustomerId,
+                createdPayment.Id,
+                createdPayment.ReceiptEmail,
+                createdPayment.Description,
+                createdPayment.Currency,
+                subtotal,
+                tax,
+                createdPayment.Amount);
         }
     }
 }

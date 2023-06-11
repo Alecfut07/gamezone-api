@@ -199,6 +199,10 @@ namespace gamezone_api
 
                 order.Property(o => o.Grandtotal).IsRequired();
 
+                order.Property(o => o.Email).IsRequired().HasMaxLength(150);
+
+                order.HasIndex(o => o.Email).IsUnique();
+
                 order.HasOne(o => o.User);
             });
 

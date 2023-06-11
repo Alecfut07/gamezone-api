@@ -25,7 +25,7 @@ namespace gamezone_api.Services
 			{
 				var cartItems = await _cartsRepository.GetCart(uuid);
 				var newOrder = _ordersMapper.Map(orderRequest);
-				var order = await _ordersRepository.SubmitOrder(uuid, null);
+				var order = await _ordersRepository.SubmitOrder(cartItems, newOrder);
 
                 return null;
 			}
