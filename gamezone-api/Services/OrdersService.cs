@@ -21,7 +21,7 @@ namespace gamezone_api.Services
             _ordersMapper = ordersMapper;
         }
 
-		public async Task<OrderResponse?> SubmitOrder(string uuid, long userId, OrderRequest orderRequest)
+		public async Task<OrderResponse?> SubmitOrder(string uuid, long userId, OrderRequest orderRequest, long subtotal, long tax, long amount)
 		{
 			try
 			{
@@ -33,7 +33,7 @@ namespace gamezone_api.Services
                     var productCacheEntry = tuple.Item3;
                     return _cartsMapper.Map(productId, quantity, productCacheEntry);
                 });
-                var newOrder = _ordersMapper.Map(userId, orderRequest);
+                var newOrder = _ordersMapper.Map(userId, cartProducts, orderRequest, subtotal, tax, amount);
 				Console.WriteLine();
 				//var order = await _ordersRepository.SubmitOrder(cartProducts, newOrder);
 
@@ -49,7 +49,7 @@ namespace gamezone_api.Services
 
 	public interface IOrdersService
 	{
-		Task<OrderResponse?> SubmitOrder(string uuid, long userId, OrderRequest orderRequest);
+		Task<OrderResponse?> SubmitOrder(string uuid, long userId, OrderRequest orderRequest, long subtotal, long tax, long amount);
     }
 }
 
