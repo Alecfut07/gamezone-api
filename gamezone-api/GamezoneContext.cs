@@ -213,6 +213,8 @@ namespace gamezone_api
 
                 orderDetail.Property(od => od.Id);
 
+                orderDetail.Property(od => od.Price).IsRequired();
+
                 orderDetail.Property(od => od.Subtotal).IsRequired();
 
                 orderDetail.Property(od => od.Tax).IsRequired();

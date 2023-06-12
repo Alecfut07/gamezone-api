@@ -11,6 +11,9 @@ namespace gamezone_api.Models
 		[Column("id")]
 		public Guid Id { get; set; }
 
+		[Column("price")]
+		public decimal Price { get; set; }
+
         [Column("subtotal")]
         public decimal Subtotal { get; set; }
 

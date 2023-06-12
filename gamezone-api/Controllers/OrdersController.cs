@@ -40,7 +40,7 @@ namespace gamezone_api.Controllers
                     var userId = TokenHelper.GetUserId(accessToken);
                     var stripeCustomer = await _paymentsService.AddStripeCustomerAsync(orderRequest.Customer, ct);
                     var paymentResponse = await _paymentsService.AddStripePaymentAsync(uuid, stripeCustomer.CustomerId, orderRequest.Address, orderRequest.Payment, ct);
-                    var orderResponse = await _ordersService.SubmitOrder(uuid, userId, orderRequest, paymentResponse.Subtotal, paymentResponse.Tax, paymentResponse.Amount);
+                    var orderResponse = await _ordersService.SubmitOrder(uuid, userId, orderRequest);
                     return Ok();
                 }
                 catch (Exception ex)

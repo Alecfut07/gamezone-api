@@ -13,21 +13,22 @@ namespace gamezone_api.Mappers
 			_productsMapper = productsMapper;
         }
 
-		public Order Map(long userId, OrderRequest orderRequest, long subtotal, long tax, long amount)
+		public Order Map(long userId, OrderRequest orderRequest)
 		{
-			decimal subtotalValue = (decimal)(subtotal / 100);
-			decimal taxValue = (decimal)(tax / 100);
-			decimal amountValue = (decimal)(amount / 100);
+			Guid id = Guid.NewGuid();
+			//decimal subtotalValue = (decimal)(subtotal / 100);
+			//decimal taxValue = (decimal)(tax / 100);
+			//decimal amountValue = (decimal)(amount / 100);
 
             return new Order
 			{
-				Id = Guid.NewGuid(),
-				Tax = taxValue,
-				Subtotal = subtotalValue,
-				Grandtotal = amountValue,
+				Id = id,
+				Tax = 0,
+				Subtotal = 0,
+				Grandtotal = 0,
 				Email = orderRequest.Customer.Email,
 				UserId = userId,
-				OrderDetails = Map(subtotalValue, taxValue, amountValue, orderRequest.OrderDetailRequests.ToList()),
+				OrderDetails = Map(id, orderRequest.OrderDetailRequests.ToList()),
 			};
 		}
 
@@ -64,26 +65,25 @@ namespace gamezone_api.Mappers
 			return orderDetails.ConvertAll<OrderDetailResponse>((odr) => Map(odr));
 		}
 
-		public OrderDetail Map(decimal subtotal, decimal tax, decimal amount, OrderDetailRequest orderDetailRequest)
+		public OrderDetail Map(Guid orderId, OrderDetailRequest orderDetailRequest)
 		{
 			return new OrderDetail
 			{
 				Id = Guid.NewGuid(),
-				OrderId = orderDetailRequest.OrderId,
-                //Subtotal = orderDetailRequest.Subtotal,
-                //Tax = orderDetailRequest.Tax,
-				//Grandtotal = orderDetailRequest.Grandtotal,
-                Subtotal = subtotal,
-                Tax = tax,
-				Grandtotal = amount,
+				//OrderId = orderDetailRequest.OrderId,
+				OrderId = orderId,
+				Price = orderDetailRequest.Price,
+				Subtotal = orderDetailRequest.Subtotal,
+				Tax = orderDetailRequest.Tax,
+				Grandtotal = orderDetailRequest.Grandtotal,
                 Quantity = orderDetailRequest.Quantity,
 				ProductId = orderDetailRequest.ProductId,
 			};
 		}
 
-		public List<OrderDetail> Map(decimal subtotal, decimal tax, decimal amount, List<OrderDetailRequest> orderDetailRequests)
+		public List<OrderDetail> Map(Guid orderId, List<OrderDetailRequest> orderDetailRequests)
 		{
-			return orderDetailRequests.ConvertAll<OrderDetail>((odr) => Map(subtotal, tax, amount, odr));
+			return orderDetailRequests.ConvertAll<OrderDetail>((odr) => Map(orderId, odr));
 		}
 	}
 }

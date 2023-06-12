@@ -15,6 +15,10 @@ namespace gamezone_api.Networking
         public Guid OrderId { get; set; }
 
         [Required]
+        [JsonPropertyName("price")]
+        public decimal Price { get; set; }
+
+        //[Required]
         [JsonPropertyName("tax")]
         public decimal Tax { get; set; }
 
