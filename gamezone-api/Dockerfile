@@ -18,6 +18,8 @@ WORKDIR /app
 
 COPY --from=build /release .
 
+RUN dotnet ef database update
+
 EXPOSE 5248
 
 CMD dotnet gamezone-api.dll
