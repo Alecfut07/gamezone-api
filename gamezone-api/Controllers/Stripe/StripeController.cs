@@ -13,7 +13,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace gamezone_api.Controllers.Stripe
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/api/[controller]")]
     public class StripeController : ControllerBase
     {
         private readonly IStripeAppService _stripeService;

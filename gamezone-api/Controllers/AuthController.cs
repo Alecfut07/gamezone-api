@@ -7,7 +7,7 @@ using Microsoft.Extensions.Primitives;
 namespace gamezone_api.Controllers
 {
     [ApiController]
-    [Route("users")]
+    [Route("/api/users")]
     public class AuthController : ControllerBase
     {
         private IAuthService _authService;
