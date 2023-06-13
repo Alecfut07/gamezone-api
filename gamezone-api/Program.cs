@@ -28,6 +28,7 @@ using ProductsService = gamezone_api.Services.ProductsService;
 
 
 DotNetEnv.Env.Load();
+DotNetEnv.Env.TraversePath().Load();
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
