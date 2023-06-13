@@ -73,8 +73,10 @@ builder.Services
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
-            ValidAudience = builder.Configuration["JWT:ValidAudience"],
+            //ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+            //ValidAudience = builder.Configuration["JWT:ValidAudience"],
+            ValidIssuer = Environment.GetEnvironmentVariable("JWT_VALID_ISSUER"),
+            ValidAudience = Environment.GetEnvironmentVariable("JWT_VALID_AUDIENCE"),
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET"))),
         };
     });
