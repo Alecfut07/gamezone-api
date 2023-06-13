@@ -71,7 +71,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("/collections")]
+    [Route("collections")]
     public async Task<ActionResult<List<ProductResponse>>> GetProductsByCollection()
     {
         try
