@@ -11,11 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gamezone-migration", "gamez
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4D2A7AA2-A758-428F-82ED-6BA9AEFD4ED4}"
 	ProjectSection(SolutionItems) = preProject
-		.env = .env
 		db.env = db.env
 		docker-compose.yml = docker-compose.yml
 		docker-entrypoint.sh = docker-entrypoint.sh
 		Dockerfile = Dockerfile
+		.env = .env
 	EndProjectSection
 EndProject
 Global
