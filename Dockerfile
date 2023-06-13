@@ -1,5 +1,9 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 
+ARG JWT_SECRET_ARG
+
+ENV JWT_SECRET=$JWT_SECRET_ARG
+
 WORKDIR /src
 
 COPY gamezone-api/gamezone-api.csproj gamezone-api/
