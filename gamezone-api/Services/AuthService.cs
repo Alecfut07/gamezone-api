@@ -41,7 +41,8 @@ namespace gamezone_api.Services
         {
             var audience = _configuration["JWT:ValidAudience"];
             var issuer = _configuration["JWT:ValidIssuer"];
-            var secret = _configuration["JWT:Secret"];
+            //var secret = _configuration["JWT:Secret"];
+            var secret = Environment.GetEnvironmentVariable("JWT_SECRET");
 
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
             var signinCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
