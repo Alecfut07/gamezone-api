@@ -27,7 +27,7 @@ using Stripe;
 using ProductsService = gamezone_api.Services.ProductsService;
 
 
-DotNetEnv.Env.Load("../.env");
+DotNetEnv.Env.Load();
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
