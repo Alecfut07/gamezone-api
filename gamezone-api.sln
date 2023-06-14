@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.env = .env
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gamezone-seed", "gamezone-seed\gamezone-seed.csproj", "{9EC08F32-1F57-4C8F-8FD5-D182D835872A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,6 +38,10 @@ Global
 		{10A564C1-AC19-4760-9BE1-C9BDB297161E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10A564C1-AC19-4760-9BE1-C9BDB297161E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10A564C1-AC19-4760-9BE1-C9BDB297161E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EC08F32-1F57-4C8F-8FD5-D182D835872A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EC08F32-1F57-4C8F-8FD5-D182D835872A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EC08F32-1F57-4C8F-8FD5-D182D835872A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EC08F32-1F57-4C8F-8FD5-D182D835872A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
