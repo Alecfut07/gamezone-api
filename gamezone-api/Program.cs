@@ -28,6 +28,7 @@ using ProductsService = gamezone_api.Services.ProductsService;
 
 
 DotNetEnv.Env.Load();
+DotNetEnv.Env.TraversePath().Load();
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
@@ -39,7 +40,7 @@ builder.Services.AddCors(options =>
                       policy =>
                       {
                           //policy.WithOrigins("http://localhost:3000")
-                          policy.WithOrigins("http://localhost:3000", "http://web:3000")
+                          policy.WithOrigins("http://localhost", "http://localhost:3000", "http://web", "http://web:3000", "http://137.184.131.233")
                               .AllowAnyHeader()
                               .AllowAnyMethod()
                               //.AllowAnyOrigin()
@@ -72,8 +73,10 @@ builder.Services
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
-            ValidAudience = builder.Configuration["JWT:ValidAudience"],
+            //ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+            //ValidAudience = builder.Configuration["JWT:ValidAudience"],
+            ValidIssuer = Environment.GetEnvironmentVariable("JWT_VALID_ISSUER"),
+            ValidAudience = Environment.GetEnvironmentVariable("JWT_VALID_AUDIENCE"),
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Environment.GetEnvironmentVariable("JWT_SECRET"))),
         };
     });

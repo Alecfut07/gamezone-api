@@ -7,7 +7,7 @@ using SendGrid.Helpers.Mail;
 namespace gamezone_api.Controllers
 {
 	[ApiController]
-	[Route("/sendgrid/[controller]")]
+	[Route("/api/sendgrid/[controller]")]
 	public class EmailSenderController : ControllerBase
 	{
 		//private IEmailSenderService _emailSenderService;

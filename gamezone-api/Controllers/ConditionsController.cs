@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace gamezone_api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/api/[controller]")]
     public class ConditionsController : ControllerBase
     {
         IConditionService _conditionService;

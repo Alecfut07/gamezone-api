@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>gamezone_seed</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\gamezone-api\gamezone-api.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="SeedData\" />
+    <None Remove="DeleteSeedData\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="SeedData\" />
+    <Folder Include="bin\Debug\net7.0\" />
+    <Folder Include="DeleteSeedData\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\net7.0\.env" />
+  </ItemGroup>
+</Project>

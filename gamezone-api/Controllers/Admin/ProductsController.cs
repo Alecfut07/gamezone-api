@@ -12,7 +12,7 @@ namespace gamezone_api.Controllers.Admin
 {
     [Authorize]
     [ApiController]
-    [Route("/admin/[controller]")]
+    [Route("/api/admin/[controller]")]
     public class ProductsController : ApplicationController
     {
         private IProductService _productService;

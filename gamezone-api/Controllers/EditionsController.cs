@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace gamezone_api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/api/[controller]")]
     public class EditionsController : ControllerBase
     {
         IEditionService _editionService;
