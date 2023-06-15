@@ -1,23 +1,22 @@
 ﻿using System;
 using gamezone_api;
-using gamezone_api.Models;
 
 namespace gamezone_seed.DeleteSeedData
 {
-	public class DeleteCategoriesSeed
+	public class DeleteProductsSeed
 	{
         private readonly GamezoneContext _context;
 
-        public DeleteCategoriesSeed(GamezoneContext context)
+        public DeleteProductsSeed(GamezoneContext context)
         {
             _context = context;
         }
 
         public void DeleteData()
         {
-            foreach (var item in _context.Categories)
+            foreach (var item in _context.Products)
             {
-                _context.Categories.Remove(item);
+                _context.Products.Remove(item);
             }
             _context.SaveChanges();
         }

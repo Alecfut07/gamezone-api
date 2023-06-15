@@ -17,13 +17,15 @@ namespace gamezone_seed.SeedData
 		{
             var productVariantsIds = _context.ProductVariants.Select(pv => pv.Id).ToList();
 
-            var category_pc_videogame_id = _context.Categories.Where(c => c.Name == "PC" && c.ParentCategoryId == 1).Select(c => c.Id).SingleOrDefault();
-            var category_ps5_videogame_id = _context.Categories.Where(c => c.Name == "PlayStation 5" && c.ParentCategoryId == 1).Select(c => c.Id).SingleOrDefault();
-            var category_ps4_videogame_id = _context.Categories.Where(c => c.Name == "PlayStation 4" && c.ParentCategoryId == 1).Select(c => c.Id).SingleOrDefault();
-            var category_xbox_series_x_s_videogame_id = _context.Categories.Where(c => c.Name == "Xbox Series X | S" && c.ParentCategoryId == 1).Select(c => c.Id).SingleOrDefault();
-            var category_xbox_one_videogame_id = _context.Categories.Where(c => c.Name == "Xbox One" && c.ParentCategoryId == 1).Select(c => c.Id).SingleOrDefault();
-            var category_nintendo_switch_videogame_id = _context.Categories.Where(c => c.Name == "Nintendo Switch" && c.ParentCategoryId == 1).Select(c => c.Id).SingleOrDefault();
-            var category_retro_gaming_videogame_id = _context.Categories.Where(c => c.Name == "Retro Gaming" && c.ParentCategoryId == 1).Select(c => c.Id).SingleOrDefault();
+            var parent_category_id_videogame = _context.Categories.Where(c => c.Name == "Video Games").Select(c => c.Id).SingleOrDefault();
+
+            var category_pc_videogame_id = _context.Categories.Where(c => c.Name == "PC" && c.ParentCategoryId == parent_category_id_videogame).Select(c => c.Id).SingleOrDefault();
+            var category_ps5_videogame_id = _context.Categories.Where(c => c.Name == "PlayStation 5" && c.ParentCategoryId == parent_category_id_videogame).Select(c => c.Id).SingleOrDefault();
+            var category_ps4_videogame_id = _context.Categories.Where(c => c.Name == "PlayStation 4" && c.ParentCategoryId == parent_category_id_videogame).Select(c => c.Id).SingleOrDefault();
+            var category_xbox_series_x_s_videogame_id = _context.Categories.Where(c => c.Name == "Xbox Series X | S" && c.ParentCategoryId == parent_category_id_videogame).Select(c => c.Id).SingleOrDefault();
+            var category_xbox_one_videogame_id = _context.Categories.Where(c => c.Name == "Xbox One" && c.ParentCategoryId == parent_category_id_videogame).Select(c => c.Id).SingleOrDefault();
+            var category_nintendo_switch_videogame_id = _context.Categories.Where(c => c.Name == "Nintendo Switch" && c.ParentCategoryId == parent_category_id_videogame).Select(c => c.Id).SingleOrDefault();
+            var category_retro_gaming_videogame_id = _context.Categories.Where(c => c.Name == "Retro Gaming" && c.ParentCategoryId == parent_category_id_videogame).Select(c => c.Id).SingleOrDefault();
 
             List<CategoryProductVariant> categoriesProductVariantsInit = new List<CategoryProductVariant>
 			{

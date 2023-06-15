@@ -23,6 +23,17 @@ var webHost = new WebHostBuilder()
 using (var context = (GamezoneContext)webHost.Services.GetService(typeof(GamezoneContext)))
 {
     Console.WriteLine("connection established");
+
+    new DeleteCategoriesProductVariantsSeed(context).DeleteData();
+
+    new DeleteCategoriesSeed(context).DeleteData();
+
+    new DeleteProductVariantsSeed(context).DeleteData();
+
+    new DeleteProductsSeed(context).DeleteData();
+
+    new DeleteUsersSeed(context).DeleteData();
+
     if (!context.Users.Any())
     {
         context.Users.AddRange(UsersSeed.InitData());
@@ -52,7 +63,7 @@ using (var context = (GamezoneContext)webHost.Services.GetService(typeof(Gamezon
     {
         context.ProductVariants.AddRange(new ProductVariantsSeed(context).InitData());
         context.SaveChanges();
-        Console.WriteLine("SUCCESS: Product variants data added into product_variants table."); ;
+        Console.WriteLine("SUCCESS: Product variants data added into product_variants table.");
     }
 
     if (!context.CategoriesProductVariants.Any())
