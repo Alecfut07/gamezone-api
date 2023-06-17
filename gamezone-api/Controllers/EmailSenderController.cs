@@ -10,14 +10,14 @@ namespace gamezone_api.Controllers
 	[Route("/api/sendgrid/[controller]")]
 	public class EmailSenderController : ControllerBase
 	{
-		//private IEmailSenderService _emailSenderService;
+        //private IEmailSenderService _emailSenderService;
 
-		//public EmailSenderController(IEmailSenderService emailSenderService)
-		//{
-		//	_emailSenderService = emailSenderService;
-  //      }
+        //public EmailSenderController(IEmailSenderService emailSenderService)
+        //{
+        //    _emailSenderService = emailSenderService;
+        //}
 
-		[HttpPost]
+        [HttpPost]
 		public async Task<ActionResult> SendEmail()
 		{
 			string subject = "Order Confirmation";

@@ -13,7 +13,7 @@ namespace gamezone_api.Mappers
 			_productsMapper = productsMapper;
         }
 
-		public Order Map(long userId, List<Models.CartProduct> cartProducts, OrderRequest orderRequest, long subtotal, long tax, long amount)
+		public Order Map(long userId, OrderRequest orderRequest, long subtotal, long tax, long amount)
 		{
 			Guid id = Guid.NewGuid();
 			//decimal subtotalValue = (decimal)(subtotal / 100);
@@ -51,11 +51,12 @@ namespace gamezone_api.Mappers
 			return new OrderDetailResponse
 			{
 				Id = orderDetail.Id,
+				Price = orderDetail.Price,
 				Subtotal = orderDetail.Subtotal,
-				Tax = orderDetail.Tax,
-				Grandtotal = orderDetail.Grandtotal,
+				//Tax = orderDetail.Tax,
+				//Grandtotal = orderDetail.Grandtotal,
 				Quantity = orderDetail.Quantity,
-				Order = Map(orderDetail.Order),
+				//Order = Map(orderDetail.Order),
 				Product = _productsMapper.Map(orderDetail.Product)
 			};
 		}
@@ -74,8 +75,8 @@ namespace gamezone_api.Mappers
 				OrderId = orderId,
 				Price = orderDetailRequest.Price,
 				Subtotal = orderDetailRequest.Subtotal,
-				Tax = 0,
-				Grandtotal = 0,
+				//Tax = 0,
+				//Grandtotal = 0,
 				Quantity = orderDetailRequest.Quantity,
 				ProductId = orderDetailRequest.ProductId,
 			};

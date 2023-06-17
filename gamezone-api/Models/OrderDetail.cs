@@ -17,11 +17,11 @@ namespace gamezone_api.Models
         [Column("subtotal")]
         public decimal Subtotal { get; set; }
 
-        [Column("tax")]
-        public decimal Tax { get; set; }
+        //[Column("tax")]
+        //public decimal Tax { get; set; }
 
-		[Column("grandtotal")]
-		public decimal Grandtotal { get; set; }
+		//[Column("grandtotal")]
+		//public decimal Grandtotal { get; set; }
 
         [Column("quantity")]
         public int Quantity { get; set; }

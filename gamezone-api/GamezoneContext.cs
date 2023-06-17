@@ -201,8 +201,6 @@ namespace gamezone_api
 
                 order.Property(o => o.Email).IsRequired().HasMaxLength(150);
 
-                order.HasIndex(o => o.Email).IsUnique();
-
                 order.HasOne(o => o.User);
             });
 
@@ -217,9 +215,9 @@ namespace gamezone_api
 
                 orderDetail.Property(od => od.Subtotal).IsRequired();
 
-                orderDetail.Property(od => od.Tax).IsRequired();
+                //orderDetail.Property(od => od.Tax).IsRequired();
 
-                orderDetail.Property(od => od.Grandtotal).IsRequired();
+                //orderDetail.Property(od => od.Grandtotal).IsRequired();
 
                 orderDetail.Property(od => od.Quantity).IsRequired();
 

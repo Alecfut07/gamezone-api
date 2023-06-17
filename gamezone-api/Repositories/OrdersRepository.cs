@@ -16,7 +16,7 @@ namespace gamezone_api.Repositories
 			_context = context;
 		}
 
-		public async Task<Models.Order> SubmitOrder(List<CartProduct> cartItems, Models.Order order)
+		public async Task<Models.Order> SubmitOrder(Models.Order order)
 		{
 			//var key = new RedisKey($"cart:{uuid}");
 			//var cartEntries = await _db.HashGetAllAsync(key);
@@ -24,7 +24,9 @@ namespace gamezone_api.Repositories
 			await _context.SaveChangesAsync();
 
 			var newOrder = await _context.Orders
-				.Include(o => o.OrderDetails).ThenInclude(od => od.Product)
+				.Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.ProductVariants).ThenInclude(pv => pv.Edition)
+				.Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.ProductVariants).ThenInclude(pv => pv.Condition)
+				.Include(o => o.OrderDetails).ThenInclude(od => od.Product).ThenInclude(p => p.ProductVariants).ThenInclude(pv => pv.CategoriesProductVariants).ThenInclude(cpv => cpv.Category)
 				.SingleAsync(o => o.Id == order.Id);
 
 			return newOrder;
@@ -33,7 +35,7 @@ namespace gamezone_api.Repositories
 
 	public interface IOrdersRepository
 	{
-		Task<Models.Order> SubmitOrder(List<CartProduct> cartItems, Models.Order order);
+		Task<Models.Order> SubmitOrder(Models.Order order);
     }
 }
 
