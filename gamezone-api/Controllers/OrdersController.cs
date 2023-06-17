@@ -47,7 +47,7 @@ namespace gamezone_api.Controllers
 
                     // Step 2: Save order and its order details in the database.
                     var orderResponse = await _ordersService.SubmitOrder(uuid, userId, orderRequest, paymentResponse.Subtotal, paymentResponse.Tax, paymentResponse.Amount);
-                    Console.WriteLine();
+
                     // Step 3: Send an email with order confirmation.
                     var emailResponse = await _ordersService.SendEmail(uuid, orderResponse);
                     return Ok(emailResponse);
