@@ -52,14 +52,14 @@ namespace gamezone_api.Services
 		{
             try
             {
-                var list = await _cartsRepository.GetCart(uuid);
-                var cartProducts = list.ConvertAll((tuple) =>
-                {
-                    var productId = tuple.Item1;
-                    var quantity = tuple.Item2;
-                    var productCacheEntry = tuple.Item3;
-                    return _cartsMapper.Map(productId, quantity, productCacheEntry);
-                });
+                //var list = await _cartsRepository.GetCart(uuid);
+                //var cartProducts = list.ConvertAll((tuple) =>
+                //{
+                //    var productId = tuple.Item1;
+                //    var quantity = tuple.Item2;
+                //    var productCacheEntry = tuple.Item3;
+                //    return _cartsMapper.Map(productId, quantity, productCacheEntry);
+                //});
 
                 //string subject = "Order Confirmation";
                 //string message = "Thank you!\n" + "for shopping in GameZone.\n";
