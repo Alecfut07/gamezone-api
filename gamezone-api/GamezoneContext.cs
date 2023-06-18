@@ -201,6 +201,8 @@ namespace gamezone_api
 
                 order.Property(o => o.Email).IsRequired().HasMaxLength(150);
 
+                order.Property(o => o.CreateDate).IsRequired();
+
                 order.HasOne(o => o.User);
             });
 

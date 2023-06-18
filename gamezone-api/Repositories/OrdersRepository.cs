@@ -20,6 +20,8 @@ namespace gamezone_api.Repositories
 		{
 			//var key = new RedisKey($"cart:{uuid}");
 			//var cartEntries = await _db.HashGetAllAsync(key);
+			order.CreateDate = DateTime.UtcNow;
+
 			await _context.Orders.AddAsync(order);
 			await _context.SaveChangesAsync();
 

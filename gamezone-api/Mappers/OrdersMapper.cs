@@ -41,6 +41,7 @@ namespace gamezone_api.Mappers
 				Subtotal = order.Subtotal,
 				Grandtotal = order.Grandtotal,
 				Email = order.Email,
+				CreateDate = order.CreateDate,
 				UserId = order.UserId,
 				OrderDetailsResponses = Map(order.OrderDetails.ToList())
 			};

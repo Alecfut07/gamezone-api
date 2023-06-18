@@ -22,6 +22,9 @@ namespace gamezone_api.Models
 		[Column("email")]
 		public string Email { get; set; }
 
+		[Column("create_date")]
+		public DateTime CreateDate { get; set; }
+
 		[ForeignKey("user_id")]
 		[Column("user_id")]
 		public long? UserId { get; set; }

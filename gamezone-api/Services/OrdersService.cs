@@ -71,6 +71,7 @@ namespace gamezone_api.Services
                 var templateId = "d-d1b20d97efbf4efaa6c59048c80707f1";
                 var dynamicTemplateData = new
                 {
+					date = orderResponse.CreateDate.ToString(),
                     orderId = orderResponse.Id.ToString(),
                     email = orderResponse.Email,
                     cartItems = orderResponse.OrderDetailsResponses,

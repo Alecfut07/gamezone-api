@@ -22,6 +22,9 @@ namespace gamezone_api.Networking
         [JsonPropertyName("grandtotal")]
         public decimal Grandtotal { get; set; }
 
+        [JsonPropertyName("create_date")]
+        public DateTime CreateDate { get; set; }
+
         [JsonPropertyName("order_details")]
         public ICollection<OrderDetailResponse> OrderDetailsResponses { get; set; }
     }
