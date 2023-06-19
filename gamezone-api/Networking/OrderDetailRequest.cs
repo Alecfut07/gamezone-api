@@ -19,8 +19,8 @@ namespace gamezone_api.Networking
         public decimal Price { get; set; }
 
         //[Required]
-        [JsonPropertyName("tax")]
-        public decimal Tax { get; set; }
+        //[JsonPropertyName("tax")]
+        //public decimal Tax { get; set; }
 
         [Required]
         [JsonPropertyName("subtotal")]
@@ -30,9 +30,9 @@ namespace gamezone_api.Networking
         [JsonPropertyName("quantity")]
         public int Quantity { get; set; }
 
-        [Required]
-        [JsonPropertyName("grandtotal")]
-        public decimal Grandtotal { get; set; }
+        //[Required]
+        //[JsonPropertyName("grandtotal")]
+        //public decimal Grandtotal { get; set; }
 
         [Required]
         [JsonPropertyName("product_id")]
