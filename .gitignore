@@ -208,6 +208,10 @@ _TeamCity*
 *.coverage
 *.coveragexml
 
+# AltCover and ReportGenerator
+reports/
+coverage.xml
+
 # NCrunch
 _NCrunch_*
 .*crunch*.local.xml
@@ -408,3 +412,4 @@ ASALocalRun/
 Resources
 
 .env
+.env.production

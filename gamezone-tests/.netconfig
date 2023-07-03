@@ -1,0 +1,12 @@
+[ReportGenerator]
+	reports = coverage.xml
+	targetdir = "./reports"
+	reporttypes = HtmlSummary
+	assemblyfilter = -AltCover.Monitor
+	assemblyfilter = -gamezone-tests
+	assemblyfilter = -Humanizer
+	assemblyfilter = -NUnit3.TestAdapter
+	assemblyfilter = -Pipelines.Sockets.Unofficial
+	assemblyfilter = -Stripe.net
+	assemblyfilter = -StackExchange.redis
+	assemblyfilter = -Moq
