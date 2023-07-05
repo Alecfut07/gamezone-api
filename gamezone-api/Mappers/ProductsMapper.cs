@@ -1,11 +1,9 @@
-﻿using System;
-using System.Web;
-using gamezone_api.Models;
+﻿using gamezone_api.Models;
 using gamezone_api.Networking;
 
 namespace gamezone_api.Mappers
 {
-	public class ProductsMapper
+	public class ProductsMapper: IProductsMapper
     {
         private ConditionsMapper _conditionsMapper;
         private EditionsMapper _editionsMapper;
@@ -125,6 +123,29 @@ namespace gamezone_api.Mappers
         {
             return categories.ConvertAll<CategoryProductVariantResponse>((c) => Map(c));
         }
+    }
+
+    public interface IProductsMapper
+    {
+        public Product Map(ProductRequest productRequest, long id = 0);
+
+        public ProductResponse Map(Product product);
+
+        public ProductVariant Map(ProductVariantRequest productVariantRequest);
+
+        public List<ProductVariant> Map(List<ProductVariantRequest> productVariantRequests);
+
+        public ProductVariantResponse Map(ProductVariant productVariant);
+
+        public List<ProductVariantResponse> Map(List<ProductVariant> productVariants);
+
+        public CategoryProductVariant Map(CategoryProductVariantRequest categoryProductVariantRequest, long productVariantId);
+
+        public List<CategoryProductVariant> Map(List<CategoryProductVariantRequest> categoryProductVariantRequests, long id);
+
+        public CategoryProductVariantResponse Map(CategoryProductVariant category);
+
+        public List<CategoryProductVariantResponse> Map(List<CategoryProductVariant> categories);
     }
 }
 

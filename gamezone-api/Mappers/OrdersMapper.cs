@@ -6,9 +6,9 @@ namespace gamezone_api.Mappers
 {
 	public class OrdersMapper
 	{
-		private ProductsMapper _productsMapper;
+		private IProductsMapper _productsMapper;
 
-		public OrdersMapper(ProductsMapper productsMapper)
+		public OrdersMapper(IProductsMapper productsMapper)
 		{
 			_productsMapper = productsMapper;
         }

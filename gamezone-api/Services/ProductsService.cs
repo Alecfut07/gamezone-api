@@ -1,25 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Runtime.Serialization;
-using gamezone_api.Helpers;
+﻿using gamezone_api.Helpers;
 using gamezone_api.Mappers;
-using gamezone_api.Models;
 using gamezone_api.Networking;
 using gamezone_api.Parameters;
 using gamezone_api.Repositories;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Stripe;
 
 namespace gamezone_api.Services
 {
     public class ProductsService : BaseService, IProductService
     {
         private IProductsRepository _productsRepository;
-        private ProductsMapper _productsMapper;
+        private IProductsMapper _productsMapper;
 
-        public ProductsService(ILogger logger, IProductsRepository productsRepository, ProductsMapper productsMapper)
+        public ProductsService(ILogger logger, IProductsRepository productsRepository, IProductsMapper productsMapper)
             : base(logger)
         {
             _productsRepository = productsRepository;
@@ -31,9 +23,9 @@ namespace gamezone_api.Services
             try
             {
                 var products = await _productsRepository.GetProducts();
-                return products.ConvertAll<ProductResponse>((p) => _productsMapper.Map(p));
+                return products.ConvertAll<ProductResponse>(p => _productsMapper.Map(p));
             }
-            catch (Exception ex)
+            catch (OperationCanceledException ex)
             {
                 _logger.LogError(ex, null);
                 throw;
@@ -52,7 +44,7 @@ namespace gamezone_api.Services
                 }
                 return null;
             }
-            catch (Exception ex)
+            catch (OperationCanceledException ex)
             {
                 _logger.LogError(ex, null);
                 throw;
@@ -63,16 +55,16 @@ namespace gamezone_api.Services
         {
             try
             {
-                var products = await _productsRepository.GetProductsByPaging(productParameters);
-                var productsResponse = products.ConvertAll<ProductResponse>((p) => _productsMapper.Map(p));
                 if (productParameters.PageNumber != null && productParameters.PageSize != null)
                 {
+                    var products = await _productsRepository.GetProductsByPaging(productParameters);
+                    var productsResponses = products.ConvertAll<ProductResponse>(p => _productsMapper.Map(p));
                     var pageNumber = productParameters.PageNumber ?? 0;
                     var pageSize = productParameters.PageSize ?? 0;
 
                     var productsByPaging = PagedList<ProductResponse>
                         .ToPagedList(
-                            productsResponse.OrderBy((prods) => prods.Name),
+                            productsResponses.OrderBy((prods) => prods.Name),
                             0,
                             pageNumber,
                             pageSize
@@ -80,12 +72,9 @@ namespace gamezone_api.Services
 
                     return productsByPaging;
                 }
-                else
-                {
-                    return new PagedList<ProductResponse>();
-                }
+                return new PagedList<ProductResponse>();
             }
-            catch (Exception ex)
+            catch (OperationCanceledException ex)
             {
                 _logger.LogError(ex, null);
                 throw;
@@ -97,9 +86,9 @@ namespace gamezone_api.Services
             try
             {
                 var products = await _productsRepository.GetProductsByCollection();
-                return products.ConvertAll<ProductResponse>((p) => _productsMapper.Map(p));
+                return products.ConvertAll<ProductResponse>(p => _productsMapper.Map(p));
             }
-            catch (Exception ex)
+            catch (OperationCanceledException ex)
             {
                 _logger.LogError(ex, null);
                 throw;
@@ -110,10 +99,10 @@ namespace gamezone_api.Services
         {
             try
             {
-                var (count, products) = await _productsRepository.SearchProducts(searchParameter);
-                var productsResponse = products.ConvertAll<ProductResponse>((p) => _productsMapper.Map(p));
-                if (searchParameter.PageNumber != null && searchParameter.PageSize != null)
+                if (searchParameter.Name != null && searchParameter.PageNumber != null && searchParameter.PageSize != null)
                 {
+                    var (count, products) = await _productsRepository.SearchProducts(searchParameter);
+                    var productsResponse = products.ConvertAll<ProductResponse>(p => _productsMapper.Map(p));
                     var pageNumber = searchParameter.PageNumber ?? 0;
                     var pageSize = searchParameter.PageSize ?? 0;
 
@@ -127,12 +116,9 @@ namespace gamezone_api.Services
 
                     return productsByPaging;
                 }
-                else
-                {
-                    return new PagedList<ProductResponse>();
-                }
+                return new PagedList<ProductResponse>();
             }
-            catch (Exception ex)
+            catch (OperationCanceledException ex)
             {
                 _logger.LogError(ex, null);
                 throw;
@@ -148,7 +134,7 @@ namespace gamezone_api.Services
                 var productResponse = _productsMapper.Map(product);
                 return productResponse;
             }
-            catch (Exception ex)
+            catch (OperationCanceledException ex)
             {
                 _logger.LogError(ex, null);
                 throw;
@@ -213,7 +199,7 @@ namespace gamezone_api.Services
                 }
                 return _productsMapper.Map(product);
             }
-            catch (Exception ex)
+            catch (OperationCanceledException ex)
             {
                 _logger.LogError(ex, null);
                 throw;
@@ -226,33 +212,12 @@ namespace gamezone_api.Services
             {
                 await _productsRepository.DeleteProduct(id);
             }
-            catch (Exception ex)
+            catch (OperationCanceledException ex)
             {
                 _logger.LogError(ex, null);
                 throw;
             }
         }
-    }
-
-    public interface IProductService
-    {
-        Task<IEnumerable<ProductResponse>> GetProducts();
-
-        Task<ProductResponse?> GetProductById(long id);
-
-        Task<PagedList<ProductResponse>> GetProductsByPaging(ProductParameters productParameters);
-
-        Task<List<ProductResponse>> GetProductsByCollection();
-
-        Task<PagedList<ProductResponse>> SearchProducts(SearchParameter searchParameter);
-
-        Task<ProductResponse?> SaveNewProduct(ProductRequest productRequest);
-
-        ImageResponse? UploadImage(ImageRequest imageRequest);
-
-        Task<ProductResponse?> UpdateProduct(long id, ProductRequest product);
-
-        Task DeleteProduct(long id);
     }
 }
 
