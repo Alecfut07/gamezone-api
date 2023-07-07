@@ -25,9 +25,19 @@ namespace gamezone_tests.Mappers
         {
             long productId = 0;
             int quantity = 0;
-            ProductCacheEntry pce = new ProductCacheEntry();
+            ProductCacheEntry pce = new ProductCacheEntry
+            {
+                Name = "name",
+                Price = 10,
+            };
 
-            var expected = new CartProduct();
+            var expected = new CartProduct
+            {
+                ProductId = productId,
+                Quantity = quantity,
+                Name = pce.Name,
+                Price = pce.Price
+            };
 
             _cartsMapper.Setup(m => m.Map(productId, quantity, pce)).Returns(expected);
 
@@ -35,8 +45,7 @@ namespace gamezone_tests.Mappers
 
             var actual = cartsMapper.Map(productId, quantity, pce);
 
-            //Assert.That(actual, Is.EqualTo(expected));
-            Assert.That(actual.GetType(), Is.EqualTo(expected.GetType()));
+            Assert.That(actual, Is.EqualTo(expected));
         }
     }
 }
