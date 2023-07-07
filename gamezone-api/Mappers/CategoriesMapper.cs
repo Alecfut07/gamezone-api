@@ -4,7 +4,7 @@ using gamezone_api.Networking;
 
 namespace gamezone_api.Mappers
 {
-	public class CategoriesMapper
+	public class CategoriesMapper : ICategoriesMapper
 	{
 		public Category Map(CategoryRequest categoryRequest)
 		{
@@ -48,6 +48,17 @@ namespace gamezone_api.Mappers
             };
 			return subcategoryResponse;
 		}
+	}
+
+	public interface ICategoriesMapper
+	{
+		Category Map(CategoryRequest categoryRequest);
+
+		List<CategoryResponse> Map(Dictionary<Category, List<Category>> categoriesDictionary);
+
+		CategoryResponse Map(Category category, List<Category> subcategories);
+
+		SubCategoryResponse Map(Category subcategory);
 	}
 }
 

@@ -12,9 +12,9 @@ namespace gamezone_api.Services
     public class CategoriesService : BaseService, ICategoryService
     {
         private CategoriesRepository _categoriesRepository;
-        private CategoriesMapper _categoriesMapper;
+        private ICategoriesMapper _categoriesMapper;
 
-        public CategoriesService(ILogger logger, CategoriesRepository categoriesRepository, CategoriesMapper categoriesMapper)
+        public CategoriesService(ILogger logger, CategoriesRepository categoriesRepository, ICategoriesMapper categoriesMapper)
             : base(logger)
         {
             _categoriesRepository = categoriesRepository;

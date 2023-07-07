@@ -110,7 +110,7 @@ builder.Services.AddScoped<EditionsMapper>();
 builder.Services.AddScoped<UsersMapper>();
 builder.Services.AddScoped<PublishersMapper>();
 builder.Services.AddScoped<ICartsMapper, CartsMapper>();
-builder.Services.AddScoped<CategoriesMapper>();
+builder.Services.AddScoped<ICategoriesMapper,CategoriesMapper>();
 builder.Services.AddScoped<OrdersMapper>();
 
 // REPOSITORIES
