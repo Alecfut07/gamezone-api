@@ -14,7 +14,7 @@ using Moq;
 
 namespace gamezone_tests.Services
 {
-    public class productsServiceTest
+    public class ProductsServiceTest
     {
         private Mock<ILogger> _logger = new Mock<ILogger>();
         private Mock<IProductsMapper> _productsMapper = new Mock<IProductsMapper>();
