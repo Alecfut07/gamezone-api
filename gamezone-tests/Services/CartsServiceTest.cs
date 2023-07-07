@@ -127,6 +127,77 @@ namespace gamezone_tests.Services
 
             _cartsRepository.Verify(m => m.UpdateQuantity(uuid, cartRequest), Times.Once);
         }
+
+        [Test]
+        public async Task updateQuantity_ThrowsException_WhenRepositoryFails()
+        {
+            string uuid = "jreioafjoirej";
+            var cartRequest = new CartRequest();
+
+            var exception = new Exception();
+
+            _cartsRepository.Setup(m => m.UpdateQuantity(uuid, cartRequest)).Throws(exception);
+
+            var cartsService = new CartsService(_logger.Object, _cartsRepository.Object, _cartsMapper.Object);
+
+            Assert.ThrowsAsync<Exception>(async () => await cartsService.UpdateQuantity(uuid, cartRequest));
+        }
+
+        [Test]
+        public async Task removeAllItemsInCart_AllItemsRemoved_WhenRepositorySucceeds()
+        {
+            string uuid = "jreioafjoirej";
+
+            _cartsRepository.Setup(m => m.RemoveAllItemsInCart(uuid)).Returns(Task.CompletedTask);
+
+            var cartsService = new CartsService(_logger.Object, _cartsRepository.Object, _cartsMapper.Object);
+            await cartsService.RemoveAllItemsInCart(uuid);
+
+            _cartsRepository.Verify(m => m.RemoveAllItemsInCart(uuid), Times.Once);
+        }
+
+        [Test]
+        public async Task removeAllItemsInCart_ThrowsException_WhenRepositoryFails()
+        {
+            string uuid = "jreioafjoirej";
+
+            var exception = new Exception();
+
+            _cartsRepository.Setup(m => m.RemoveAllItemsInCart(uuid)).Throws(exception);
+
+            var cartsService = new CartsService(_logger.Object, _cartsRepository.Object, _cartsMapper.Object);
+
+            Assert.ThrowsAsync<Exception>(async () => await cartsService.RemoveAllItemsInCart(uuid));
+        }
+
+        [Test]
+        public async Task removeItemInCart_ItemRemoved_WhenRepositorySucceeds()
+        {
+            string uuid = "jreioafjoirej";
+            var cartRequest = new CartRequest();
+
+            _cartsRepository.Setup(m => m.RemoveItemInCart(uuid, cartRequest)).Returns(Task.CompletedTask);
+
+            var cartsService = new CartsService(_logger.Object, _cartsRepository.Object, _cartsMapper.Object);
+            await cartsService.RemoveItemInCart(uuid, cartRequest);
+
+            _cartsRepository.Verify(m => m.RemoveItemInCart(uuid, cartRequest), Times.Once);
+        }
+
+        [Test]
+        public async Task removeItemInCart_ThrowsException_WhenRepositoryFails()
+        {
+            string uuid = "jreioafjoirej";
+            var cartRequest = new CartRequest();
+
+            var exception = new Exception();
+
+            _cartsRepository.Setup(m => m.RemoveItemInCart(uuid, cartRequest)).Throws(exception);
+
+            var cartsService = new CartsService(_logger.Object, _cartsRepository.Object, _cartsMapper.Object);
+
+            Assert.ThrowsAsync<Exception>(async () => await cartsService.RemoveItemInCart(uuid, cartRequest));
+        }
     }
 }
 
