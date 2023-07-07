@@ -1,6 +1,4 @@
-﻿using System;
-using gamezone_api.Models;
-using gamezone_api.Networking;
+﻿using gamezone_api.Models;
 
 namespace gamezone_api.Mappers
 {
