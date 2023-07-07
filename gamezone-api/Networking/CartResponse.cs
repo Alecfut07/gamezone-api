@@ -8,5 +8,5 @@ namespace gamezone_api.Networking
 	{
 		[JsonPropertyName("products")]
 		public ICollection<CartProduct> Products { get; set; }
-	}
+    }
 }

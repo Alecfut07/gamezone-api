@@ -109,7 +109,7 @@ builder.Services.AddScoped<ConditionsMapper>();
 builder.Services.AddScoped<EditionsMapper>();
 builder.Services.AddScoped<UsersMapper>();
 builder.Services.AddScoped<PublishersMapper>();
-builder.Services.AddScoped<CartsMapper>();
+builder.Services.AddScoped<ICartsMapper, CartsMapper>();
 builder.Services.AddScoped<CategoriesMapper>();
 builder.Services.AddScoped<OrdersMapper>();
 
@@ -122,7 +122,7 @@ builder.Services.AddScoped<EditionsRepository>();
 builder.Services.AddScoped<AuthRepository>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<PublishersRepository>();
-builder.Services.AddScoped<CartsRepository>();
+builder.Services.AddScoped<ICartsRepository, CartsRepository>();
 builder.Services.AddScoped<CategoriesRepository>();
 builder.Services.AddScoped<IOrdersRepository, OrdersRepository>();
 

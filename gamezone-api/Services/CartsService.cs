@@ -10,10 +10,10 @@ namespace gamezone_api.Services
 {
     public class CartsService : BaseService, ICartsService
     {
-        private CartsRepository _cartsRepository;
-        private CartsMapper _cartsMapper;
+        private ICartsRepository _cartsRepository;
+        private ICartsMapper _cartsMapper;
 
-        public CartsService(ILogger logger, CartsRepository cartsRepository, CartsMapper cartsMapper)
+        public CartsService(ILogger logger, ICartsRepository cartsRepository, ICartsMapper cartsMapper)
             : base(logger)
         {
             _cartsRepository = cartsRepository;
@@ -38,7 +38,7 @@ namespace gamezone_api.Services
                 };
                 return cartResponse;
             }
-            catch (Exception ex)
+            catch (ArgumentNullException ex)
             {
                 _logger.LogError(ex, null);
                 throw;
@@ -51,7 +51,7 @@ namespace gamezone_api.Services
             {
                 await _cartsRepository.AddItemToCart(uuid, cartRequest);
             }
-            catch (Exception ex)
+            catch (OperationCanceledException ex)
             {
                 _logger.LogError(ex, null);
                 throw;
@@ -96,19 +96,6 @@ namespace gamezone_api.Services
                 throw;
             }
         }
-    }
-
-    public interface ICartsService
-    {
-        Task<CartResponse> GetCart(string uuid);
-
-        Task AddItemToCart(string uuid, CartRequest cartRequest);
-
-        Task UpdateQuantity(string uuid, CartRequest cartRequest);
-
-        Task RemoveAllItemsInCart(string uuid);
-
-        Task RemoveItemInCart(string uuid, CartRequest cartRequest);
     }
 }
 

@@ -8,13 +8,13 @@ using gamezone_api.Models;
 
 namespace gamezone_api.Repositories
 {
-	public class CartsRepository
+	public class CartsRepository : ICartsRepository
 	{
 		private IDatabase _db;
 		private GamezoneContext _context;
-        private CartsMapper _cartsMapper;
+        private ICartsMapper _cartsMapper;
 
-        public CartsRepository(IDatabase db, GamezoneContext context, CartsMapper cartsMapper)
+        public CartsRepository(IDatabase db, GamezoneContext context, ICartsMapper cartsMapper)
 		{
 			_db = db;
 			_context = context;
@@ -85,5 +85,18 @@ namespace gamezone_api.Repositories
 			await _db.HashDeleteAsync(key, $"product:{cartRequest.ProductId}");
 		}
     }
+
+	public interface ICartsRepository
+	{
+		Task<List<(long, int, ProductCacheEntry)>> GetCart(string uuid);
+
+		Task AddItemToCart(string uuid, CartRequest cartRequest);
+
+		Task UpdateQuantity(string uuid, CartRequest cartRequest);
+
+		Task RemoveAllItemsInCart(string uuid);
+
+		Task RemoveItemInCart(string uuid, CartRequest cartRequest);
+	}
 }
 

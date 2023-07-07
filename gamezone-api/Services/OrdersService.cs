@@ -9,12 +9,12 @@ namespace gamezone_api.Services
 {
 	public class OrdersService : BaseService, IOrdersService
 	{
-		private CartsRepository _cartsRepository;
+		private ICartsRepository _cartsRepository;
 		private IOrdersRepository _ordersRepository;
-		private CartsMapper _cartsMapper;
+		private ICartsMapper _cartsMapper;
 		private OrdersMapper _ordersMapper;
 
-		public OrdersService(ILogger logger, IOrdersRepository ordersRepository, CartsRepository cartsRepository, OrdersMapper ordersMapper, CartsMapper cartsMapper)
+		public OrdersService(ILogger logger, IOrdersRepository ordersRepository, ICartsRepository cartsRepository, OrdersMapper ordersMapper, ICartsMapper cartsMapper)
 			: base(logger)
 		{
 			_ordersRepository = ordersRepository;

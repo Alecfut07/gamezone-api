@@ -9,10 +9,10 @@ namespace gamezone_api.Services
 {
     public class EmailSenderService : BaseService, IEmailSenderService
     {
-        private CartsRepository _cartsRepository;
-        private CartsMapper _cartsMapper;
+        private ICartsRepository _cartsRepository;
+        private ICartsMapper _cartsMapper;
 
-        public EmailSenderService(ILogger logger, CartsRepository cartsRepository, CartsMapper cartsMapper)
+        public EmailSenderService(ILogger logger, ICartsRepository cartsRepository, ICartsMapper cartsMapper)
             : base(logger)
         {
             _cartsRepository = cartsRepository;

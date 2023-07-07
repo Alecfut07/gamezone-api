@@ -16,10 +16,10 @@ namespace gamezone_api.Application
         private readonly ChargeService _chargeService;
         private readonly CustomerService _customerService;
         private readonly TokenService _tokenService;
-        private readonly CartsRepository _cartsRepository;
-        private readonly CartsMapper _cartsMapper;
+        private readonly ICartsRepository _cartsRepository;
+        private readonly ICartsMapper _cartsMapper;
 
-        public PaymentsService(ChargeService chargeService, CustomerService customerService, TokenService tokenService, CartsRepository cartsRepository, CartsMapper cartsMapper)
+        public PaymentsService(ChargeService chargeService, CustomerService customerService, TokenService tokenService, ICartsRepository cartsRepository, ICartsMapper cartsMapper)
         {
             _chargeService = chargeService;
             _customerService = customerService;

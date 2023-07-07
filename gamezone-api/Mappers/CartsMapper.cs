@@ -4,7 +4,7 @@ using gamezone_api.Networking;
 
 namespace gamezone_api.Mappers
 {
-	public class CartsMapper
+	public class CartsMapper : ICartsMapper
 	{
 		public CartProduct Map(long id, int quantity, ProductCacheEntry productCacheEntry)
 		{
@@ -17,4 +17,9 @@ namespace gamezone_api.Mappers
 			};
 		}
 	}
+
+	public interface ICartsMapper
+	{
+		CartProduct Map(long id, int quantity, ProductCacheEntry productCacheEntry);
+    }
 }
