@@ -23,9 +23,11 @@
 
   <ItemGroup>
     <None Remove="Services\" />
+    <None Remove="Mappers\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
+    <Folder Include="Mappers\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\gamezone-api\gamezone-api.csproj" />
