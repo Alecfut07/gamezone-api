@@ -10,9 +10,9 @@ namespace gamezone_api.Services
     public class ConditionsService : BaseService, IConditionService
     {
         private ConditionsRepository _conditionsRepository;
-        private ConditionsMapper _conditionsMapper;
+        private IConditionsMapper _conditionsMapper;
 
-        public ConditionsService(ILogger logger, ConditionsRepository conditionsRepository, ConditionsMapper conditionsMapper)
+        public ConditionsService(ILogger logger, ConditionsRepository conditionsRepository, IConditionsMapper conditionsMapper)
             : base(logger)
         {
             _conditionsRepository = conditionsRepository;

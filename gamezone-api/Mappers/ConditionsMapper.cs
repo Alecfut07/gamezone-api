@@ -4,7 +4,7 @@ using gamezone_api.Networking;
 
 namespace gamezone_api.Mappers
 {
-	public class ConditionsMapper
+	public class ConditionsMapper : IConditionsMapper
 	{
 		public Condition Map(ConditionRequest conditionRequest)
 		{
@@ -23,5 +23,12 @@ namespace gamezone_api.Mappers
 			};
 		}
 	}
+
+	public interface IConditionsMapper
+	{
+		Condition Map(ConditionRequest conditionRequest);
+
+		ConditionResponse Map(Condition condition);
+    }
 }
 

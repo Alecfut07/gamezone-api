@@ -105,7 +105,7 @@ builder.Services.AddSqlServer<GamezoneContext>(Environment.GetEnvironmentVariabl
 
 // MAPPERS
 builder.Services.AddScoped<IProductsMapper, ProductsMapper>();
-builder.Services.AddScoped<ConditionsMapper>();
+builder.Services.AddScoped<IConditionsMapper, ConditionsMapper>();
 builder.Services.AddScoped<EditionsMapper>();
 builder.Services.AddScoped<UsersMapper>();
 builder.Services.AddScoped<PublishersMapper>();
