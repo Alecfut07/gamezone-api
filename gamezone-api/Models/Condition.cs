@@ -12,5 +12,16 @@ namespace gamezone_api.Models
 		[Required]
 		[Column("state")]
 		public string State { get; set; }
-	}
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) { return false; }
+            if (object.ReferenceEquals(this, obj)) { return true; }
+
+            var condition = obj as Condition;
+            return
+                this.Id == condition.Id &&
+                this.State == condition.State;
+        }
+    }
 }
