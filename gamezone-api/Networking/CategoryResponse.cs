@@ -8,6 +8,17 @@ namespace gamezone_api.Networking
 	{
         [JsonPropertyName("subcategories")]
         public IEnumerable<SubCategoryResponse> SubCategories { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            var categoryResponse = obj as CategoryResponse;
+            return base.Equals(obj) &&
+                this.ParentCategoryId == categoryResponse.ParentCategoryId &&
+                this.CreateDate == categoryResponse.CreateDate &&
+                this.UpdateDate == categoryResponse.UpdateDate &&
+                //this.SubCategories == categoryResponse.SubCategories;
+                this.SubCategories.SequenceEqual(categoryResponse.SubCategories);
+        }
     }
 }
 

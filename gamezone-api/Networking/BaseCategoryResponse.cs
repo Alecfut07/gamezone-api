@@ -3,8 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace gamezone_api.Networking
 {
-	public abstract class BaseCategoryResponse
-	{
+    public abstract class BaseCategoryResponse
+    {
         public long Id { get; set; }
 
         public string Name { get; set; }
@@ -19,6 +19,18 @@ namespace gamezone_api.Networking
 
         [JsonPropertyName("update_date")]
         public DateTime UpdateDate { get; set; }
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) { return false; }
+            if (object.ReferenceEquals(this, obj)) { return true; }
+
+            var baseCategoryResponse = obj as BaseCategoryResponse;
+            return
+                this.Id == baseCategoryResponse.Id &&
+                this.Name == baseCategoryResponse.Name &&
+                this.Handle == baseCategoryResponse.Handle;
+        }
     }
 }
 

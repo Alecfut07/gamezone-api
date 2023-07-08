@@ -29,6 +29,23 @@ namespace gamezone_api.Models
         public virtual Category? ParentCategory { get; set; }
 
 		public ICollection<CategoryProductVariant> CategoriesProductVariants { get; set; }
-	}
+
+        public override bool Equals(object? obj)
+        {
+            if (obj == null) { return false; }
+            if (object.ReferenceEquals(this, obj)) { return true; }
+
+            var category = obj as Category;
+            return
+                this.Id == category.Id &&
+                this.Name == category.Name &&
+                this.ParentCategoryId == category.ParentCategoryId &&
+                this.Handle == category.Handle &&
+				this.CreateDate == category.CreateDate &&
+				this.UpdateDate == category.UpdateDate &&
+				this.ParentCategory == category.ParentCategory &&
+				this.CategoriesProductVariants == category.CategoriesProductVariants;
+        }
+    }
 }
 
