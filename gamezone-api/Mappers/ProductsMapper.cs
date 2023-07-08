@@ -6,10 +6,10 @@ namespace gamezone_api.Mappers
 	public class ProductsMapper: IProductsMapper
     {
         private IConditionsMapper _conditionsMapper;
-        private EditionsMapper _editionsMapper;
+        private IEditionsMapper _editionsMapper;
         private IHttpContextAccessor _httpContextAccessor;
 
-        public ProductsMapper(IConditionsMapper conditionsMapper, EditionsMapper editionsMapper, IHttpContextAccessor httpContextAccessor)
+        public ProductsMapper(IConditionsMapper conditionsMapper, IEditionsMapper editionsMapper, IHttpContextAccessor httpContextAccessor)
         {
             _conditionsMapper = conditionsMapper;
             _editionsMapper = editionsMapper;

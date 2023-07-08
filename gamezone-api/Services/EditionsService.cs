@@ -10,9 +10,9 @@ namespace gamezone_api.Services
     public class EditionsService : BaseService, IEditionService
     {
         private EditionsRepository _editionsRepository;
-        private EditionsMapper _editionsMapper;
+        private IEditionsMapper _editionsMapper;
 
-        public EditionsService(ILogger logger, EditionsRepository editionsRepository, EditionsMapper editionsMapper)
+        public EditionsService(ILogger logger, EditionsRepository editionsRepository, IEditionsMapper editionsMapper)
             : base(logger)
         {
             _editionsRepository = editionsRepository;

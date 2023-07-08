@@ -4,7 +4,7 @@ using gamezone_api.Networking;
 
 namespace gamezone_api.Mappers
 {
-	public class EditionsMapper
+	public class EditionsMapper : IEditionsMapper
 	{
 		public Edition Map(EditionRequest editionRequest)
 		{
@@ -23,5 +23,12 @@ namespace gamezone_api.Mappers
 			};
 		}
 	}
+
+	public interface IEditionsMapper
+	{
+		Edition Map(EditionRequest editionRequest);
+
+		EditionResponse Map(Edition edition);
+    }
 }
 
